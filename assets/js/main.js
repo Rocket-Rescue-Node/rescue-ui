@@ -57,7 +57,7 @@ function submit() {
   const accessToken = document.getElementById("accessToken");
   const signedMsg = JSON.parse(document.getElementById("signedMsg").value);
 
-  fetch('https://api-staging.rescuenode.com/rescue/v1/credentials/', {
+  fetch('https://api.rescuenode.com/rescue/v1/credentials/', {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
