@@ -108,7 +108,7 @@ function createAccessToken(response) {
               <span>  validator:</span>
               <span>    x-rp-comment: Add your customizations below...</span>
               <span>    environment:</span>
-              <span>      - "CC_RPC_ENDPOINT=prysm-grpc.rescuenode.com"</span>
+              <span>      - "CC_RPC_ENDPOINT=prysm-grpc.rescuenode.com:443"</span>
               <span>      - "VC_ADDITIONAL_FLAGS=--grpc-headers=rprnauth=${username}:${password} --tls-cert=/etc/ssl/certs/ca-certificates.crt"</span>`;
     } else {
       console.error("Client not supported")
