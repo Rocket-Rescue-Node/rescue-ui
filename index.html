@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100 bg-black">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="rocketpool, rocket, pool, rescue, node, staking, ethereum">
+    <meta name="description" content="Rocket Rescue Node is a community-run project giving Rocket Pool node operators access to a trust-minimized and secured fallback node for emergencies and maintenance.">
+    <title>Rocket Rescue Node</title>
+    <link rel="dns-prefetch" href="">
+    <link rel="canonical" href="">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/icons/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/icons/apple-touch-icon.png">
+    <link rel="manifest" href="assets/img/icons/site.webmanifest">
+    <link rel="mask-icon" href="assets/img/icons/safari-pinned-tab.svg" color="#000000">
+    <link rel="shortcut icon" href="assets/img/icons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="assets/img/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <meta property="og:locale" content="en-US">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Rocket Rescue Node">
+    <meta property="og:description" content="Rocket Rescue Node is a community-run project giving Rocket Pool node operators access to a trust-minimized and secured fallback node for emergencies and maintenance.">
+    <meta property="og:url" content="https://rescuenode.com">
+    <meta property="og:site_name" content="Rocket Rescue Node">
+    <meta property="og:image" content="assets/img/cover/cover.png">
+    <meta property="og:image:secure_url" content="assets/img/cover/cover.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="Rocket Rescue Node is a community-run project giving Rocket Pool node operators access to a trust-minimized and secured fallback node for emergencies and maintenance.">
+    <meta name="twitter:title" content="Rocket Rescue Node">
+    <meta name="twitter:image" content="assets/img/cover/cover.png">
+    <meta name="twitter:image:alt" content="Rocket Rescue Node">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+  </head>
+
+
+  <body class="d-flex flex-column min-vh-100 bg-black">
+
+
+    <!-- Header -->
+    <header class="bg-black">
+      <div class="container pt-5 pb-5 mt-2 mb-5 text-center text-light">
+        <img src="assets/img/logo.png" height="75px">
+        <h1 class="display-5 fw-bold mt-4">Rocket Rescue Node</h1>
+        <div class="col-lg-7 mx-auto mb-4">
+          <a class="lead mx-2" href="" data-bs-toggle="modal" data-bs-target="#aboutModal">About</a>
+          <a class="lead mx-2" href="" data-bs-toggle="modal" data-bs-target="#donateModal">Donate</a>
+        </div>
+        <div class="col-lg-5 mx-auto">
+          <p class="lead">A community-run, trust-minimized, and secured fallback node for emergencies and maintenance.</p>
+        </div>
+      </div>
+    </header>
+
+
+    <!-- Content -->
+    <section class="">
+      <div class="container py-5">
+        <div class="row justify-content-center" style="margin-top: -7rem;">
+          <div class="col-12">
+            <div class="card rounded-0 mx-auto bg-dark text-light" style="max-width: 40rem;">
+              <div class="card-body markdown m-3">
+
+                <!-- Request Access -->
+                <div id="requestAccess" class="prompt ">
+                  <h4 class="card-title">
+                    <p>Request Temporary Access</p>
+                  </h4>
+                  <div class="card-text mb-4">
+                    <label for="signedMsg" class="form-label mb-3">
+                      To request access, run <code>rocketpool node sign-message -m "Rescue Node `date +%s`"</code> and paste the signed message here:
+                    </label>
+                    <textarea id="signedMsg" class="form-control" rows="3" style="height: 165px" spellcheck="false" onkeyup="validate()" 
+                    placeholder='{&#10;&#09;"address": "0x12413fdb146df6b5f6285e2cdadc9cb23b5142d1",&#10;&#09;"msg": "Rescue Node 1672595636",&#10;&#09;"sig": "0x3a787fa4b5a8ea2ecad39f78a4dfe9d622864f6de6c4...",&#10;&#09;"version": "1"&#10;}'></textarea>
+                    <p id="errorMsg" class="mt-1 d-none">
+                      <span class="text-brand-secondary">* </span>
+                      ERROR: The contents do not match the expected output.
+                    </p>
+                  </div>
+                  <!-- Terms & Conditions -->
+                  <div class="form-check">
+                    <input id="termsCheckbox" class="form-check-input" type="checkbox" value="" onclick="validate()">
+                    <label class="form-check-label" for="termsCheckbox">
+                      I agree to the <a href="" data-bs-toggle="modal" data-bs-target="#termsModal">terms and conditions</a>, and acknowledge the <a href="" data-bs-toggle="modal" data-bs-target="#risksModal">associated risks</a>.
+                    </label>
+                  </div>
+                  <!-- Next Button -->
+                  <div id="submit" class="mt-4 text-center" style="max-width: 40rem;">
+                    <a id="submitBtn" class="btn btn-secondary disabled" onclick="submit()">
+                      Next
+                      <span class="ms-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" transform="scale(-1, 1)">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
+                        </svg>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+
+
+                <!-- Access Token -->
+                <div id="accessToken" class="prompt d-none">
+                  <h4 class="card-title">
+                    <p>Access Token</p>
+                  </h4>
+                  <div class="card-text mb-4">
+                    <p>This access token is valid until <u><span id="expDate">{response.timestamp + 15d}</span></u>.</p>
+                    <p>Select your client below and edit your <code>~/.rocketpool/override/validator.yml</code> file to look exactly like the contents shown. Save the file, exit, then run <code>rocketpool service start</code>:</p>
+                  </div>
+                  <!-- Tab Nav -->
+                  <ul class="nav nav-tabs" id="clientTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active" id="lighthouse" data-bs-toggle="tab" data-bs-target="#lighthouse-pane" type="button" role="tab" aria-controls="lighthouse-pane" aria-selected="true">Lighthouse</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link" id="prysm-tab" data-bs-toggle="tab" data-bs-target="#prysm-tab-pane" type="button" role="tab" aria-controls="prysm-tab-pane" aria-selected="false">Prysm</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link" id="teku-tab" data-bs-toggle="tab" data-bs-target="#teku-tab-pane" type="button" role="tab" aria-controls="teku-tab-pane" aria-selected="false">Teku</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link" id="nimbus-tab" data-bs-toggle="tab" data-bs-target="#nimbus-tab-pane" type="button" role="tab" aria-controls="nimbus-tab-pane" aria-selected="false">Nimbus</button>
+                    </li>
+                  </ul>
+                  <!-- Tab Content -->
+                  <div class="tab-content" id="clientTabContent">
+                    <!-- Lighthouse -->
+                    <div class="tab-pane fade show active bg-black" id="lighthouse-pane" role="tabpanel" aria-labelledby="lighthouse" tabindex="0">
+                      <div class="code-container">
+                        <pre><code id="lighthouseCode">
+                          <!-- ...lighthouse token... -->
+                        </code></pre>
+                        <svg id="lighthouseCopy" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="code-copy" onclick="copyText('lighthouseCopy','lighthouseCode')" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-trigger="click" data-bs-original-title="Copied!">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
+                        </svg>
+                      </div>
+                    </div>
+                    <!-- Prysm -->
+                    <div class="tab-pane fade bg-black" id="prysm-tab-pane" role="tabpanel" aria-labelledby="prysm-tab" tabindex="0">
+                      <div class="code-container">
+                        <pre><code id="prysmCode">
+                          <!-- ...prysm token... -->
+                        </code></pre>
+                        <svg id="prysmCopy" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="code-copy" onclick="copyText('prysmCopy','prysmCode')" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-trigger="click" data-bs-original-title="Copied!">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
+                        </svg>
+                      </div>
+                    </div>
+                    <!-- Teku -->
+                    <div class="tab-pane fade bg-black" id="teku-tab-pane" role="tabpanel" aria-labelledby="teku-tab" tabindex="0">
+                      <div class="code-container">
+                        <pre><code id="tekuCode">
+                          <!-- ...teku token... -->
+                        </code></pre>
+                        <svg id="tekuCopy" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="code-copy" onclick="copyText('tekuCopy','tekuCode')" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-trigger="click" data-bs-original-title="Copied!">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
+                        </svg>
+                      </div>
+                    </div>
+                    <!-- Nimbus -->
+                    <div class="tab-pane fade bg-black" id="nimbus-tab-pane" role="tabpanel" aria-labelledby="nimbus-tab" tabindex="0">
+                      <div class="code-container">
+                        <pre><code id="nimbusCode">
+                          <!-- ...nimbus token... -->
+                        </code></pre>
+                        <svg id="nimbusCopy" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="code-copy" onclick="copyText('nimbusCopy','nimbusCode')" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-trigger="click" data-bs-original-title="Copied!">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- About Modal -->
+    <div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content bg-black">
+          <div class="modal-header border-dark">
+            <h2 class="modal-title text-white" id="aboutModalLabel">About Rocket Rescue Node</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-white">
+            <p>At its core, Rocket Rescue Node is a community-operated Ethereum node which can be used by <a href="https://rocketpool.net/" target="_blank">Rocket Pool</a> node operators as an emergency fallback node during maintenance.<p/>
+            <p>Rocket Rescue Node was first created to help Node Operators survive The Merge in September '22, but quickly proved its lasting utility. We have <a href="https://dao.rocketpool.net/t/january-2023-gmc-call-for-grant-applications-deadline-is-january-15th/1335/3" target="_blank">applied for a pDAO grant</a> to help ensure its ongoing available to the community.</p>
+            <p>Under the hood, Rocket Rescue Node is actually 4 nodes to maximize Beacon Client compatibility, a custom reverse-proxy to combat potential malfeasance by its users, and an API and UI to make it easy to access. For more information, see the <a href="https://gist.github.com/jshufro/a22724f06702c8342b5d1b29ee0a6190" target="_blank">Tech Spec</a>.</p>
+            <h3>Maintainers</h2>
+            <p>The rescue node is currently maintained by:</p>
+            <ul>
+              <li>João Poupino
+                <ul>
+                  <li><strong>@poupas</strong> on Discord</li>
+                  <li><a href="https://github.com/poupas" target="_blank">GitHub</a></li>
+                  <li><a href="https://dao.rocketpool.net/u/poupas/summary" target="_blank">RP Dao Forum</a></li>
+                  <li><a href="https://twitter.com/poupas" target="_blank">Twitter</a></li>
+                </ul>
+              </li>
+              <li>Jacob Shufro
+                <ul>
+                  <li><strong>@0xPatches.eth</strong> on Discord</li>
+                  <li><a href="https://github.com/jshufro" target="_blank">GitHub</a></li>
+                  <li><a href="https://dao.rocketpool.net/u/patches/summary" target="_blank">RP Dao Forum</a></li>
+                  <li><a href="https://twitter.com/0xPatches" target="_blank">Twitter</a></li>
+                </ul>
+              </li>
+              <li>Ken Smith
+                <ul>
+                  <li><strong>@Ken</strong> on Discord</li>
+                  <li><a href="https://github.com/jshufro" target="_blank">GitHub</a></li>
+                  <li><a href="https://dao.rocketpool.net/u/patches/summary" target="_blank">RP Dao Forum</a></li>
+                  <li><a href="https://twitter.com/shtimseht" target="_blank">Twitter</a></li>
+                </ul>
+              </li>
+            </ul>
+            <h3>Credits</h3>
+            <ul>
+              <li>@poupas - prototype, rescue-api, design, infrastructure, security</li>
+              <li>@0xPatches.eth - rescue-proxy, credentials library, design, general administrative stuff</li>
+              <li>@hanniabu.eth - rescue-ui website</li>
+              <li>@sleety.eth - logo design</li>
+            </ul>
+            <h3>Open Source</h3>
+            <p>The software that secures and powers the Rocket Rescue Node is open source under the AGPL V3 License.</p>
+            <p><a href="https://github.com/orgs/Rocket-Rescue-Node/repositories" target="_blank">View source code on GitHub</a></p>
+          </div>
+          <div class="modal-footer border-dark">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Donate Modal -->
+    <div class="modal fade" id="donateModal" tabindex="-1" aria-labelledby="donateModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content bg-black">
+          <div class="modal-header border-dark">
+            <h2 class="modal-title text-white" id="donateModalLabel">Donate</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-white">
+            <p>We will begin accepting donations after our <a href="https://dao.rocketpool.net/t/january-2023-gmc-call-for-grant-applications-deadline-is-january-15th/1335/3">Grant Proposal</a> is decided.</p>
+          </div>
+          <div class="modal-footer border-dark">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Terms & Conditions Modal -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content bg-black">
+          <div class="modal-header border-dark">
+            <h2 class="modal-title text-white" id="termseModalLabel">Terms and Conditions</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-white">
+            <p>Users acknowledge that the Maintainers and Developers of the Rocket Rescue Node are not liable for any financial damages incurred by or during their use of the Rocket Rescue Node.</p>
+            <p>Users agree not to attempt to redirect any funds or digital assets while using the Rocket Rescue Node.</p>
+            <p>Users access can be revoked without warning and at the sole discretion of the Rocket Rescue Node's maintainers.</p>
+          </div>
+          <div class="modal-footer border-dark">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Risks Modal -->
+    <div class="modal fade" id="risksModal" tabindex="-1" aria-labelledby="risksModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content bg-black">
+          <div class="modal-header border-dark">
+            <h2 class="modal-title text-white" id="risksModalLabel">Rocket Rescue Node Risks and Trust Disclosure</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-white">
+            <p>While we have done everything in our power to minimize risks and trust assumptions, there are a few that remain.</p>
+            <h3>Trust Assumptions</h3>
+            <p>A user of Rocket Rescue Node is explicitly trusting that its maintainers will not attempt to steal their tips/MEV rewards. We obviously have no intention of doing so, however, it is theoretically within our ability. For a list of the current maintainers, see the <strong>About</strong> link at the top of the page. We have gone to great lengths to prevent a user of Rocket Rescue Node from stealing the tips/MEV from another user, but we cannot promise that it is impossible to do so. You are explicitly trusting that the safeguards we put in place are sufficient.</p>
+            <p>Rocket Rescue Node is fully non-custodial. Your validator keys remain local to your node.</p>
+            <h3>Risks</h3>
+            <p>The slashing risks of Node Operation are not mitigated by Rocket Rescue Node. We encourage you to use Doppelgänger Detection, and always wait the prescribed 15 minutes after changing Validator Clients. Since your keys remain in your custody and your Validator Client's slashing protection database remains in place, Rocket Rescue Node does not present additional slashing risks, outside of the usual human error. Please exercise caution whenever performing adminstrative functions on your node.</p>
+          </div>
+          <div class="modal-footer border-dark">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="footer mt-auto">
+      <div class="container">
+        <div class="py-3 mt-5 border-top text-center border-secondary text-light">
+          <p class="my-0">Frontend made by <a href="https://etheralpha.org" target="_blank">Ether Alpha</a> with <small>❤️</small>
+          </p>
+        </div>
+      </div>
+    </footer>
+
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <!-- Custom JS -->
+    <script src="assets/js/main.js" type="application/javascript">
+    </script>
+  </body>
+</html>
