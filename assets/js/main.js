@@ -101,7 +101,7 @@ function createAccessToken(response) {
               <span>  validator:</span>
               <span>    x-rp-comment: Add your customizations below...</span>
               <span>    environment:</span>
-              <span>      - "CC_API_ENDPOINT=http://${username}:${password}@${clients[client]}.rescuenode.com"</span>`;
+              <span>      - "CC_API_ENDPOINT=https://${username}:${password}@${clients[client]}.rescuenode.com"</span>`;
     } else if (clients[client] == "prysm") {
       token =`<span>version: "3.7"</span>
               <span>services:</span>
