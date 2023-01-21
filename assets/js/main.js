@@ -77,9 +77,16 @@ function submit() {
       console.error(`ERROR: ${response.error}`);
       if (response.error == "timestamp is too old") {
         alert('ERROR: Your signature has expired. Signatures are only valid for 15 minutes after they are created. Please generate a new signature and submit again within a 15 minute period.');
-      }
-      if (response.error == "invalid signature") {
+      } else if (response.error == "invalid signature") {
         alert('ERROR: Your signature is invalid.');
+      } else if (response.error == "node is not registered") {
+        alert('ERROR: Your node is not registered.');
+      } else if (response.error == "node is not authorized") {
+        alert('ERROR: Your node is not authorized.');
+      } else if (response.error == "node has requested too many credentials") {
+        alert('ERROR: You have exceeded your usage limits.');
+      } else if (response.error) {
+        alert('Error: ' + response.error);
       }
     }
   })
