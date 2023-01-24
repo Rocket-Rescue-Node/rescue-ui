@@ -79,6 +79,11 @@ function submit() {
         timestamp: Date().now
       }
     };
+    // let response = { "error": "timestamp is too old" };
+    // let response = { "error": "invalid signature" };
+    // let response = { "error": "node is not registered" };
+    // let response = { "error": "node is not authorized" };
+    // let response = { "error": "node has requested too many credentials" };
     createAccessToken(response);
     setExpirationDate(response);
     document.getElementById("requestAccess").classList.add("d-none");
