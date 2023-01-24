@@ -38,12 +38,12 @@ function validate() {
   const termsCheckbox = document.getElementById("termsCheckbox").checked;
   const submitBtn = document.getElementById("submitBtn");
   const errorMsg = document.getElementById("errorMsg");
-  const correctFormat = signedMsg.includes(`{`) && 
-                        signedMsg.includes(`"address"`) && 
-                        signedMsg.includes(`"msg"`) && 
-                        signedMsg.includes(`"sig"`) && 
-                        signedMsg.includes(`"version"`) && 
-                        signedMsg.includes(`}`);                        
+  const correctFormat = signedMsg.includes(`{`) &&
+                        signedMsg.includes(`"address"`) &&
+                        signedMsg.includes(`"msg"`) &&
+                        signedMsg.includes(`"sig"`) &&
+                        signedMsg.includes(`"version"`) &&
+                        signedMsg.includes(`}`);
   let validJSON = false;
   try {
     let test = JSON.parse(signedMsg);
@@ -213,7 +213,3 @@ function log(msg) {
     console.log(msg);
   }
 }
-
-
-
-
