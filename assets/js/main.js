@@ -14,18 +14,35 @@
 // }
 
 
+const dev = false;
+
+
+
+// Event listeners
+document.getElementById("signedMsg").addEventListener("keyup", validate);
+document.getElementById("termsCheckbox").addEventListener("click", validate);
+document.getElementById("submitBtn").addEventListener("click", submit);
+const copyBtns = document.getElementsByClassName("code-copy");
+Array.from(copyBtns).forEach(function(element) {
+  element.addEventListener('click', copyText);
+});
+
+
 
 // Checks if signed message is valid json and format
 function validate() {
+  log("validating...");
+  if (dev) { return document.getElementById("submitBtn").classList.remove("disabled"); }
+
   const signedMsg = document.getElementById("signedMsg").value;
   const termsCheckbox = document.getElementById("termsCheckbox").checked;
   const submitBtn = document.getElementById("submitBtn");
   const errorMsg = document.getElementById("errorMsg");
-  const correctFormat = signedMsg.includes(`{`) && 
-                        signedMsg.includes(`"address"`) && 
-                        signedMsg.includes(`"msg"`) && 
-                        signedMsg.includes(`"sig"`) && 
-                        signedMsg.includes(`"version"`) && 
+  const correctFormat = signedMsg.includes(`{`) &&
+                        signedMsg.includes(`"address"`) &&
+                        signedMsg.includes(`"msg"`) &&
+                        signedMsg.includes(`"sig"`) &&
+                        signedMsg.includes(`"version"`) &&
                         signedMsg.includes(`}`);
   let validJSON = false;
   try {
@@ -53,6 +70,27 @@ function validate() {
 
 // Submit signed message and handle response
 function submit() {
+  log("submitting...");
+  if (dev) {
+    let response = {
+      data: {
+        username: "username",
+        password: "password",
+        timestamp: Date().now
+      }
+    };
+    // let response = { "error": "timestamp is too old" };
+    // let response = { "error": "invalid signature" };
+    // let response = { "error": "node is not registered" };
+    // let response = { "error": "node is not authorized" };
+    // let response = { "error": "node has requested too many credentials" };
+    createAccessToken(response);
+    setExpirationDate(response);
+    document.getElementById("requestAccess").classList.add("d-none");
+    document.getElementById("accessToken").classList.remove("d-none");
+    return
+  }
+
   const requestAccess = document.getElementById("requestAccess");
   const accessToken = document.getElementById("accessToken");
   const signedMsg = JSON.parse(document.getElementById("signedMsg").value);
@@ -68,7 +106,7 @@ function submit() {
   .then(response => response.json())
   .then(response => {
     if (response.data) {
-      console.log(response);
+      log(response);
       createAccessToken(response);
       setExpirationDate(response);
       requestAccess.classList.add("d-none");
@@ -96,6 +134,7 @@ function submit() {
 
 // Populate UI with access token
 function createAccessToken(response) {
+  log("creating token...");
   const username = response.data.username;
   const password = response.data.password;
   const timestamp = response.data.timestamp;
@@ -139,6 +178,7 @@ function createAccessToken(response) {
 
 // Populate UI with expiration date
 function setExpirationDate(response) {
+  log("setting expiration...");
   const timestamp = response.data.timestamp * 1000; // in milliseconds
   const expirationDate = document.getElementById("expDate");
   const expiration = new Date(timestamp + 1296000000);
@@ -153,9 +193,14 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
   return new bootstrap.Tooltip(tooltipTriggerEl)
 })
 // Copy text
-function copyText(copyIconId, textToCopyId) {
+function copyText() {
+  log("copying...");
+  let copyIconId = this.id;
+  log(`\tclicked: ${copyIconId}`);
+  let textToCopyId = this.getAttribute("data-copy");
+  log(`\tcopying: ${textToCopyId}`);
   const textToCopy = document.getElementById(textToCopyId).innerText;
-  console.log(textToCopy);
+  log(`\tcopied content: ${textToCopy}`);
   navigator.clipboard.writeText(textToCopy).then(function() {
     let tooltipElement = document.getElementById(copyIconId);
     let tooltip = bootstrap.Tooltip.getInstance(tooltipElement);
@@ -167,4 +212,9 @@ function copyText(copyIconId, textToCopyId) {
 
 
 
-
+// Console log
+function log(msg) {
+  if (dev) {
+    console.log(msg);
+  }
+}
