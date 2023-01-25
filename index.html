@@ -74,9 +74,7 @@
                     <p>Request Temporary Access</p>
                   </h4>
                   <div class="card-text mb-4">
-                    <label for="signedMsg" class="form-label mb-3">
-                      To request access, run <code>rocketpool node sign-message -m "Rescue Node `date +%s`"</code> and paste the signed message here:
-                    </label>
+                    <p class="mb-3">To request access, run <code>rocketpool node sign-message -m "Rescue Node `date +%s`"</code> and paste the signed message here:</p>
                     <textarea id="signedMsg" class="form-control" rows="3" style="height: 165px" spellcheck="false" 
                     placeholder='{&#10;&#09;"address": "0x12413fdb146df6b5f6285e2cdadc9cb23b5142d1",&#10;&#09;"msg": "Rescue Node 1672595636",&#10;&#09;"sig": "0x3a787fa4b5a8ea2ecad39f78a4dfe9d622864f6de6c4...",&#10;&#09;"version": "1"&#10;}'></textarea>
                     <p id="errorMsg" class="mt-1 d-none">

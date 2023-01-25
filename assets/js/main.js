@@ -142,20 +142,26 @@ function createAccessToken(response) {
   for (let client in clients) {
     let token;
     if (clients[client] == "lighthouse" || clients[client] == "teku" || clients[client] == "nimbus") {
-      token =`<span>version: "3.7"</span>
-              <span>services:</span>
-              <span>  validator:</span>
-              <span>    x-rp-comment: Add your customizations below...</span>
-              <span>    environment:</span>
-              <span>      - "CC_API_ENDPOINT=https://${username}:${password}@${clients[client]}.rescuenode.com"</span>`;
+
+token =
+`<span>version: "3.7"
+services:
+  validator:
+    x-rp-comment: Add your customizations below...
+    environment:
+      - "CC_API_ENDPOINT=https://${username}:${password}@${clients[client]}.rescuenode.com"</span>`;
+
     } else if (clients[client] == "prysm") {
-      token =`<span>version: "3.7"</span>
-              <span>services:</span>
-              <span>  validator:</span>
-              <span>    x-rp-comment: Add your customizations below...</span>
-              <span>    environment:</span>
-              <span>      - "CC_RPC_ENDPOINT=prysm-grpc.rescuenode.com:443"</span>
-              <span>      - "VC_ADDITIONAL_FLAGS=--grpc-headers=rprnauth=${username}:${password} --tls-cert=/etc/ssl/certs/ca-certificates.crt"</span>`;
+
+token =
+`<span>version: "3.7"
+services:
+  validator:
+    x-rp-comment: Add your customizations below...
+    environment:
+      - "CC_RPC_ENDPOINT=prysm-grpc.rescuenode.com:443"
+      - "VC_ADDITIONAL_FLAGS=--grpc-headers=rprnauth=${username}:${password} --tls-cert=/etc/ssl/certs/ca-certificates.crt"</span>`;
+
     } else {
       console.error("Client not supported")
     }
