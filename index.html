@@ -52,6 +52,7 @@
         <div class="col-lg-7 mx-auto mb-4">
           <a class="lead mx-2" href="" data-bs-toggle="modal" data-bs-target="#aboutModal">About</a>
           <a class="lead mx-2" href="" data-bs-toggle="modal" data-bs-target="#donateModal">Donate</a>
+          <a class="lead mx-2" href="" data-bs-toggle="modal" data-bs-target="#faqModal">FAQ</a>
         </div>
         <div class="col-lg-5 mx-auto">
           <p class="lead">A community-run, trust-minimized, and secured fallback node for emergencies and maintenance.</p>
@@ -254,6 +255,66 @@
           </div>
           <div class="modal-body text-white">
             <p>We will begin accepting donations after our <a href="https://dao.rocketpool.net/t/january-2023-gmc-call-for-grant-applications-deadline-is-january-15th/1335/3">Grant Proposal</a> is decided.</p>
+          </div>
+          <div class="modal-footer border-dark">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- FAQ Modal -->
+    <div class="modal fade" id="faqModal" tabindex="-1" aria-labelledby="faqModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content bg-black">
+          <div class="modal-header border-dark">
+            <h2 class="modal-title text-white" id="faqModalLabel">FAQ</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-white">
+
+            <div class="accordion" id="faqAccordion">
+              <div class="accordion-item bg-dark text-white border-start-0 border-end-0 border-top-0 border-secondary">
+                <h2 class="accordion-header" id="faq-1q">
+                  <button class="accordion-button bg-dark text-white shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#faq-1a" aria-expanded="true" aria-controls="faq-1a">
+                    Accordion Item #1
+                  </button>
+                </h2>
+                <div id="faq-1a" class="accordion-collapse collapse show" aria-labelledby="faq-1q">
+                  <div class="accordion-body border border-0">
+                    <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item bg-dark text-white border-start-0 border-end-0 border-top-0 border-secondary">
+                <h2 class="accordion-header" id="faq-2q">
+                  <button class="accordion-button bg-dark text-white shadow-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-2a" aria-expanded="false" aria-controls="faq-2a">
+                    Accordion Item #2
+                  </button>
+                </h2>
+                <div id="faq-2a" class="accordion-collapse collapse" aria-labelledby="faq-2q">
+                  <div class="accordion-body border border-0">
+                    <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item bg-dark text-white border-0">
+                <h2 class="accordion-header" id="faq-3q">
+                  <button class="accordion-button bg-dark text-white shadow-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-3a" aria-expanded="false" aria-controls="faq-3a">
+                    Accordion Item #3
+                  </button>
+                </h2>
+                <div id="faq-3a" class="accordion-collapse collapse" aria-labelledby="faq-3q">
+                  <div class="accordion-body border border-0">
+                    <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
           <div class="modal-footer border-dark">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
