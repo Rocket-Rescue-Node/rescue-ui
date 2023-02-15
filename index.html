@@ -111,7 +111,7 @@
                   </h4>
                   <div class="card-text mb-4">
                     <p>This access token is valid until <u><span id="expDate">{response.timestamp + 15d}</span></u>.</p>
-                    <p>Select your client below and edit your <code>~/.rocketpool/override/validator.yml</code> file to look exactly like the contents shown. Save the file, exit, then run <code>rocketpool service start</code>:</p>
+                    <p>Select your client below and edit your <code>~/.rocketpool/override/validator.yml</code> file to look exactly like the contents shown below. Save the file, exit, and proceed to the next step.</p>
                   </div>
                   <!-- Tab Nav -->
                   <ul class="nav nav-tabs" id="clientTabs" role="tablist">
@@ -175,6 +175,11 @@
                       </div>
                     </div>
                   </div>
+                  <div class="card-text mb-4">
+                    <p>Finally, run <code>rocketpool service start</code></p>
+                    <p>You should now be attesting and proposing through the rescue node.</p>
+                    <p>When you no longer need the rescue node, revert <code>~/.rocketpool/override/validator.yml</code> to its original state, save, exit, and run <code>rocketpool service start</code> once more to disconnect.</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -196,8 +201,8 @@
             <p>At its core, Rocket Rescue Node is a community-operated Ethereum node which can be used by <a href="https://rocketpool.net/" target="_blank">Rocket Pool</a> node operators as an emergency fallback node during maintenance.<p/>
             <p>Rocket Rescue Node was first created to help Node Operators survive The Merge in September '22, but quickly proved its lasting utility. We have <a href="https://dao.rocketpool.net/t/january-2023-gmc-call-for-grant-applications-deadline-is-january-15th/1335/3" target="_blank">applied for a pDAO grant</a> to help ensure its ongoing available to the community.</p>
             <p>Under the hood, Rocket Rescue Node is actually 4 nodes to maximize Beacon Client compatibility, a custom reverse-proxy to combat potential malfeasance by its users, and an API and UI to make it easy to access. For more information, see the <a href="https://gist.github.com/jshufro/a22724f06702c8342b5d1b29ee0a6190" target="_blank">Tech Spec</a>.</p>
-	    <h3>Limits</h3>
-	    <p>Currently, a single node is restricted to using Rocket Rescue Node <b>four times per year, for 15 days at a time</b>. Re-requesting access before the window ends will <b>not</b> consume additional quota nor will it extend your access, <b>unless less than 2 days remain</b>. Therefore, if you lose your access URL, you can rerequest access to retrieve it, up until 13 days after it was created.</p>
+            <h3>Limits</h3>
+            <p>Currently, a single node is restricted to using Rocket Rescue Node <b>four times per year, for 15 days at a time</b>. Re-requesting access before the window ends will <b>not</b> consume additional quota nor will it extend your access, <b>unless less than 2 days remain</b>. Therefore, if you lose your access URL, you can rerequest access to retrieve it, up until 13 days after it was created.</p>
             <h3>Maintainers</h3>
             <p>The rescue node is currently maintained by:</p>
             <ul>
@@ -278,12 +283,12 @@
               <div class="accordion-item bg-dark text-white border-start-0 border-end-0 border-top-0 border-secondary">
                 <h2 class="accordion-header" id="faq-1q">
                   <button class="accordion-button bg-dark text-white shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#faq-1a" aria-expanded="true" aria-controls="faq-1a">
-                    Accordion Item #1
+                    How often can I use the Rescue Node?
                   </button>
                 </h2>
                 <div id="faq-1a" class="accordion-collapse collapse show" aria-labelledby="faq-1q">
                   <div class="accordion-body border border-0">
-                    <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                    <strong>Four times per year.</strong> Each token is valid for fifteen days. If you lose your token, you can simply repeat the request process to retrieve it. This will not count against your usage limits unless less than 48 hours remain, in which case a new token valid for 15 additional days will be issued.
                   </div>
                 </div>
               </div>
@@ -291,12 +296,12 @@
               <div class="accordion-item bg-dark text-white border-start-0 border-end-0 border-top-0 border-secondary">
                 <h2 class="accordion-header" id="faq-2q">
                   <button class="accordion-button bg-dark text-white shadow-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-2a" aria-expanded="false" aria-controls="faq-2a">
-                    Accordion Item #2
+                    Why can't I claim rewards or do other operations while using the Rescue Node?
                   </button>
                 </h2>
                 <div id="faq-2a" class="accordion-collapse collapse" aria-labelledby="faq-2q">
                   <div class="accordion-body border border-0">
-                    <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                    The Rescue Node only ensures that attestations, proposals, sync committees and other duties are performed- in order to join or leave the smoothing pool, claim rewards, or submit other transactions, you either must have synced local clients, or use infura as a fallback. Your Rescue Node URL, from <code>~/.rocketpool/override/validator.yml</code> will work as a Consensus Client fallback URL in conjunction with an Infura execution client fallback, if you need to submit a transaction in a pinch.
                   </div>
                 </div>
               </div>
@@ -304,12 +309,14 @@
               <div class="accordion-item bg-dark text-white border-0">
                 <h2 class="accordion-header" id="faq-3q">
                   <button class="accordion-button bg-dark text-white shadow-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-3a" aria-expanded="false" aria-controls="faq-3a">
-                    Accordion Item #3
+                    How can I check that I successfully connected to the Rescue Node?
                   </button>
                 </h2>
                 <div id="faq-3a" class="accordion-collapse collapse" aria-labelledby="faq-3q">
                   <div class="accordion-body border border-0">
-                    <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                    Most validator clients will log a message containing the url, so you can run
+                    <pre><code>docker logs rocketpool_validator | grep rescuenode.com</code></pre>
+                    to see if it connected. Follow your validators on <a href="https://beaconcha.in">beaconcha.in</a> to verify that they are attesting.
                   </div>
                 </div>
               </div>
