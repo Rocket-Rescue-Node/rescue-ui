@@ -141,7 +141,17 @@ function createAccessToken(response) {
   const clients = ["lighthouse", "teku", "nimbus", "prysm"];
   for (let client in clients) {
     let token;
-    if (clients[client] == "lighthouse" || clients[client] == "teku" || clients[client] == "nimbus") {
+    // Nimbus 23.5.0 will set port to 5052 unless it's specified in the url
+    if (clients[client] == "nimbus") {
+token =
+`<span>version: "3.7"
+services:
+  validator:
+    x-rp-comment: Add your customizations below...
+    environment:
+      - "CC_API_ENDPOINT=https://${username}:${password}@${clients[client]}.rescuenode.com:443"</span>`;
+
+    } else if (clients[client] == "lighthouse" || clients[client] == "teku") {
 
 token =
 `<span>version: "3.7"
