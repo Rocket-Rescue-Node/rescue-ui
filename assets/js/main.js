@@ -138,7 +138,7 @@ function createAccessToken(response) {
   const username = response.data.username;
   const password = response.data.password;
   const timestamp = response.data.timestamp;
-  const clients = ["lighthouse", "teku", "nimbus", "prysm"];
+  const clients = ["lighthouse", "teku", "nimbus", "prysm", "lodestar"];
   for (let client in clients) {
     let token;
     // Nimbus 23.5.0 will set port to 5052 unless it's specified in the url
@@ -151,7 +151,7 @@ services:
     environment:
       - "CC_API_ENDPOINT=https://${username}:${password}@${clients[client]}.rescuenode.com:443"</span>`;
 
-    } else if (clients[client] == "lighthouse" || clients[client] == "teku") {
+    } else if (clients[client] == "lighthouse" || clients[client] == "teku" || clients[client] == "lodestar") {
 
 token =
 `<span>version: "3.7"
@@ -187,6 +187,9 @@ services:
     } else if (clients[client] == "prysm") {
       const prysmCode = document.getElementById("prysmCode");
       prysmCode.innerHTML = token;
+    } else if (clients[client] == "lodestar") {
+      const prysmCode = document.getElementById("lodestarCode");
+      lodestar.innerHTML = token;
     }
   }
 }
