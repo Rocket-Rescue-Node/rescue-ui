@@ -189,7 +189,7 @@ services:
       prysmCode.innerHTML = token;
     } else if (clients[client] == "lodestar") {
       const prysmCode = document.getElementById("lodestarCode");
-      lodestar.innerHTML = token;
+      lodestarCode.innerHTML = token;
     }
   }
 }
