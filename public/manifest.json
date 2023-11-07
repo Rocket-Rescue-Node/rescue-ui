@@ -1,0 +1,16 @@
+{
+  "short_name": "Rocket Rescue Node",
+  "name": "Rocket Rescue Node",
+  "description": "Rocket Rescue Node is a community-run project giving Rocket Pool node operators access to a trust-minimized and secured fallback node for emergencies and maintenance.",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#000000"
+}
