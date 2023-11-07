@@ -1,0 +1,14 @@
+on:
+  pull_request:
+jobs:
+  check_build:
+    if: "${{ github.event.pull_request.head.repo.full_name == github.repository }}"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm install
+      - run: npm run pretty:check
+      - run: npm run build
+        env:
+          VITE_WC_PROJECT_ID: "112233445566778899aabbccddeeff00"
+          VITE_RESCUE_API_BASE_URL: "https://example.com/rescue/v1"

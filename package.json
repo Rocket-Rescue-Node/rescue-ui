@@ -1,0 +1,37 @@
+{
+  "name": "rescue-ui",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "pretty": "npx prettier '**/*.{tsx,ts,js,html}' --write",
+    "pretty:check": "npx prettier '**/*.{tsx,ts,js,html}' --check",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.16",
+    "@mui/material": "^5.14.16",
+    "@web3modal/ethereum": "2.4.1",
+    "@web3modal/react": "2.4.1",
+    "@web3modal/wagmi": "^3.2.0",
+    "buffer": "^6.0.3",
+    "moment": "^2.29.4",
+    "process": "^0.11.10",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "util": "^0.12.4",
+    "viem": "^0.3.50",
+    "wagmi": "^1.4.5"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "prettier": "3.0.3",
+    "typescript": "^5.0.4",
+    "vite": "^4.3.5"
+  }
+}
