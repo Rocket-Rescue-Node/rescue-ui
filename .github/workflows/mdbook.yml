@@ -1,0 +1,33 @@
+name: static-content-rendered
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  mdbook:
+    name: mdbook
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v3
+      - name: Setup mdBook
+        uses: peaceiris/actions-mdbook@v1
+        with:
+          mdbook-version: 'latest'
+      - run: mdbook build ./docs
+      - name: Check if rebuilding the book creates a diff
+        run: |
+          if test $(git diff --name-only | wc -l) != 0
+          then
+            echo "Files changed... $(git diff --name-only)"
+            exit 1
+          fi
+          if test $(git ls-files --others --exclude-standard | wc -l) != 0
+          then
+            echo "Untracked files created... $(git ls-files --others --exclude-standard)"
+            exit 1
+          fi

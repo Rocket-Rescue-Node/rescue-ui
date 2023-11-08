@@ -1,0 +1,394 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Original Tech Spec - Rocket Rescue Node Docs</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="../donate.html"><strong aria-hidden="true">2.</strong> Donate</a></li><li class="chapter-item expanded "><a href="../faq.html"><strong aria-hidden="true">3.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="../tandc.html"><strong aria-hidden="true">4.</strong> Terms and Conditions</a></li><li class="chapter-item expanded "><a href="../randt.html"><strong aria-hidden="true">5.</strong> Risks and Trust</a></li><li class="chapter-item expanded "><a href="../tech-specs/SUMMARY.html"><strong aria-hidden="true">6.</strong> Tech Specs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tech-specs/original-tech-spec.html" class="active"><strong aria-hidden="true">6.1.</strong> Original Tech Spec</a></li><li class="chapter-item expanded "><a href="../tech-specs/solo-validator-support.html"><strong aria-hidden="true">6.2.</strong> Solo Validator Support</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rocket Rescue Node Docs</h1>
+
+                    <div class="right-buttons">
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="rocket-pool-rescue-node-tech-spec"><a class="header" href="#rocket-pool-rescue-node-tech-spec">Rocket Pool Rescue Node Tech Spec</a></h1>
+<p>This document describes the technical implementation details of a secure and broadly useful temporary fallback
+node for Rocket Pool Node operators.</p>
+<h2 id="requirements"><a class="header" href="#requirements">Requirements</a></h2>
+<ol>
+<li><strong>DDoS Protection</strong></li>
+</ol>
+<ul>
+<li>If, at any one point in time, a large number of Node Operators are relying on the rescue node,
+it becomes a vector for attack- a malicious actor can take those Node Operators offline by
+DDoSing the rescue node. We should protect, to the best of our abilities, against this.</li>
+</ul>
+<ol start="2">
+<li><strong>Compatability with each available Consensus Client that supports split mode</strong> (currently ligthouse, prysm and teku)</li>
+</ol>
+<ul>
+<li>Currently, prysm only works with a prysm fallback.
+Teku only works with a teku fallback.
+Lighthouse works with teku, but doppelganger detection must be disabled.</li>
+</ul>
+<ol start="3">
+<li><strong>Available to Rocket Pool Node Operators</strong></li>
+</ol>
+<ul>
+<li>Any Node Operator should be able to seemlessly use the rescue node in an emergency.
+Non Node Operators should not have access, to reserve capacity for Rocket Pool.</li>
+</ul>
+<ol start="4">
+<li><strong>Self-serve</strong></li>
+</ol>
+<ul>
+<li>Node Operators can enable the rescue node permissionlessly</li>
+</ul>
+<ol start="5">
+<li><strong>(Reverse) hybrid mode support</strong></li>
+</ol>
+<ul>
+<li>A node operator who has solo validators should be able to use the rescue node.
+As a courtesy, we should allow them to use it for their solo validators as well.</li>
+</ul>
+<ol start="6">
+<li><strong>Usage limiting</strong></li>
+</ol>
+<ul>
+<li>A node operator shouldn't be able to use the rescue node outside of emergencies.
+To prevent this, it should shut access off with a lockout period after a certain duration.</li>
+</ul>
+<ol start="7">
+<li><strong>Fee recipient validation</strong></li>
+</ol>
+<ul>
+<li>We shouldn't suborn the theft of tips/MEV. We should validate that a node operator using
+the rescue node has correctly configured their fee recipient to either their fee distributor,
+the smoothing pool, or the rEth address.</li>
+</ul>
+<h2 id="non-requirements"><a class="header" href="#non-requirements">Non-requirements</a></h2>
+<ol>
+<li><strong>Choose-your-own mev-boost relays</strong></li>
+</ol>
+<ul>
+<li>The relays are determined by the rescue node, so Node Operators will have no say in which relays are used.
+Node Operators who do not agree with the relays selected by the maintainers have the option of disabling mev-boost, so long as the protocol allows it. It may not be possible to force Node Operators to enable mev boost in order to use the rescue node, so compliance will be best-effort.</li>
+</ul>
+<ol start="2">
+<li><strong>High Availability</strong></li>
+</ol>
+<ul>
+<li>We should try to maintain good service, but these nodes will need to undergo maintenance/pruning.</li>
+</ul>
+<ol start="3">
+<li><strong>Decentralization</strong></li>
+</ol>
+<ul>
+<li>The rescue node will be centralized. It's feasible to do this in a decentralized manner, but
+the complexity of the project becomes untenable.</li>
+</ul>
+<ol start="4">
+<li><strong>Trustlessness</strong></li>
+</ol>
+<ul>
+<li>Node Operators using the rescue node acknowledge that they are trusting its maintainers not to steal tips
+or MEV. The maintainers will not be able to steal their keys or funds.</li>
+</ul>
+<h2 id="existing-rescue-node-comparison"><a class="header" href="#existing-rescue-node-comparison">Existing Rescue Node Comparison</a></h2>
+<div class="table-wrapper"><table><thead><tr><th></th><th>Existing</th><th>Proposed</th></tr></thead><tbody>
+<tr><td>DDOS Protection</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>CC Compatibility</td><td>Partial</td><td>Full</td></tr>
+<tr><td>Available to RP NOs in SP</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Available to RP NOs with MEV-boost</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Choose-your-own MEV-boost Relays</td><td>No</td><td>No</td></tr>
+<tr><td>Available to non-mev-boost NOs, non-SP NOs</td><td>No</td><td>Yes</td></tr>
+<tr><td>Self Serve</td><td>No</td><td>Yes</td></tr>
+<tr><td>Hybrid Mode Support</td><td>Partial</td><td>Yes</td></tr>
+<tr><td>Reverse Hybrid Mode Support</td><td>Partial</td><td>Yes</td></tr>
+<tr><td>Limits usage to prevent reliance</td><td>No</td><td>Yes</td></tr>
+<tr><td>Fee Recipient Validation</td><td>Partial</td><td>Yes</td></tr>
+<tr><td>Trustless</td><td>No</td><td>No</td></tr>
+</tbody></table>
+</div>
+<h2 id="implementation"><a class="header" href="#implementation">Implementation</a></h2>
+<p>The existing rescue node uses cloudflare for DDoS protection, and openresty which validates fee recipients 
+for the connected validators, and reverse-proxies a consensus client. The node is running teku and geth.
+Poupas generates subdomains which are kept 'secret', and distributed in DMs manually to node operators in need.</p>
+<p>This design aims to keep most of this architecture intact, but extend some of the functionality.</p>
+<h3 id="cloudflare"><a class="header" href="#cloudflare">Cloudflare</a></h3>
+<p>Continuing to use cloudflare's DDoS protection is a no-brainer.</p>
+<h3 id="auth-token-generator-new-component"><a class="header" href="#auth-token-generator-new-component">Auth token generator (new component)</a></h3>
+<p>A node operator who wishes to use the rescue node will be required to sign a message using <code>rocketpool node sign-message</code>.
+The body of this message should contain a known string and a timestamp expressed in epoch time, and the result takes the form:</p>
+<pre><code class="language-json">{
+    &quot;address&quot;: &quot;0x1234567890123456789012345678901234567890&quot;,
+    &quot;msg&quot;: &quot;Rescue Node 1665549215&quot;,
+    &quot;sig&quot;: &quot;0xabcdef...6789&quot;,
+    &quot;version&quot;: &quot;1&quot;
+}
+</code></pre>
+<p>The node operator would paste the message into a web ui or POST it as the body of an API request to the auth token generator.</p>
+<p>The API will:</p>
+<ol>
+<li>Validated the signature</li>
+<li>Ensure that the timestamp is &quot;recent&quot;</li>
+<li>Ensure that the node is not banned for misbehavior</li>
+<li>Determine if a credential younger than GRACE_PERIOD_DAYS already exists, and if so, return it. If a credential between GRACE_PERIOD_DAYS and (GRACE_PERIOD_DAYS + TIMEOUT_DAYS) exists, reject access to the rescue node.</li>
+<li>Ensure that the NODE_ID is eligible (is a registered rocketpool node).</li>
+<li>Generate a credential of the form <code>urlsafe_b64encode(timestamp||hmac-sha256(rescue_node_secret, NODE_ID||timestamp))</code> (where <code>||</code> denotes concatenation), and store it in a persistant manner with a TTL set to TIMEOUT_DAYS + GRACE_PERIOD_DAYS.</li>
+<li>Return this credential to the user pre-embedded in a URL of the form <code>https://NODE_ID:CREDENTIAL@rescuenode.tld</code></li>
+</ol>
+<p>The API should also support manual blocking of node addresses, so maintainers can proactively lock out node operators for abuse.</p>
+<h3 id="reverse-proxy-existing-component"><a class="header" href="#reverse-proxy-existing-component">Reverse proxy (existing component)</a></h3>
+<p>Critically, the reverse proxy should only work over https. By handling ssl termination here, we protect the privacy
+of our Node Operators.</p>
+<p>The reverse proxy currently only does a minimal fee recipient validation (and only permits the smoothing pool address).</p>
+<p>We will want to extend it a bit.</p>
+<p>First, we should add a periodic job that queries the upstream Execution Clients to get a list of registered rocket pool nodes and their respective validator public keys, fee recipients, and smoothing pool status.
+This mapping should be cached on disk with a timestamp and updated on a regular cadence.
+If all upstreams are unresponsive, we should gracefully degrade and use the cached data, and we should
+not query upstreams if the cached data are fresh.</p>
+<p>In memory, these data should be indexed by both the node address and the validator array.</p>
+<p>When the reverse proxy receives a request, it should</p>
+<ol>
+<li>Validate the HMAC contents match the Authentication &quot;user&quot;</li>
+<li>Validate that the node is not banned for misbehavior</li>
+<li>Validate the timestamp embedded in the credential is no older than GRACE_PERIOD_DAYS</li>
+<li>If the request is to the <code>/eth/v1/validator/prepare_beacon_proposer</code> or the <code>.../register_validator</code> route,
+parse the body and ensure that the the validator isn't owned by a different node, and the correct fee recipient is set (smoothing pool if opted in, otherwise the fee distributor or rEth address or smoothing pool address).
+If the validator is <em>not</em> in the node info mapping, it must be a solo validator, and <code>register_validator</code> will have a signature proving that the owner of that validator is deliberately changing the fee recipient... <code>prepare_beacon_proposer</code> will have to cross-reference prior calls to <code>register_validator</code> before accepting a request.</li>
+<li>Parse the User-Agent header and reverse-proxy the correct beacon node.</li>
+</ol>
+<h3 id="beacon-node--execution-client-pairs"><a class="header" href="#beacon-node--execution-client-pairs">Beacon Node / Execution Client pairs</a></h3>
+<p>We need 3 pairs to cover full support. The reverse proxy can be cotenant on one with low resource requirements.
+For ease of maintenance, we should just run smartnode. Eth1 client selection methodology TBD.</p>
+<p>Once nimbus split mode is available, we can trivially extend to a 4th upstream beacon node.</p>
+<h2 id="nice-to-haves"><a class="header" href="#nice-to-haves">Nice-to-haves</a></h2>
+<p>These are soft requirements that I think are worth pursuing after the MVP is built.</p>
+<h3 id="monitoring"><a class="header" href="#monitoring">Monitoring</a></h3>
+<p>Ideally, we will monitor uptime/performance and set up a pager rotation among trusted volunteer maintainers. The rotation should be paid, with funding coming from the same grant.</p>
+<h3 id="frontend"><a class="header" href="#frontend">Frontend</a></h3>
+<p>A status page would be good, as well as a guide on setting up the rescue node.
+There should be an info page describing who the maintainers are, to the degree that they are willing to reveal their identities, as well as which mev-boost relays are active.</p>
+<h3 id="checkpoint-sync"><a class="header" href="#checkpoint-sync">Checkpoint Sync</a></h3>
+<p>The rescue node should expose the endpoints required for checkpoint sync in a traditionally rate-limited fashion.</p>
+<p>That is, you should be able to check point sync from it once per minute, or something along those lines, regardless of whether or not you are currently in your GRACE_PERIOD_DAYS interval.</p>
+<h3 id="treegen"><a class="header" href="#treegen">Treegen</a></h3>
+<p>It'd be nice if the rescue node implemented a rewards tree generation pass on a daily or continual basis, so that we can alleviate some of the busywork on Joe's plate with the daily tree previews. This can be automated, and we can push results to a public s3 bucket. They're trivially small (a few megabytes), so the additional cost is negligible.</p>
+<h3 id="non-mev-boost-solo-validator-credential-piggy-backing"><a class="header" href="#non-mev-boost-solo-validator-credential-piggy-backing">Non-mev-boost solo validator credential piggy-backing</a></h3>
+<p>This spec describes a way to securely allow solo validators who have mev-boost enabled to use the rescue node, however, it does not currently allow non-mev-boost solo validators to use it. This is due to the lack of a signature on the <code>prepare_beacon_proposer</code> endpoint, which means we can't verify custody of a given solo validator automatically. We should follow up this work to provide an endpoint which accepts messages signed with a solo validator's BLS keys and affiliates them to an existing credential, to expand utility of the rescue node to hybrid mode users who have solo validators that they do not wish to enable mev-boost on.</p>
+<h2 id="caveats"><a class="header" href="#caveats">Caveats</a></h2>
+<p>No system is perfect, and this is no exception.</p>
+<ol>
+<li>Hybrid mode node operators are using the rescue node for their solo validators <em>at their own risk</em>. Since there is no way for us to validate the correctness of their fee recipients, it is feasible for one Node Operator to overwrite the fee recipient of a hybrid node operator. However, this would not steal tips/mev destined for the Rocket Pool protocol, so this risk is entirely owned by the node operator, and they can decide for themselves whether to accept it. However, since <code>/eth/v1/validator/register_validator</code> requires a signature, node operators who use MEV-Boost are shielded from this risk. Until we devise a way to prove custody, non-MEV-boost solo validators will not be able to use the rescue node.</li>
+<li>Smoothing Pool status changes may not reflect immediately. We are polling the eth1 client to create the validator/node info mapping, and the poll interval may be on the order of epochs. To mitigate this, we will allow node operators to use the smoothing pool address as their fee recipient, even if we think they are opted out. Smartnode updates the fee recipient before the opt-in transaction is completed, so we should be flexible here.</li>
+<li>Credential sharing- a node operator could feasibly generate a credential and send it to someone, skirting the &quot;RP Node Operators Only&quot; design goal. This would be detectable- we would see requests from validators using the credential without belonging to the node, and none from validators belonging to the node. We will mitigate this if/when it comes up.</li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../tech-specs/SUMMARY.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../tech-specs/solo-validator-support.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../tech-specs/SUMMARY.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../tech-specs/solo-validator-support.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

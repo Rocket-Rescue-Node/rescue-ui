@@ -1,0 +1,25 @@
+version: "3"
+services:
+  mdbook-build:
+    image: mdbook
+    build: .
+    volumes:
+      - .:/book
+    command:
+      - build
+      - /book
+  mdbook-serve:
+    build: .
+    volumes:
+      - .:/book
+    ports:
+      - 3000:3000
+    command:
+      - serve
+      - -n
+      - 0.0.0.0
+      - /book
+    depends_on:
+      mdbook-build:
+        condition: service_completed_successfully
+

@@ -1,0 +1,276 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Solo Validator Support - Rocket Rescue Node Docs</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="../donate.html"><strong aria-hidden="true">2.</strong> Donate</a></li><li class="chapter-item expanded "><a href="../faq.html"><strong aria-hidden="true">3.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="../tandc.html"><strong aria-hidden="true">4.</strong> Terms and Conditions</a></li><li class="chapter-item expanded "><a href="../randt.html"><strong aria-hidden="true">5.</strong> Risks and Trust</a></li><li class="chapter-item expanded "><a href="../tech-specs/SUMMARY.html"><strong aria-hidden="true">6.</strong> Tech Specs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tech-specs/original-tech-spec.html"><strong aria-hidden="true">6.1.</strong> Original Tech Spec</a></li><li class="chapter-item expanded "><a href="../tech-specs/solo-validator-support.html" class="active"><strong aria-hidden="true">6.2.</strong> Solo Validator Support</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rocket Rescue Node Docs</h1>
+
+                    <div class="right-buttons">
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="rescue-node---solo-validator-access-tech-spec"><a class="header" href="#rescue-node---solo-validator-access-tech-spec">Rescue Node - Solo Validator Access Tech Spec</a></h1>
+<p>This document will serve as a technical specification for a project with the goal of allowing solo validators access to the <a href="https://rescuenode.com/">Rocket Rescue Node</a>.</p>
+<p>As with the original project, the main priority will be around identity management for MEV/tips theft prevention.</p>
+<h2 id="changes"><a class="header" href="#changes">Changes</a></h2>
+<h3 id="credentials"><a class="header" href="#credentials">credentials</a></h3>
+<p>The <a href="https://github.com/Rocket-Rescue-Node/credentials">credentials</a> library will be updated to change the proto spec for the <code>Credential</code> message.</p>
+<pre><code class="language-protobuf">message Credential {
+	bytes node_id = 1; // 20 bytes representing the Node address
+	int64 timestamp = 2; // UTC epoch time the credential was issued
+}
+</code></pre>
+<p>will change to </p>
+<pre><code class="language-protobuf">enum OperatorType {
+	OT_ROCKETPOOL = 0; // Issued to a RP NO via a signature from their node wallet.
+	OT_SOLO = 1; // Issued to a solo validator via a signature from their 0x01 withdrawal address.
+}
+
+message Credential {
+	bytes address = 1; // 20 bytes representing the Node address, or if a solo validator, the withdrawal adress.
+	int64 timestamp = 2; // UTC epoch time the credential was issued.
+	OperatorType operator_type = 3; // The type of Node Operator for whom the credential was issued.
+}
+</code></pre>
+<p>These messages are used across the stack to identify the user for whom we process traffic, and critically, rate-limit their access.</p>
+<h3 id="rescue-api"><a class="header" href="#rescue-api">rescue-api</a></h3>
+<p><a href="https://github.com/Rocket-Rescue-Node/rescue-api">rescue-api</a>'s primary responsibility is creating new <code>AuthenticatedCredential</code> messages according to the predetermined rate limit rules. It currently verifies the validator's ownership by requiring a signed message from the Rocket Pool node wallet. In order to support solo validators, it needs to be updated to accept a <strong>signed message from the validator's 0x01 withdrawal address</strong> instead.</p>
+<p>This means that rescue-api will need a view of all validators active on the Beacon Chain, which will be provided to it by rescue-proxy.</p>
+<p>When generating the credentials, it will keep a separate table for solo validators, and be subject to a <strong>separate ruleset.</strong><br />
+Solo validators may have reduced usage credits (when compared to the 4 annual, 15 day credits given to Rocket Pool node operators).</p>
+<ul>
+<li>Credentials with <code>OperatorType = OT_SOLO</code> may be issued to Rocket Pool node wallets if they are a 0x01 address, subject to the solo validator rate limits. Allnodes users, for instance, may use the same wallet for solo validators and minipools.</li>
+<li>Credentials with <code>OperatorType = OT_ROCKETPOOL</code> may be issued to Rocket Pool node wallets even if they are a 0x01 address, subject to the Rocket Pool rate limits, provided the message is signed by the node wallet, as usual.</li>
+</ul>
+<p>To differentiate, the API will have a <strong>separate route for solo validators vs Rocket Pool node operators.</strong> </p>
+<h3 id="rescue-proxy"><a class="header" href="#rescue-proxy">rescue-proxy</a></h3>
+<ol>
+<li><a href="https://github.com/Rocket-Rescue-Node/rescue-proxy">rescue-proxy</a> will now have to provide rescue-api with a gRPC service for 0x01 credential queries.<br />
+rescue-api needs this in order to ensure that the wallet used to request a credential is in fact the withdrawal address for at least one validator.<br />
+This should be developed in a way that makes real-time sacrifices in order to minimize load on the beacon node (eg, cache all the validators from the latest <code>justified</code> state).</li>
+<li>rescue-proxy must differentiate between <code>operator_type</code> credentials. When <code>operator_type=OT_SOLO</code>, instead of validating that the fee recipient is set to the correct address (fee distributor vs smoothing pool), we will <strong>validate that the fee recipient is set to the address of the 0x01 credential.</strong> This means solo validators who wish to use the rescue node <strong>must use their withdrawal address as their fee recipient</strong>.</li>
+<li>rescue-proxy should support a different expiry window for solo validator credentials, which are subject to a distinct rate limiting ruleset.</li>
+</ol>
+<h3 id="guarded-beacon-proxy"><a class="header" href="#guarded-beacon-proxy">guarded-beacon-proxy</a></h3>
+<p>Ideally, <a href="https://github.com/Rocket-Rescue-Node/guarded-beacon-proxy">this library</a> does not need to be changed, though there may be some quality of life updates.</p>
+<h3 id="rescue-ui"><a class="header" href="#rescue-ui">rescue-ui</a></h3>
+<p>The bulk of the work will fall in <a href="https://github.com/Rocket-Rescue-Node/rescue-ui">rescue-ui</a>.</p>
+<ol>
+<li>The landing page at https://rescuenode.com will have to ask if the user is requesting access for a solo validator or a Rocket Pool node.</li>
+<li>We will use an open-source library to allow the solo operator to connect their 0x01 wallet to the website. We will advise against connecting a cold wallet. Unfortunately, the solo validator needs to prove custody of the withdrawal address, and this is the cleanest solution. We will take this opportunity to recommend that the solo validator use a hardware wallet (or better) as their withdrawal address.</li>
+<li>Once connected, the solo validator will be able to <strong>sign EIP-191 data</strong> with their withdrawal wallet which is automatically populated with a message of the format:</li>
+</ol>
+<pre><code>Rescue Node `date +%s`
+</code></pre>
+<p>(where <code>date +%s</code> expands to a Unix timestamp in UTC).</p>
+<ol start="4">
+<li>rescue-ui will request a credential from rescue-api, and render instructions for each of the 5 supported validator clients on how to connect, plus a 6th tab for eth-docker users.</li>
+</ol>
+<h3 id="infrastructure"><a class="header" href="#infrastructure">infrastructure</a></h3>
+<p>Tweaks may be made here to separate solo validator traffic from Rocket Pool traffic, with the goal of being able to prioritize traffic from Rocket Pool nodes. Generally, though, <strong>solo validator support will happen at the software layer</strong>, so <strong>no additional resources should be required</strong>.</p>
+<h3 id="miscellaneous"><a class="header" href="#miscellaneous">miscellaneous</a></h3>
+<p>Metrics are collected across the platform and should, wherever possible, include a new <code>solo</code> label.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../tech-specs/original-tech-spec.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../tech-specs/original-tech-spec.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

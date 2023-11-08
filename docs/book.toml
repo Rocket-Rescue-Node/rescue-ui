@@ -1,0 +1,12 @@
+[book]
+title = "Rocket Rescue Node Docs"
+authors = ["jshufro"]
+language = "en"
+multilingual = false
+src = "src"
+
+[output.html]
+default-theme = "navy"
+
+[output.html.print]
+enable = false
