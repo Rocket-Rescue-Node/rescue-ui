@@ -18,7 +18,7 @@ jobs:
         uses: peaceiris/actions-mdbook@v1
         with:
           mdbook-version: 'latest'
-      - run: mdbook build ./docs
+      - run: mdbook build ./docs -d ${GITHUB_WORKSPACE}/public/docs
       - name: Check if rebuilding the book creates a diff
         run: |
           if test $(git diff --name-only | wc -l) != 0

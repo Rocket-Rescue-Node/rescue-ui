@@ -5,13 +5,18 @@ services:
     build: .
     volumes:
       - .:/book
+      - ../public:/public
     command:
       - build
       - /book
+      - -d
+      - /public/docs
+    user: ${CURRENT_USER}
   mdbook-serve:
     build: .
     volumes:
       - .:/book
+      - ../public:/public
     ports:
       - 3000:3000
     command:
@@ -19,6 +24,9 @@ services:
       - -n
       - 0.0.0.0
       - /book
+      - -d
+      - /public/docs
+    user: ${CURRENT_USER}
     depends_on:
       mdbook-build:
         condition: service_completed_successfully
