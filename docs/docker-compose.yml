@@ -1,7 +1,7 @@
 version: "3"
 services:
   mdbook-build:
-    image: mdbook
+    image: rescue-ui-mdbook:local
     build: .
     volumes:
       - .:/book
@@ -13,10 +13,10 @@ services:
       - /public/docs
     user: ${CURRENT_USER}
   mdbook-serve:
-    build: .
+    image: rescue-ui-mdbook:local
     volumes:
-      - .:/book
-      - ../public:/public
+      - .:/book:ro
+      - ../public:/public:ro
     ports:
       - 3000:3000
     command:
@@ -25,8 +25,7 @@ services:
       - 0.0.0.0
       - /book
       - -d
-      - /public/docs
-    user: ${CURRENT_USER}
+      - /tmp
     depends_on:
       mdbook-build:
         condition: service_completed_successfully
