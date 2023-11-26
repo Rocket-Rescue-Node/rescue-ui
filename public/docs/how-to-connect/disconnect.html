@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>FAQ - Rocket Rescue Node Docs</title>
+        <title>... and Disconnect - Rocket Rescue Node Docs</title>
 
 
         <!-- Custom HTML head -->
@@ -12,20 +12,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -34,7 +34,7 @@
     <div id="body-container">
         <!-- Provide site root to javascript -->
         <script>
-            var path_to_root = "";
+            var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
         </script>
 
@@ -87,11 +87,9 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="how-to-connect/SUMMARY.html"><strong aria-hidden="true">2.</strong> How To Connect</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="how-to-connect/rp.html"><strong aria-hidden="true">2.1.</strong> ... As a Rocket Pool Node Operator</a></li><li class="chapter-item expanded "><a href="how-to-connect/solo.html"><strong aria-hidden="true">2.2.</strong> ... As a Solo Staker</a></li><li class="chapter-item expanded "><a href="how-to-connect/disconnect.html"><strong aria-hidden="true">2.3.</strong> ... and Disconnect</a></li></ol></li><li class="chapter-item expanded "><a href="donate.html"><strong aria-hidden="true">3.</strong> Donate</a></li><li class="chapter-item expanded "><a href="faq.html" class="active"><strong aria-hidden="true">4.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="tandc.html"><strong aria-hidden="true">5.</strong> Terms and Conditions</a></li><li class="chapter-item expanded "><a href="randt.html"><strong aria-hidden="true">6.</strong> Risks and Trust</a></li><li class="chapter-item expanded "><a href="tech-specs/SUMMARY.html"><strong aria-hidden="true">7.</strong> Tech Specs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tech-specs/original-tech-spec.html"><strong aria-hidden="true">7.1.</strong> Original Tech Spec</a></li><li class="chapter-item expanded "><a href="tech-specs/solo-validator-support.html"><strong aria-hidden="true">7.2.</strong> Solo Validator Support</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="../how-to-connect/SUMMARY.html"><strong aria-hidden="true">2.</strong> How To Connect</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../how-to-connect/rp.html"><strong aria-hidden="true">2.1.</strong> ... As a Rocket Pool Node Operator</a></li><li class="chapter-item expanded "><a href="../how-to-connect/solo.html"><strong aria-hidden="true">2.2.</strong> ... As a Solo Staker</a></li><li class="chapter-item expanded "><a href="../how-to-connect/disconnect.html" class="active"><strong aria-hidden="true">2.3.</strong> ... and Disconnect</a></li></ol></li><li class="chapter-item expanded "><a href="../donate.html"><strong aria-hidden="true">3.</strong> Donate</a></li><li class="chapter-item expanded "><a href="../faq.html"><strong aria-hidden="true">4.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="../tandc.html"><strong aria-hidden="true">5.</strong> Terms and Conditions</a></li><li class="chapter-item expanded "><a href="../randt.html"><strong aria-hidden="true">6.</strong> Risks and Trust</a></li><li class="chapter-item expanded "><a href="../tech-specs/SUMMARY.html"><strong aria-hidden="true">7.</strong> Tech Specs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tech-specs/original-tech-spec.html"><strong aria-hidden="true">7.1.</strong> Original Tech Spec</a></li><li class="chapter-item expanded "><a href="../tech-specs/solo-validator-support.html"><strong aria-hidden="true">7.2.</strong> Solo Validator Support</a></li></ol></li></ol>
             </div>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
-                <div class="sidebar-resize-indicator"></div>
-            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
         <!-- Track and set sidebar scroll position -->
@@ -169,48 +167,36 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="faq"><a class="header" href="#faq">FAQ</a></h1>
-<details>
-  <summary>How often can I use the Rescue Node?</summary>
-<p>Four times per year.</p>
-<p>Each token is valid for fifteen days.
-If you lose your token, you can simply repeat the request process to retrieve it.
-This will not count against your usage limits unless less than 48 hours remain, in which case a new token valid for 15 additional days will be issued.</p>
-</details>
-<details>
-  <summary>Why can't I claim rewards or do other operations while using the Rescue Node?</summary>
-<p>The Rescue Node only ensures that attestations, proposals, sync committees and other duties are performed- in order to join or leave the smoothing pool, claim rewards, or submit other transactions, you either must have synced local clients, or use infura as a fallback.
-Your Rescue Node URL, from <code>~/.rocketpool/override/validator.yml</code> will work as a Consensus Client fallback URL in conjunction with an Infura web3 URL configured as an Execution Fallback, if you need to submit a transaction in a pinch.</p>
-</details>
-<details>
-  <summary>How can I check that I successfully connected to the Rescue Node?</summary>
-<p>Most validator clients will log a message containing the url.
-You can see if it connected by running:</p>
-<pre><code>docker logs rocketpool_validator |&amp; grep rescuenode.com
+                        <h1 id="how-to-disconnect"><a class="header" href="#how-to-disconnect">How To Disconnect</a></h1>
+<p>Disconnecting from the Rescue Node is as simple as undoing the changes you did when you originally connect.</p>
+<h2 id="rocket-pool-node-operators"><a class="header" href="#rocket-pool-node-operators">Rocket Pool Node Operators</a></h2>
+<p>Revert <code>~/.rocketpool/override/validator.yml</code> to its original state from your backup:</p>
+<pre><code>cp ~/.rocketpool/override/validator.yml.bak ~/.rocketpool/override/validator.yml
 </code></pre>
-<p>If that doesn't work, you can also check the following command to make sure the validator is using the Rescue Node URL:</p>
-<pre><code>docker exec rocketpool_validator env |&amp; grep rescuenode.com
+<p>Save, exit, and run <code>rocketpool service start</code>.</p>
+<div class="warning">
+<p>If you didn't create a backup or it isn't disconnecting you, you can replace the file with these commands:</p>
+<pre><code>rocketpool service stop
+rm ~/.rocketpool/override/validator.yml
+rocketpool service install -d
+rocketpool service start
 </code></pre>
-<p>Follow your validators on <a href="https://beaconcha.in/">beaconcha.in</a> to verify that they are attesting.</p>
-</details>
-<details>
-  <summary>How can I disconnect from the Rescue Node?</summary>
-<p>Edit your <code>~/.rocketpool/override/validator.yml</code> file again, and remove all the lines you added when you connected- normally everything after the <code>x-rp-comment</code> line.
-Next, run <code>rocketpool service start</code>.</p>
-<p>If you're having trouble, the following commands will also reset the file:</p>
-<pre><code>rm ~/.rocketpool/override/validator.yml; rocketpool service install -d; rocketpool service start
-</code></pre>
-</details>
+</div>
+<h2 id="solo-stakers"><a class="header" href="#solo-stakers">Solo Stakers</a></h2>
+<p>Docker Compose and Systemd users should review the <a href="solo.html">Connection Guide</a> and restore their backed up configs to disconnect.<br />
+Don't forget to <code>sudo systemctl daemon-reload</code> and restart, or to <code>docker compose up -d</code> to restart.</p>
+<p>eth-docker users can use <code>git diff</code> to check which files have been modified, and <code>git restore</code> to restore them to their original states.<br />
+If you modified your <code>.env</code> file, edit it and restore <code>CL_NODE=</code> variable to the value before you connected (default is <code>CL_NODE=http://consensus:5052).   Run </code>./ethd update<code>and</code>./ethd up` to apply the changes.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="donate.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../how-to-connect/solo.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="tandc.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../donate.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -220,11 +206,11 @@ Next, run <code>rocketpool service start</code>.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="donate.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../how-to-connect/solo.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="tandc.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../donate.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
@@ -239,13 +225,13 @@ Next, run <code>rocketpool service start</code>.</p>
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
 
