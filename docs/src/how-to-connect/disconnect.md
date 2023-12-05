@@ -4,6 +4,11 @@ Disconnecting from the Rescue Node is as simple as undoing the changes you did w
 
 ## Rocket Pool Node Operators
 
+If you're using the Smartnode Addon, simply uncheck the `Enabled` box in `rocketpool service config`.
+Save and exit, and restart the containers when prompted.
+
+If you connected manually, follow these steps:
+
 Revert `~/.rocketpool/override/validator.yml` to its original state from your backup:
 ```
 cp ~/.rocketpool/override/validator.yml.bak ~/.rocketpool/override/validator.yml
