@@ -15,7 +15,7 @@ For more information, see the [Tech Specs](./tech-specs/SUMMARY.md).
 Currently, a single Rocket Pool node is restricted to using Rocket Rescue Node **four times per year, for 15 days at a time**.
 Solo stakers are restricted to using the Rocket Rescue Node **twice per year, for 10 days at a time**.
 Re-requesting access before the window ends will **not** consume additional quota nor will it extend your access, **unless less than 2 days remain**.
-Therefore, if you lose your access URL, you can rerequest access to retrieve it, up until 8 or 13 days after it was created.
+Therefore, if you lose your access URL, you can rerequest access to retrieve it, up to 8 or 13 days after it was created.
 
 ## Maintainers
 The rescue node is currently maintained by:

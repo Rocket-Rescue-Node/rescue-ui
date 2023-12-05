@@ -115,7 +115,7 @@ Lighthouse, Lodestar, Nimbus (vc-only), and Teku (vc-only):
 
 Prysm
 - Edit `prysm.yml` or `prysm-vc-only.yml` depending on whether eth-docker runs your Consensus Client or not.
-- In the `validator` service `entrypoint` list, update or add the folling flags:
+- In the `validator` service `entrypoint` list, update or add the following flags:
 
 ```
 - --beacon-rpc-provider
