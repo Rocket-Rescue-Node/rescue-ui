@@ -4,6 +4,7 @@ import {
   AlertTitle,
   Box,
   Button,
+  Link,
   Stack,
   Step,
   StepContent,
@@ -60,6 +61,17 @@ export default function SoloNodeRequestAccess({
       : Steps.connectWallet;
   return (
     <Stack direction="column">
+      <Alert sx={{ mb: 2 }} severity="warning" color="gray">
+        To avoid missing proposals make sure that{" "}
+        <Link
+          href="/docs/randt#fee-recipient-enforcement"
+          color="inherit"
+          target="_blank"
+        >
+          your fee-recipient is properly configured
+        </Link>
+        .
+      </Alert>
       <Typography gutterBottom variant="body1">
         You’ll submit a signed message from your withdrawal wallet.
       </Typography>
