@@ -87,7 +87,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="donate.html"><strong aria-hidden="true">2.</strong> Donate</a></li><li class="chapter-item expanded "><a href="faq.html" class="active"><strong aria-hidden="true">3.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="tandc.html"><strong aria-hidden="true">4.</strong> Terms and Conditions</a></li><li class="chapter-item expanded "><a href="randt.html"><strong aria-hidden="true">5.</strong> Risks and Trust</a></li><li class="chapter-item expanded "><a href="tech-specs/SUMMARY.html"><strong aria-hidden="true">6.</strong> Tech Specs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tech-specs/original-tech-spec.html"><strong aria-hidden="true">6.1.</strong> Original Tech Spec</a></li><li class="chapter-item expanded "><a href="tech-specs/solo-validator-support.html"><strong aria-hidden="true">6.2.</strong> Solo Validator Support</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="how-to-connect/SUMMARY.html"><strong aria-hidden="true">2.</strong> How To Connect</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="how-to-connect/rp.html"><strong aria-hidden="true">2.1.</strong> ... As a Rocket Pool Node Operator</a></li><li class="chapter-item expanded "><a href="how-to-connect/solo.html"><strong aria-hidden="true">2.2.</strong> ... As a Solo Staker</a></li><li class="chapter-item expanded "><a href="how-to-connect/disconnect.html"><strong aria-hidden="true">2.3.</strong> ... and Disconnect</a></li></ol></li><li class="chapter-item expanded "><a href="donate.html"><strong aria-hidden="true">3.</strong> Donate</a></li><li class="chapter-item expanded "><a href="faq.html" class="active"><strong aria-hidden="true">4.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="tandc.html"><strong aria-hidden="true">5.</strong> Terms and Conditions</a></li><li class="chapter-item expanded "><a href="randt.html"><strong aria-hidden="true">6.</strong> Risks and Trust</a></li><li class="chapter-item expanded "><a href="tech-specs/SUMMARY.html"><strong aria-hidden="true">7.</strong> Tech Specs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tech-specs/original-tech-spec.html"><strong aria-hidden="true">7.1.</strong> Original Tech Spec</a></li><li class="chapter-item expanded "><a href="tech-specs/solo-validator-support.html"><strong aria-hidden="true">7.2.</strong> Solo Validator Support</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -172,10 +172,11 @@
                         <h1 id="faq"><a class="header" href="#faq">FAQ</a></h1>
 <details>
   <summary>How often can I use the Rescue Node?</summary>
-<p>Four times per year.</p>
-<p>Each token is valid for fifteen days.
+<p>Rocket Pool Node operators can use it four times per year.<br />
+Solo stakers can use it twice per year.</p>
+<p>Each token is valid for ten or fifteen days, respectively, for solo stakers and Rocket Pool node operators.
 If you lose your token, you can simply repeat the request process to retrieve it.
-This will not count against your usage limits unless less than 48 hours remain, in which case a new token valid for 15 additional days will be issued.</p>
+This will not count against your usage limits unless less than 48 hours remain, in which case a new token valid for 10/15 additional days will be issued.</p>
 </details>
 <details>
   <summary>Why can't I claim rewards or do other operations while using the Rescue Node?</summary>
@@ -184,7 +185,8 @@ Your Rescue Node URL, from <code>~/.rocketpool/override/validator.yml</code> wil
 </details>
 <details>
   <summary>How can I check that I successfully connected to the Rescue Node?</summary>
-<p>Most validator clients will log a message containing the url.
+<p>As of Smartnode v1.11.1, <code>rocketpool node status</code> will contain a message telling you that you are using the Rescue Node, and how much longer you have access.</p>
+<p>Addtionally, most validator clients will log a message containing the url.
 You can see if it connected by running:</p>
 <pre><code>docker logs rocketpool_validator |&amp; grep rescuenode.com
 </code></pre>
@@ -194,12 +196,9 @@ You can see if it connected by running:</p>
 <p>Follow your validators on <a href="https://beaconcha.in/">beaconcha.in</a> to verify that they are attesting.</p>
 </details>
 <details>
-  <summary>How can I disconnect from the Rescue Node?</summary>
-<p>Edit your <code>~/.rocketpool/override/validator.yml</code> file again, and remove all the lines you added when you connected- normally everything after the <code>x-rp-comment</code> line.
-Next, run <code>rocketpool service start</code>.</p>
-<p>If you're having trouble, the following commands will also reset the file:</p>
-<pre><code>rm ~/.rocketpool/override/validator.yml; rocketpool service install -d; rocketpool service start
-</code></pre>
+  <summary>Why do I have to submit a signed message to connect?</summary>
+<p>The signed message allows us to enforce our quotas.
+We don't save it, or broadcast it, or use it for any other purpose.</p>
 </details>
 
                     </main>

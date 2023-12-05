@@ -87,7 +87,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="donate.html"><strong aria-hidden="true">2.</strong> Donate</a></li><li class="chapter-item expanded "><a href="faq.html"><strong aria-hidden="true">3.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="tandc.html"><strong aria-hidden="true">4.</strong> Terms and Conditions</a></li><li class="chapter-item expanded "><a href="randt.html" class="active"><strong aria-hidden="true">5.</strong> Risks and Trust</a></li><li class="chapter-item expanded "><a href="tech-specs/SUMMARY.html"><strong aria-hidden="true">6.</strong> Tech Specs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tech-specs/original-tech-spec.html"><strong aria-hidden="true">6.1.</strong> Original Tech Spec</a></li><li class="chapter-item expanded "><a href="tech-specs/solo-validator-support.html"><strong aria-hidden="true">6.2.</strong> Solo Validator Support</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="how-to-connect/SUMMARY.html"><strong aria-hidden="true">2.</strong> How To Connect</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="how-to-connect/rp.html"><strong aria-hidden="true">2.1.</strong> ... As a Rocket Pool Node Operator</a></li><li class="chapter-item expanded "><a href="how-to-connect/solo.html"><strong aria-hidden="true">2.2.</strong> ... As a Solo Staker</a></li><li class="chapter-item expanded "><a href="how-to-connect/disconnect.html"><strong aria-hidden="true">2.3.</strong> ... and Disconnect</a></li></ol></li><li class="chapter-item expanded "><a href="donate.html"><strong aria-hidden="true">3.</strong> Donate</a></li><li class="chapter-item expanded "><a href="faq.html"><strong aria-hidden="true">4.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="tandc.html"><strong aria-hidden="true">5.</strong> Terms and Conditions</a></li><li class="chapter-item expanded "><a href="randt.html" class="active"><strong aria-hidden="true">6.</strong> Risks and Trust</a></li><li class="chapter-item expanded "><a href="tech-specs/SUMMARY.html"><strong aria-hidden="true">7.</strong> Tech Specs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tech-specs/original-tech-spec.html"><strong aria-hidden="true">7.1.</strong> Original Tech Spec</a></li><li class="chapter-item expanded "><a href="tech-specs/solo-validator-support.html"><strong aria-hidden="true">7.2.</strong> Solo Validator Support</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -172,10 +172,10 @@
                         <h1 id="risks-and-trust"><a class="header" href="#risks-and-trust">Risks and Trust</a></h1>
 <p>While we have done everything in our power to minimize risks and trust assumptions, there are a few that remain.</p>
 <h2 id="trust-assumptions"><a class="header" href="#trust-assumptions">Trust Assumptions</a></h2>
-<p>A User of Rocket Rescue Node is explicitly trusting that its Maintainers will not attempt to steal their tips/MEV rewards and is accepting full liability.
-We obviously have no intention of doing so, however, it is theoretically within our ability.
+<p>A User of Rocket Rescue Node is explicitly trusting that its Maintainers will not attempt to steal their proposal rewards and is accepting full liability.
+We obviously have no intention of doing so, however, it is theoretically within our ability to siphon proposal fees.
 For a list of the current Maintainers, see the <a href="./about.html">About</a> section.
-We have gone to great lengths to prevent a User of Rocket Rescue Node from stealing the tips/MEV from another User, but we cannot promise that it is impossible to do so.
+We have gone to great lengths to prevent a User of Rocket Rescue Node from stealing the proposal fees from another User, but we cannot promise that it is impossible to do so.
 You are explicitly trusting that the safeguards we put in place are sufficient.</p>
 <p>Rocket Rescue Node is fully non-custodial.
 Your validator keys remain local to your node.</p>
@@ -184,11 +184,30 @@ Your validator keys remain local to your node.</p>
 We encourage you to use Doppelgänger Detection, and always wait the prescribed 15 minutes after changing Validator Clients.
 Since your keys remain in your custody and your Validator Client's slashing protection database remains in place, Rocket Rescue Node does not present additional slashing risks, outside of the usual human error.
 Please exercise caution whenever performing administrative functions on your node.</p>
+<h3 id="fee-recipient-enforcement"><a class="header" href="#fee-recipient-enforcement">Fee Recipient Enforcement</a></h3>
+<p>For locally built blocks, The Rocket Rescue Node forces connected users to use fee recipients that are known to be safe.</p>
+<p>For Rocket Pool Node Operators, this means either their node's fee distributor contract, or the smoothing pool contract, depending on whether they are in the smoothing pool.<br />
+For solo stakers, <strong>we only accept the 0x01 credential's address as the fee recipient for locally built blocks.</strong></p>
+<p>For blind blocks, any fee recipient is accepted.</p>
+<div class="warning">
+<p>We <em><strong>strongly</strong></em> <strong>recommend solo stakers use their 0x01 credential as their fee recipient, or at least enable MEV-Boost before connecting.</strong></p>
+<p>Invalid fee recipients can lead to missed proposals.</p>
+</div>
 <h2 id="data-retention"><a class="header" href="#data-retention">Data Retention</a></h2>
-<p>As a matter of necessity, your node address and IP address are logged by our system.
+<p>As a matter of necessity, your wallet address and IP address are logged by our system.
 This allows us to proactively block Users who attempt to misbehave.
 We will never share these data with a third party.
 If you would like to have an extra layer of anonymity, we recommend using a VPN on your node to anonymize your IP address.</p>
+<h2 id="types-of-theft"><a class="header" href="#types-of-theft">Types of Theft</a></h2>
+<p>Proposals include two types of Execution Layer rewards, tips, and if enabled, MEV.
+They also include a reward on the Consensus Layer, which is not at risk.</p>
+<h2 id="stealing-tips"><a class="header" href="#stealing-tips">Stealing tips</a></h2>
+<p>The main type of theft that is possible is the theft of tips by the maintainers of the service.
+Since anyone with access to the Beacon API can call <code>prepare_beacon_proposer</code>, a malicious maintainer could overwrite your fee recipient and steal the tips for any locally built blocks you publish while connected.</p>
+<h2 id="stealing-mev"><a class="header" href="#stealing-mev">Stealing MEV</a></h2>
+<p>Stealing MEV is not possible, to the best of our knowledge.
+The <code>register_validator</code> request from the validator client requires a signature from the validator's keys, and we have no way of spoofing it.
+However, a malicious maintainer could force your validator to use locally built blocks only, and proceed to steal the tips, as described above.</p>
 
                     </main>
 
