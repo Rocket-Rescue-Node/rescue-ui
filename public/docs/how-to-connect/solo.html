@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Solo Validator Support - Rocket Rescue Node Docs</title>
+        <title>... As a Solo Staker - Rocket Rescue Node Docs</title>
 
 
         <!-- Custom HTML head -->
@@ -87,7 +87,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="../how-to-connect/SUMMARY.html"><strong aria-hidden="true">2.</strong> How To Connect</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../how-to-connect/rp.html"><strong aria-hidden="true">2.1.</strong> ... As a Rocket Pool Node Operator</a></li><li class="chapter-item expanded "><a href="../how-to-connect/solo.html"><strong aria-hidden="true">2.2.</strong> ... As a Solo Staker</a></li><li class="chapter-item expanded "><a href="../how-to-connect/disconnect.html"><strong aria-hidden="true">2.3.</strong> ... and Disconnect</a></li></ol></li><li class="chapter-item expanded "><a href="../donate.html"><strong aria-hidden="true">3.</strong> Donate</a></li><li class="chapter-item expanded "><a href="../faq.html"><strong aria-hidden="true">4.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="../tandc.html"><strong aria-hidden="true">5.</strong> Terms and Conditions</a></li><li class="chapter-item expanded "><a href="../randt.html"><strong aria-hidden="true">6.</strong> Risks and Trust</a></li><li class="chapter-item expanded "><a href="../tech-specs/SUMMARY.html"><strong aria-hidden="true">7.</strong> Tech Specs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tech-specs/original-tech-spec.html"><strong aria-hidden="true">7.1.</strong> Original Tech Spec</a></li><li class="chapter-item expanded "><a href="../tech-specs/solo-validator-support.html" class="active"><strong aria-hidden="true">7.2.</strong> Solo Validator Support</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="../how-to-connect/SUMMARY.html"><strong aria-hidden="true">2.</strong> How To Connect</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../how-to-connect/rp.html"><strong aria-hidden="true">2.1.</strong> ... As a Rocket Pool Node Operator</a></li><li class="chapter-item expanded "><a href="../how-to-connect/solo.html" class="active"><strong aria-hidden="true">2.2.</strong> ... As a Solo Staker</a></li><li class="chapter-item expanded "><a href="../how-to-connect/disconnect.html"><strong aria-hidden="true">2.3.</strong> ... and Disconnect</a></li></ol></li><li class="chapter-item expanded "><a href="../donate.html"><strong aria-hidden="true">3.</strong> Donate</a></li><li class="chapter-item expanded "><a href="../faq.html"><strong aria-hidden="true">4.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="../tandc.html"><strong aria-hidden="true">5.</strong> Terms and Conditions</a></li><li class="chapter-item expanded "><a href="../randt.html"><strong aria-hidden="true">6.</strong> Risks and Trust</a></li><li class="chapter-item expanded "><a href="../tech-specs/SUMMARY.html"><strong aria-hidden="true">7.</strong> Tech Specs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tech-specs/original-tech-spec.html"><strong aria-hidden="true">7.1.</strong> Original Tech Spec</a></li><li class="chapter-item expanded "><a href="../tech-specs/solo-validator-support.html"><strong aria-hidden="true">7.2.</strong> Solo Validator Support</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -169,76 +169,122 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="rescue-node---solo-validator-access-tech-spec"><a class="header" href="#rescue-node---solo-validator-access-tech-spec">Rescue Node - Solo Validator Access Tech Spec</a></h1>
-<p>This document will serve as a technical specification for a project with the goal of allowing solo validators access to the <a href="https://rescuenode.com/">Rocket Rescue Node</a>.</p>
-<p>As with the original project, the main priority will be around identity management for MEV/tips theft prevention.</p>
-<h2 id="changes"><a class="header" href="#changes">Changes</a></h2>
-<h3 id="credentials"><a class="header" href="#credentials">credentials</a></h3>
-<p>The <a href="https://github.com/Rocket-Rescue-Node/credentials">credentials</a> library will be updated to change the proto spec for the <code>Credential</code> message.</p>
-<pre><code class="language-protobuf">message Credential {
-	bytes node_id = 1; // 20 bytes representing the Node address
-	int64 timestamp = 2; // UTC epoch time the credential was issued
-}
-</code></pre>
-<p>will change to </p>
-<pre><code class="language-protobuf">enum OperatorType {
-	OT_ROCKETPOOL = 0; // Issued to a RP NO via a signature from their node wallet.
-	OT_SOLO = 1; // Issued to a solo validator via a signature from their 0x01 withdrawal address.
-}
-
-message Credential {
-	bytes address = 1; // 20 bytes representing the Node address, or if a solo validator, the withdrawal adress.
-	int64 timestamp = 2; // UTC epoch time the credential was issued.
-	OperatorType operator_type = 3; // The type of Node Operator for whom the credential was issued.
-}
-</code></pre>
-<p>These messages are used across the stack to identify the user for whom we process traffic, and critically, rate-limit their access.</p>
-<h3 id="rescue-api"><a class="header" href="#rescue-api">rescue-api</a></h3>
-<p><a href="https://github.com/Rocket-Rescue-Node/rescue-api">rescue-api</a>'s primary responsibility is creating new <code>AuthenticatedCredential</code> messages according to the predetermined rate limit rules. It currently verifies the validator's ownership by requiring a signed message from the Rocket Pool node wallet. In order to support solo validators, it needs to be updated to accept a <strong>signed message from the validator's 0x01 withdrawal address</strong> instead.</p>
-<p>This means that rescue-api will need a view of all validators active on the Beacon Chain, which will be provided to it by rescue-proxy.</p>
-<p>When generating the credentials, it will keep a separate table for solo validators, and be subject to a <strong>separate ruleset.</strong><br />
-Solo validators may have reduced usage credits (when compared to the 4 annual, 15 day credits given to Rocket Pool node operators).</p>
+                        <h1 id="how-to-connect-as-a-solo-staker"><a class="header" href="#how-to-connect-as-a-solo-staker">How To Connect As a Solo Staker</a></h1>
+<div class="warning">
+<p>Solo Stakers can only use the Rescue Node if running their validators in a stand-alone process.</p>
+<p>If you have loaded your keys into the Beacon Node directly, there is no way to connect.</p>
+<p>For eth-docker users, as of Nov. 2023, this means only Prysm, Lodestar, and Lighthouse are fully supported, and Nimbus and Teku are only supported if eth-docker only manages your Validator Client.</p>
+</div>
+<div class="warning">
+<p>We recommend having migrated all active validators to 0x01 and <strong>using the 0x01 address as the fee recipient.</strong>
+If MEV-Boost is not enabled by your Validator Client, you will miss proposals on all validators if any noncompliant fee recipient is used.
+Additionally, even if MEV-Boost is enabled and there is no MEV available for a proposal duty assignment, that proposal will be missed unless all fee recipients are compliant. </p>
+<p>If this is an emergency and you don't have time to migrate to 0x01, <strong>we strongly recommend enabling MEV Boost / External Builders in your Validator Client flags to minimize potential losses.</strong></p>
+</div>
+<h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
+<p><strong>First</strong>, follow the steps from <a href="SUMMARY.html">previous section</a> to receive a credential (a USERNAME / PASSWORD pair).</p>
+<p>Connecting as a Solo Staker depends on how you originally installed your Validator Client.</p>
 <ul>
-<li>Credentials with <code>OperatorType = OT_SOLO</code> may be issued to Rocket Pool node wallets if they are a 0x01 address, subject to the solo validator rate limits. Allnodes users, for instance, may use the same wallet for solo validators and minipools.</li>
-<li>Credentials with <code>OperatorType = OT_ROCKETPOOL</code> may be issued to Rocket Pool node wallets even if they are a 0x01 address, subject to the Rocket Pool rate limits, provided the message is signed by the node wallet, as usual.</li>
+<li>Most solo staking guides instruct the user to install it natively with a systemd service file.</li>
+<li>Some solo stakers may have opted to use <a href="https://eth-docker.net/">eth-docker</a> instead.</li>
+<li>Others may use docker-compose directly.</li>
 </ul>
-<p>To differentiate, the API will have a <strong>separate route for solo validators vs Rocket Pool node operators.</strong> </p>
-<h3 id="rescue-proxy"><a class="header" href="#rescue-proxy">rescue-proxy</a></h3>
-<ol>
-<li><a href="https://github.com/Rocket-Rescue-Node/rescue-proxy">rescue-proxy</a> will now have to provide rescue-api with a gRPC service for 0x01 credential queries.<br />
-rescue-api needs this in order to ensure that the wallet used to request a credential is in fact the withdrawal address for at least one validator.<br />
-This should be developed in a way that makes real-time sacrifices in order to minimize load on the beacon node (eg, cache all the validators from the latest <code>justified</code> state).</li>
-<li>rescue-proxy must differentiate between <code>operator_type</code> credentials. When <code>operator_type=OT_SOLO</code>, instead of validating that the fee recipient is set to the correct address (fee distributor vs smoothing pool), we will <strong>validate that the fee recipient is set to the address of the 0x01 credential.</strong> This means solo validators who wish to use the rescue node <strong>must use their withdrawal address as their fee recipient</strong>.</li>
-<li>rescue-proxy should support a different expiry window for solo validator credentials, which are subject to a distinct rate limiting ruleset.</li>
-</ol>
-<h3 id="guarded-beacon-proxy"><a class="header" href="#guarded-beacon-proxy">guarded-beacon-proxy</a></h3>
-<p>Ideally, <a href="https://github.com/Rocket-Rescue-Node/guarded-beacon-proxy">this library</a> does not need to be changed, though there may be some quality of life updates.</p>
-<h3 id="rescue-ui"><a class="header" href="#rescue-ui">rescue-ui</a></h3>
-<p>The bulk of the work will fall in <a href="https://github.com/Rocket-Rescue-Node/rescue-ui">rescue-ui</a>.</p>
-<ol>
-<li>The landing page at https://rescuenode.com will have to ask if the user is requesting access for a solo validator or a Rocket Pool node.</li>
-<li>We will use an open-source library to allow the solo operator to connect their 0x01 wallet to the website. We will advise against connecting a cold wallet. Unfortunately, the solo validator needs to prove custody of the withdrawal address, and this is the cleanest solution. We will take this opportunity to recommend that the solo validator use a hardware wallet (or better) as their withdrawal address.</li>
-<li>Once connected, the solo validator will be able to <strong>sign EIP-191 data</strong> with their withdrawal wallet which is automatically populated with a message of the format:</li>
-</ol>
-<pre><code>Rescue Node `date +%s`
+<p>No matter how you originally installed your Validator Client, to proceed you will need the credential pair you received after submitting your signed message on the <a href="https://rescuenode.com">website</a>.</p>
+<h1 id="constructing-your-access-urls"><a class="header" href="#constructing-your-access-urls">Constructing your access URL(s)</a></h1>
+<hr />
+<p>For <strong>ALL</strong> users, the URL will have the format:</p>
+<pre><code>https://USERNAME:PASSWORD@CLIENT.rescuenode.com
 </code></pre>
-<p>(where <code>date +%s</code> expands to a Unix timestamp in UTC).</p>
-<ol start="4">
-<li>rescue-ui will request a credential from rescue-api, and render instructions for each of the 5 supported validator clients on how to connect, plus a 6th tab for eth-docker users.</li>
-</ol>
-<h3 id="infrastructure"><a class="header" href="#infrastructure">infrastructure</a></h3>
-<p>Tweaks may be made here to separate solo validator traffic from Rocket Pool traffic, with the goal of being able to prioritize traffic from Rocket Pool nodes. Generally, though, <strong>solo validator support will happen at the software layer</strong>, so <strong>no additional resources should be required</strong>.</p>
-<h3 id="miscellaneous"><a class="header" href="#miscellaneous">miscellaneous</a></h3>
-<p>Metrics are collected across the platform and should, wherever possible, include a new <code>solo</code> label.</p>
+<p>where CLIENT is <code>nimbus</code>, e.g., for Nimbus, and USERNAME/PASSWORD are your credentials from the website.</p>
+<hr />
+<p>If you use <strong>Prysm</strong>, you have an additional authorization header.</p>
+<pre><code>USERNAME:PASSWORD
+</code></pre>
+<hr />
+<h2 id="native-installation-with-systemd-or-docker-installation-with-docker-compose"><a class="header" href="#native-installation-with-systemd-or-docker-installation-with-docker-compose">Native Installation (with systemd) or Docker installation with Docker Compose</a></h2>
+<div class="warning">
+<p>Make a backup copy of your systemd service file for your validator client, or the docker-compose.yml file.</p>
+<p>You will need this to disconnect from the Rescue Node when your access expires.</p>
+</div>
+<p>Modify your systemd service file for your validator client, or your docker-compose.yml file where the validator client service is defined.</p>
+<p>Add or change your Beacon Node URL flag according to which client you use (substituting for YOUR_ACCESS_URL and if using Prysm, YOUR_AUTH_HEADER):</p>
+<hr />
+<ul>
+<li>Lighthouse:</li>
+</ul>
+<pre><code>--beacon-nodes YOUR_ACCESS_URL 
+</code></pre>
+<ul>
+<li>Lodestar:</li>
+</ul>
+<pre><code>--beaconNodes YOUR_ACCESS_URL
+</code></pre>
+<ul>
+<li>Nimbus:</li>
+</ul>
+<pre><code>--beacon-node=YOUR_ACCESS_URL
+</code></pre>
+<ul>
+<li>Prysm:</li>
+</ul>
+<pre><code>--beacon-rest-api-provider=YOUR_ACCESS_URL \
+--beacon-rpc-provider=prysm-grpc.rescuenode.com:443 \
+--grpc-headers=rprnauth=YOUR_AUTH_HEADER \
+--tls-cert=/etc/ssl/certs/ca-certificates.crt
+</code></pre>
+<ul>
+<li>Teku:</li>
+</ul>
+<pre><code>--beacon-node-api-endpoint=YOUR_ACCESS_URL
+</code></pre>
+<hr />
+<p>If modifying a systemd unit file, save it and run <code>sudo systemctl daemon-reload</code> before restarting the service.<br />
+If modifying a docker-compose file, save it and run <code>docker compose up -d</code>.</p>
+<h2 id="eth-docker-users"><a class="header" href="#eth-docker-users">eth-docker Users</a></h2>
+<div class="warning">
+Only Prysm, Lodestar, and Lighthouse are fully supported as of Nov. 2023.
+<p>Teku and Nimbus are only supported if eth-docker does <strong>not</strong> manage your Beacon Node, and only manages your Validator Client.</p>
+</div>
+<hr />
+<p>Lighthouse, Lodestar, Nimbus (vc-only), and Teku (vc-only):</p>
+<ul>
+<li>Edit <code>.env</code> with a text editor of your choice and update <code>CL_NODE=</code> to <code>CL_NODE=YOUR_ACCESS_URL</code></li>
+</ul>
+<p>Prysm</p>
+<ul>
+<li>Edit <code>prysm.yml</code> or <code>prysm-vc-only.yml</code> depending on whether eth-docker runs your Consensus Client or not.</li>
+<li>In the <code>validator</code> service <code>entrypoint</code> list, update or add the folling flags:</li>
+</ul>
+<pre><code>- --beacon-rpc-provider
+- prysm-grpc.rescuenode.com:443
+- --beacon-rpc-gateway-provider
+- prysm-grpc.rescuenode.com:443
+- --grpc-headers
+- rprnauth=YOUR_AUTH_HEADER
+- --tls-cert
+- /etc/ssl/certs/ca-certificates.crt
+</code></pre>
+<hr />
+<p>Run <code>./ethd update</code> to rebuild your containers.
+Run <code>./ethd up</code> to finish connecting.
+Monitor <code>./ethd logs validator</code> for errors.</p>
+<h1 id="finishing-up"><a class="header" href="#finishing-up">Finishing Up</a></h1>
+<div class="warning">
+<p>Once connected, <strong>do not forget</strong> to <a href="disconnect.html">disconnect</a> before 10 days, or to request a new credential on the 9th day. </p>
+<p>Failure to do so will result in <strong>missed attestations and other duties</strong>.</p>
+</div>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../tech-specs/original-tech-spec.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../how-to-connect/rp.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
+                            <a rel="next prefetch" href="../how-to-connect/disconnect.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -246,10 +292,13 @@ This should be developed in a way that makes real-time sacrifices in order to mi
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../tech-specs/original-tech-spec.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../how-to-connect/rp.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
+                    <a rel="next prefetch" href="../how-to-connect/disconnect.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>
