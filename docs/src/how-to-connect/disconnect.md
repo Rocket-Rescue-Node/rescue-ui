@@ -1,6 +1,6 @@
 # How To Disconnect
 
-Disconnecting from the Rescue Node is as simple as undoing the changes you did when you originally connect.
+Disconnecting from the Rescue Node is as simple as undoing the changes you did when you originally connected.
 
 ## Rocket Pool Node Operators
 
