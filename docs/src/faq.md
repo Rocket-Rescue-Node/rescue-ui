@@ -3,11 +3,13 @@
 <details>
   <summary>How often can I use the Rescue Node?</summary>
 
-Four times per year.
+Rocket Pool Node operators can use it four times per year.  
+Solo stakers can use it twice per year.
 
-Each token is valid for fifteen days.
+
+Each token is valid for ten or fifteen days, respectively, for solo stakers and Rocket Pool node operators.
 If you lose your token, you can simply repeat the request process to retrieve it.
-This will not count against your usage limits unless less than 48 hours remain, in which case a new token valid for 15 additional days will be issued.
+This will not count against your usage limits unless less than 48 hours remain, in which case a new token valid for 10/15 additional days will be issued.
 
 
 </details>
@@ -23,7 +25,9 @@ Your Rescue Node URL, from `~/.rocketpool/override/validator.yml` will work as a
 <details>
   <summary>How can I check that I successfully connected to the Rescue Node?</summary>
 
-Most validator clients will log a message containing the url.
+As of Smartnode v1.11.1, `rocketpool node status` will contain a message telling you that you are using the Rescue Node, and how much longer you have access.
+
+Addtionally, most validator clients will log a message containing the url.
 You can see if it connected by running:
 ```
 docker logs rocketpool_validator |& grep rescuenode.com
@@ -39,14 +43,10 @@ Follow your validators on [beaconcha.in](https://beaconcha.in/) to verify that t
 </details>
 
 <details>
-  <summary>How can I disconnect from the Rescue Node?</summary>
+  <summary>Why do I have to submit a signed message to connect?</summary>
 
-Edit your `~/.rocketpool/override/validator.yml` file again, and remove all the lines you added when you connected- normally everything after the `x-rp-comment` line.
-Next, run `rocketpool service start`.
-
-If you're having trouble, the following commands will also reset the file:
-```
-rm ~/.rocketpool/override/validator.yml; rocketpool service install -d; rocketpool service start
-```
+The signed message allows us to enforce our quotas.
+We don't save it, or broadcast it, or use it for any other purpose.
 
 </details>
+

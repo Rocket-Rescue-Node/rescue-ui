@@ -2,6 +2,24 @@
 
 After following the steps from the [previous section](SUMMARY.md), the website will present you with the easiest way to connect.
 
+As of Smartnode v1.11.1, this is to use the Rescue Node Addon in the Addons section of `rocketpool service config`.
+
+Enable the addon and paste your username and password from the website.
+Press `<enter>` after pasting, or your changes won't be saved.
+
+Save and exit.
+Restart the mentioned containers when prompted.
+
+You can check you completed the process by running `rocketpool node status`. At the bottom of the output you should see a message like this:
+
+![Node Status Output](./nodestatus.png)
+
+---
+
+## Manually Connecting (without the Addon)
+
+If you haven't upgraded to v1.11.1 yet, or want to connect the old way, follow these steps.
+
 First, back up your `~/.rocketpool/override/validator.yml` file using this command:
 ```
 cp ~/.rocketpool/override/validator.yml ~/.rocketpool/override/validator.yml.bak
