@@ -87,7 +87,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="about.html" class="active"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="donate.html"><strong aria-hidden="true">2.</strong> Donate</a></li><li class="chapter-item expanded "><a href="faq.html"><strong aria-hidden="true">3.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="tandc.html"><strong aria-hidden="true">4.</strong> Terms and Conditions</a></li><li class="chapter-item expanded "><a href="randt.html"><strong aria-hidden="true">5.</strong> Risks and Trust</a></li><li class="chapter-item expanded "><a href="tech-specs/SUMMARY.html"><strong aria-hidden="true">6.</strong> Tech Specs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tech-specs/original-tech-spec.html"><strong aria-hidden="true">6.1.</strong> Original Tech Spec</a></li><li class="chapter-item expanded "><a href="tech-specs/solo-validator-support.html"><strong aria-hidden="true">6.2.</strong> Solo Validator Support</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="about.html" class="active"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="how-to-connect/SUMMARY.html"><strong aria-hidden="true">2.</strong> How To Connect</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="how-to-connect/rp.html"><strong aria-hidden="true">2.1.</strong> ... As a Rocket Pool Node Operator</a></li><li class="chapter-item expanded "><a href="how-to-connect/solo.html"><strong aria-hidden="true">2.2.</strong> ... As a Solo Staker</a></li><li class="chapter-item expanded "><a href="how-to-connect/disconnect.html"><strong aria-hidden="true">2.3.</strong> ... and Disconnect</a></li></ol></li><li class="chapter-item expanded "><a href="donate.html"><strong aria-hidden="true">3.</strong> Donate</a></li><li class="chapter-item expanded "><a href="faq.html"><strong aria-hidden="true">4.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="tandc.html"><strong aria-hidden="true">5.</strong> Terms and Conditions</a></li><li class="chapter-item expanded "><a href="randt.html"><strong aria-hidden="true">6.</strong> Risks and Trust</a></li><li class="chapter-item expanded "><a href="tech-specs/SUMMARY.html"><strong aria-hidden="true">7.</strong> Tech Specs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tech-specs/original-tech-spec.html"><strong aria-hidden="true">7.1.</strong> Original Tech Spec</a></li><li class="chapter-item expanded "><a href="tech-specs/solo-validator-support.html"><strong aria-hidden="true">7.2.</strong> Solo Validator Support</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -172,14 +172,15 @@
                         <h1 id="about-the-rocket-rescue-node"><a class="header" href="#about-the-rocket-rescue-node">About the Rocket Rescue Node</a></h1>
 <p>At its core, Rocket Rescue Node is a community-operated Ethereum node which can be used by node operators as an emergency fallback node during maintenance.</p>
 <p>Rocket Rescue Node was first created to help <a href="https://rocketpool.net/">Rocket Pool</a> Node Operators survive The Merge in September '22, but quickly proved its lasting utility.
-In November '23, we launched solo validator support.</p>
+In December 2023, we launched solo validator support.</p>
 <p>We have <a href="https://dao.rocketpool.net/t/january-2023-gmc-call-for-grant-applications-deadline-is-january-15th/1335/3">received a pDAO grant</a> to help ensure its ongoing available to the community.</p>
 <p>Under the hood, Rocket Rescue Node is actually five nodes to maximize Beacon Client compatibility, a custom reverse-proxy to combat potential malfeasance by its users, and an API and UI to make it easy to access.
 For more information, see the <a href="./tech-specs/SUMMARY.html">Tech Specs</a>.</p>
 <h2 id="limits"><a class="header" href="#limits">Limits</a></h2>
-<p>Currently, a single node is restricted to using Rocket Rescue Node <strong>four times per year, for 15 days at a time</strong>.
+<p>Currently, a single Rocket Pool node is restricted to using Rocket Rescue Node <strong>four times per year, for 15 days at a time</strong>.
+Solo stakers are restricted to using the Rocket Rescue Node <strong>twice per year, for 10 days at a time</strong>.
 Re-requesting access before the window ends will <strong>not</strong> consume additional quota nor will it extend your access, <strong>unless less than 2 days remain</strong>.
-Therefore, if you lose your access URL, you can rerequest access to retrieve it, up until 13 days after it was created.</p>
+Therefore, if you lose your access URL, you can rerequest access to retrieve it, up to 8 or 13 days after it was created.</p>
 <h2 id="maintainers"><a class="header" href="#maintainers">Maintainers</a></h2>
 <p>The rescue node is currently maintained by:</p>
 <ul>
@@ -212,7 +213,8 @@ Therefore, if you lose your access URL, you can rerequest access to retrieve it,
 <ul>
 <li>@poupas - prototype, rescue-api, design, infrastructure, security</li>
 <li>@Patches - rescue-proxy, credentials library, design, general administrative stuff</li>
-<li>@hanniabu.eth - rescue-ui website</li>
+<li>@hanniabu.eth - original rescue-ui website</li>
+<li>@dmccartney - new rescue-ui website with solo support</li>
 <li>@sleety.eth - logo design</li>
 </ul>
 <h2 id="open-source"><a class="header" href="#open-source">Open Source</a></h2>
@@ -224,7 +226,7 @@ Therefore, if you lose your access URL, you can rerequest access to retrieve it,
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
 
-                            <a rel="next prefetch" href="donate.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="how-to-connect/SUMMARY.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -235,7 +237,7 @@ Therefore, if you lose your access URL, you can rerequest access to retrieve it,
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
 
-                    <a rel="next prefetch" href="donate.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="how-to-connect/SUMMARY.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
