@@ -182,7 +182,7 @@ it becomes a vector for attack- a malicious actor can take those Node Operators 
 DDoSing the rescue node. We should protect, to the best of our abilities, against this.</li>
 </ul>
 <ol start="2">
-<li><strong>Compatability with each available Consensus Client that supports split mode</strong> (currently ligthouse, prysm and teku)</li>
+<li><strong>Compatability with each available Consensus Client that supports split mode</strong> (currently lighthouse, prysm and teku)</li>
 </ol>
 <ul>
 <li>Currently, prysm only works with a prysm fallback.
@@ -193,7 +193,7 @@ Lighthouse works with teku, but doppelganger detection must be disabled.</li>
 <li><strong>Available to Rocket Pool Node Operators</strong></li>
 </ol>
 <ul>
-<li>Any Node Operator should be able to seemlessly use the rescue node in an emergency.
+<li>Any Node Operator should be able to seamlessly use the rescue node in an emergency.
 Non Node Operators should not have access, to reserve capacity for Rocket Pool.</li>
 </ul>
 <ol start="4">
@@ -313,7 +313,7 @@ not query upstreams if the cached data are fresh.</p>
 <li>Validate that the node is not banned for misbehavior</li>
 <li>Validate the timestamp embedded in the credential is no older than GRACE_PERIOD_DAYS</li>
 <li>If the request is to the <code>/eth/v1/validator/prepare_beacon_proposer</code> or the <code>.../register_validator</code> route,
-parse the body and ensure that the the validator isn't owned by a different node, and the correct fee recipient is set (smoothing pool if opted in, otherwise the fee distributor or rEth address or smoothing pool address).
+parse the body and ensure that the validator isn't owned by a different node, and the correct fee recipient is set (smoothing pool if opted in, otherwise the fee distributor or rEth address or smoothing pool address).
 If the validator is <em>not</em> in the node info mapping, it must be a solo validator, and <code>register_validator</code> will have a signature proving that the owner of that validator is deliberately changing the fee recipient... <code>prepare_beacon_proposer</code> will have to cross-reference prior calls to <code>register_validator</code> before accepting a request.</li>
 <li>Parse the User-Agent header and reverse-proxy the correct beacon node.</li>
 </ol>
