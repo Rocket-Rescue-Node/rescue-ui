@@ -6,3 +6,7 @@
   X-XSS-Protection: 1; mode=block
   Content-Security-Policy: default-src 'none'; script-src 'self' https://cdn.jsdelivr.net; img-src 'self' data: https://explorer-api.walletconnect.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self'; manifest-src 'self'; connect-src 'self' wss://*.walletconnect.com https://*.walletconnect.com https://api.rescuenode.com; frame-ancestors 'self'; base-uri 'none'; form-action 'self'; upgrade-insecure-requests; report-uri https://rescuenode.com/csp-report; frame-src https://verify.walletconnect.com https://verify.walletconnect.org;
   X-Robots-Tag: noindex
+
+/docs/*
+  ! Content-Security-Policy
+  Content-Security-Policy: default-src 'none'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; manifest-src 'self'; connect-src 'self'; frame-ancestors 'self'; base-uri 'none'; form-action 'self'; upgrade-insecure-requests; report-uri https://rescuenode.com/csp-report;
