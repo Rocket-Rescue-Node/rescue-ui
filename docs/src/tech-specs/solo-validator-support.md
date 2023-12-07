@@ -23,7 +23,7 @@ enum OperatorType {
 }
 
 message Credential {
-	bytes address = 1; // 20 bytes representing the Node address, or if a solo validator, the withdrawal adress.
+	bytes address = 1; // 20 bytes representing the Node address, or if a solo validator, the withdrawal address.
 	int64 timestamp = 2; // UTC epoch time the credential was issued.
 	OperatorType operator_type = 3; // The type of Node Operator for whom the credential was issued.
 }
