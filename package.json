@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "lint": "eslint --ext .ts,.tsx src",
-    "lint:fix": "eslint --ext .ts,.tsx src --fix",
+    "build": "tsc --build && vite build && npm run build:_headers",
+    "build:_headers": "node scripts/dist/gen_headers.js ./public/docs ./dist/_headers",
+    "lint": "eslint --ext .ts,.tsx src scripts/src",
+    "lint:fix": "eslint --ext .ts,.tsx src scripts/src --fix",
     "pretty": "npx prettier '**/*.{tsx,ts,js,html}' --write",
     "pretty:check": "npx prettier '**/*.{tsx,ts,js,html}' --check",
     "preview": "vite preview"
@@ -29,8 +30,10 @@
     "wagmi": "^1.4.5"
   },
   "devDependencies": {
+    "@types/glob": "^8.1.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
+    "@types/sha256": "^0.2.2",
     "@typescript-eslint/eslint-plugin": "^6.13.2",
     "@vitejs/plugin-react": "^4.0.0",
     "eslint": "^8.55.0",
@@ -40,7 +43,9 @@
     "eslint-plugin-n": "^16.3.1",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.33.2",
+    "node-html-parser": "^6.1.11",
     "prettier": "3.0.3",
+    "sha256": "^0.2.0",
     "typescript": "^5.3.3",
     "vite": "^4.3.5"
   }
