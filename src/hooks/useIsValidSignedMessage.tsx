@@ -3,7 +3,7 @@ import { getAddress, recoverMessageAddress } from "viem";
 
 // Hook for whether the given `value` contains JSON of a valid signed message.
 export default function useIsValidSignedMessage(value: string) {
-  return useQuery(
+  return useQuery<boolean>(
     ["isValidSignedMessage", value || ""],
     async () => {
       try {

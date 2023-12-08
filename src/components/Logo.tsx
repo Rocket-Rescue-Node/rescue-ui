@@ -1,6 +1,14 @@
+import React from "react";
+
 // An SVG of the logo for the app.
 // The `accentColor` is used to fill the bottom portion.
-export default function Logo({ size = 60, accentColor = "#f7931e" }) {
+export default function Logo({
+  size = 60,
+  accentColor = "#f7931e",
+}: {
+  size?: number;
+  accentColor?: string;
+}) {
   return (
     <svg
       width={size}

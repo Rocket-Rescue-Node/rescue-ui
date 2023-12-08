@@ -13,11 +13,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { AccessCredential } from "../Api";
+import { type AccessCredential } from "../Api";
 import moment from "moment";
-import { useState } from "react";
+import React, { useState } from "react";
 import { ContentCopy } from "@mui/icons-material";
-import { SxProps } from "@mui/system";
+import { type SxProps } from "@mui/system";
 import type { Theme } from "@mui/material/styles/createTheme";
 
 export default function CredentialCard({
@@ -40,12 +40,12 @@ export default function CredentialCard({
           <Box sx={{ width: 300 }}>
             <CopyTextField
               helperText={"Username"}
-              value={cred?.username || ""}
+              value={cred?.username ?? ""}
             />
             <CopyTextField
               sx={{ mt: 1 }}
               helperText={"Password"}
-              value={cred?.password || ""}
+              value={cred?.password ?? ""}
             />
           </Box>
           <Alert severity="info" sx={{ mt: 2 }}>
@@ -106,7 +106,9 @@ function CopyTextField({
           <InputAdornment position="end">
             <Button
               endIcon={<ContentCopy />}
-              onClick={() => navigator.clipboard.writeText(value)}
+              onClick={() => {
+                navigator.clipboard.writeText(value).catch(() => {});
+              }}
             >
               Copy
             </Button>
@@ -147,7 +149,8 @@ function RocketPoolInstructions() {
         Rescue Node
       </Typography>
       <Typography sx={{ mt: 3 }}>
-        For more complicated setups that don't use the Smartnode UI, you can{" "}
+        For more complicated setups that don&apos;t use the Smartnode UI, you
+        can{" "}
         <Link target="_blank" href="/docs/how-to-connect/rp">
           configure your rescue node credentials manually
         </Link>
@@ -190,7 +193,7 @@ function InstructionTabs({
   cred?: AccessCredential | undefined;
   initialTab?: "rocketpool" | "solo";
 }) {
-  let [tab, setTab] = useState<"rocketpool" | "solo">(initialTab);
+  const [tab, setTab] = useState<"rocketpool" | "solo">(initialTab);
   return (
     <Stack direction="column" sx={sx} spacing={2}>
       <Tabs
@@ -199,7 +202,9 @@ function InstructionTabs({
         variant={"fullWidth"}
         textColor={tab === "rocketpool" ? "primary" : "secondary"}
         indicatorColor={tab === "rocketpool" ? "primary" : "secondary"}
-        onChange={(e, v) => setTab(v)}
+        onChange={(e, v) => {
+          setTab(v);
+        }}
       >
         <Tab
           value="rocketpool"

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Address } from "wagmi";
+import { type Address } from "wagmi";
 import { recoverMessageAddress } from "viem";
 
 // Hook for the signing address recovered from the given `message` and `signature`.
@@ -22,7 +22,7 @@ export default function useRecoveredAddress({
         });
         setRecoveredAddress(recoveredAddress);
       }
-    })();
+    })().catch(() => {});
   }, [signature, message]);
   return {
     recoveredAddress,

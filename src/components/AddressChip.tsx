@@ -1,4 +1,5 @@
-import { Address, useEnsName } from "wagmi";
+import React from "react";
+import { type Address, useEnsName } from "wagmi";
 import { Chip } from "@mui/material";
 
 // Display an address as a clickable chip.
@@ -14,7 +15,7 @@ export default function AddressChip({
     <Chip
       color={color}
       component="a"
-      href={`https://etherscan.io/address/${ensName || address}`}
+      href={`https://etherscan.io/address/${ensName ?? address}`}
       target={"_blank"}
       // variant="outlined"
       clickable
