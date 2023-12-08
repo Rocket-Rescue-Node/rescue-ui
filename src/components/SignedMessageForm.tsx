@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import useIsValidSignedMessage from "../hooks/useIsValidSignedMessage";
 import {
   Alert,
@@ -12,7 +12,7 @@ import {
   TextField,
 } from "@mui/material";
 import { Error } from "@mui/icons-material";
-import { AccessCredential, Api } from "../Api";
+import { type AccessCredential, Api } from "../Api";
 
 // A form for submitting the signed message JSON.
 // If `readOnly` then the `initialValue` is not editable.
@@ -33,18 +33,18 @@ export default function SignedMessageForm({
   operatorType?: "solo" | "rocketpool";
   color?: "primary" | "secondary";
 }) {
-  let [isAgreed, setAgreed] = useState<boolean>(false);
-  let [isCreating, setIsCreating] = useState<boolean>(false);
-  let [error, setError] = useState<string>("");
-  let [value, setValue] = useState<string>(initialValue);
-  let { data: isValid } = useIsValidSignedMessage(value);
+  const [isAgreed, setAgreed] = useState<boolean>(false);
+  const [isCreating, setIsCreating] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+  const [value, setValue] = useState<string>(initialValue);
+  const { data: isValid } = useIsValidSignedMessage(value);
   return (
     <Stack direction="column">
       <TextField
         multiline
-        color={operatorType == "solo" ? "secondary" : "primary"}
+        color={operatorType === "solo" ? "secondary" : "primary"}
         inputProps={{
-          readOnly: readOnly,
+          readOnly,
           spellCheck: false,
           sx: {
             fontFamily: "monospace",
@@ -70,7 +70,9 @@ export default function SignedMessageForm({
         rows={6}
         spellCheck={false}
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => {
+          setValue(e.target.value);
+        }}
         placeholder={JSON.stringify(
           {
             address: "0x...",
@@ -88,7 +90,9 @@ export default function SignedMessageForm({
           <Checkbox
             color={color}
             value={isAgreed}
-            onChange={(e, v) => setAgreed(v)}
+            onChange={(e, v) => {
+              setAgreed(v);
+            }}
           />
         }
         label={
@@ -109,31 +113,33 @@ export default function SignedMessageForm({
         color={color}
         disabled={!isValid || !isAgreed || isCreating}
         endIcon={isCreating ? <CircularProgress size={16} /> : null}
-        onClick={async function () {
-          setIsCreating(true);
-          setError("");
-          try {
-            let res = await Api.createCredentials({
-              body: value,
-              query: {
-                operator_type: operatorType,
-              },
-            });
-            // TODO: consider folding the .error/.data handling into the `Api` client.
-            if (res.error) {
-              setError(res.error);
+        onClick={() => {
+          (async () => {
+            setIsCreating(true);
+            setError("");
+            try {
+              const res = await Api.createCredentials({
+                body: value,
+                query: {
+                  operator_type: operatorType,
+                },
+              });
+              // TODO: consider folding the .error/.data handling into the `Api` client.
+              if (res.error) {
+                setError(res.error);
+              }
+              if (!res.data) {
+                console.log("missing .data and .error", res);
+                setError("invalid response (missing .data and .error)");
+              }
+              onCredentialCreated(res.data);
+            } catch (err) {
+              console.log("error", err);
+              setError(err ? (err as string) : "Unknown error");
+            } finally {
+              setIsCreating(false);
             }
-            if (!res.data) {
-              console.log("missing .data and .error", res);
-              setError("invalid response (missing .data and .error)");
-            }
-            onCredentialCreated(res.data);
-          } catch (err) {
-            console.log("error", err);
-            setError(err ? (err as string) : "Unknown error");
-          } finally {
-            setIsCreating(false);
-          }
+          })().catch(() => {});
         }}
         variant="contained"
         size="large"

@@ -1,3 +1,4 @@
+import React from "react";
 import { useAccount, useDisconnect, useSignMessage } from "wagmi";
 import {
   Alert,
@@ -19,7 +20,7 @@ import SignatureAlert from "./SignatureAlert";
 import SignedMessageForm from "./SignedMessageForm";
 import useIsContract from "../hooks/useIsContract";
 import useRecoveredAddress from "../hooks/useRecoveredAddress";
-import { AccessCredential } from "../Api";
+import { type AccessCredential } from "../Api";
 
 const Steps = {
   connectWallet: 0,
@@ -53,7 +54,7 @@ export default function SoloNodeRequestAccess({
   });
 
   // Decide which step we're on based on what we've gathered so far.
-  let step =
+  const step =
     signature && recoveredAddress === address
       ? Steps.submitSignedMessage
       : isConnected && !isWalletContract
@@ -93,13 +94,15 @@ export default function SoloNodeRequestAccess({
         <Step>
           <StepLabel
             optional={
-              !isConnected ? null : (
+              !isConnected || !address ? null : (
                 <Stack direction="row" spacing={1}>
-                  <AddressChip address={address!} />
+                  <AddressChip address={address} />
                   <Button
                     size={"small"}
                     color="inherit"
-                    onClick={() => disconnectAsync()}
+                    onClick={() => {
+                      disconnectAsync().catch(() => {});
+                    }}
                     endIcon={<Logout />}
                   >
                     Disconnect
@@ -123,7 +126,7 @@ export default function SoloNodeRequestAccess({
                   message.
                 </Typography>
                 <Box>
-                  {/*  @ts-ignore */}
+                  {/*  @ts-expect-error: w3m doesn't include type information */}
                   <w3m-connect-button size="sm" />
                 </Box>
                 <Typography
@@ -168,11 +171,11 @@ export default function SoloNodeRequestAccess({
                 fullWidth
                 variant="contained"
                 color="secondary"
-                onClick={() =>
+                onClick={() => {
                   signMessage({
                     message: soloSignatureMessage,
-                  })
-                }
+                  });
+                }}
               >
                 Sign
               </Button>
@@ -226,16 +229,18 @@ function ContractWalletAlert() {
           size={"small"}
           color="inherit"
           variant={"contained"}
-          onClick={() => disconnectAsync()}
+          onClick={() => {
+            disconnectAsync().catch(() => {});
+          }}
           endIcon={<Logout />}
         >
           Disconnect
         </Button>
       }
     >
-      <AlertTitle>You've connected a contract wallet.</AlertTitle>
-      Sorry, but we don't support contract wallets yet. If this is something you
-      need, please reach out so we know to prioritize it.
+      <AlertTitle>You&apos;ve connected a contract wallet.</AlertTitle>
+      Sorry, but we don&apos;t support contract wallets yet. If this is
+      something you need, please reach out so we know to prioritize it.
     </Alert>
   );
 }

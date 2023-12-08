@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Button,
   InputAdornment,
@@ -7,7 +8,7 @@ import {
 } from "@mui/material";
 import { ContentCopy } from "@mui/icons-material";
 import SignedMessageForm from "./SignedMessageForm";
-import { AccessCredential } from "../Api";
+import { type AccessCredential } from "../Api";
 
 // This is the command RP operators run to get the signed message.
 const rpSignatureCommand =
@@ -24,7 +25,7 @@ export default function RocketPoolRequestAccess({
       <Typography gutterBottom variant="body1">
         You’ll submit a signed message from your node.
       </Typography>
-      {/*<SignatureAlert sx={{ mb: 1, mt: 1 }} />*/}
+      {/* <SignatureAlert sx={{ mb: 1, mt: 1 }} /> */}
       <Typography sx={{ mt: 1 }} variant="body1">
         Run this command to sign the message
       </Typography>
@@ -49,9 +50,11 @@ export default function RocketPoolRequestAccess({
             <InputAdornment position="end">
               <Button
                 endIcon={<ContentCopy />}
-                onClick={() =>
-                  navigator.clipboard.writeText(rpSignatureCommand)
-                }
+                onClick={() => {
+                  navigator.clipboard
+                    .writeText(rpSignatureCommand)
+                    .catch(() => {});
+                }}
               >
                 Copy
               </Button>

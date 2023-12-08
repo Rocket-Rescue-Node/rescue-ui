@@ -11,7 +11,11 @@ import theme from "./theme";
 
 const ethereumClient = new EthereumClient(config, chains);
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+const root = document.getElementById("root");
+if (!root) {
+  throw new Error("missing root div in index.html");
+}
+ReactDOM.createRoot(root).render(
   <React.StrictMode>
     <WagmiConfig config={config}>
       <ThemeProvider theme={theme}>

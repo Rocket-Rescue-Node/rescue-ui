@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Alert,
   AlertTitle,
@@ -12,17 +12,17 @@ import {
   Tabs,
   Typography,
 } from "@mui/material";
-import { SxProps } from "@mui/system";
-import { Theme } from "@mui/material/styles/createTheme";
+import { type SxProps } from "@mui/system";
+import { type Theme } from "@mui/material/styles/createTheme";
 import RocketPoolRequestAccess from "./RocketPoolRequestAccess";
 import SoloNodeRequestAccess from "./SoloNodeRequestAccess";
-import { AccessCredential } from "../Api";
+import { type AccessCredential } from "../Api";
 import CredentialCard from "./CredentialCard";
 
 // Tabbed interface to the request-access forms (one for RP, another for Solo operators).
 export default function RequestAccessSection({ sx }: { sx?: SxProps<Theme> }) {
-  let [tab, setTab] = useState<"rocketpool" | "solo">("rocketpool");
-  let [cred, setCred] = useState<AccessCredential | null>(null);
+  const [tab, setTab] = useState<"rocketpool" | "solo">("rocketpool");
+  const [cred, setCred] = useState<AccessCredential | null>(null);
   return (
     <Paper sx={sx}>
       <Stack direction="column">
@@ -39,7 +39,9 @@ export default function RequestAccessSection({ sx }: { sx?: SxProps<Theme> }) {
             To request access, you’ll need to prove you own your validator with
             a signature. This signature process is different for{" "}
             <Link
-              onClick={() => setTab("rocketpool")}
+              onClick={() => {
+                setTab("rocketpool");
+              }}
               sx={{ cursor: "pointer" }}
               underline="hover"
               color="primary.main"
@@ -48,7 +50,9 @@ export default function RequestAccessSection({ sx }: { sx?: SxProps<Theme> }) {
             </Link>{" "}
             versus{" "}
             <Link
-              onClick={() => setTab("solo")}
+              onClick={() => {
+                setTab("solo");
+              }}
               sx={{ cursor: "pointer" }}
               underline="hover"
               color="secondary.main"
@@ -64,7 +68,9 @@ export default function RequestAccessSection({ sx }: { sx?: SxProps<Theme> }) {
           variant={"fullWidth"}
           textColor={tab === "rocketpool" ? "primary" : "secondary"}
           indicatorColor={tab === "rocketpool" ? "primary" : "secondary"}
-          onChange={(e, v) => setTab(v)}
+          onChange={(e, v) => {
+            setTab(v);
+          }}
         >
           <Tab
             value="rocketpool"
@@ -109,7 +115,7 @@ export default function RequestAccessSection({ sx }: { sx?: SxProps<Theme> }) {
               justifyContent: "center",
             }}
           >
-            <CredentialCard operatorType={tab} cred={cred!} />
+            <CredentialCard operatorType={tab} cred={cred ?? undefined} />
           </Modal>
         </Box>
       </Stack>

@@ -1,8 +1,9 @@
+import React from "react";
 import { Box, Button, Link, Stack, Typography } from "@mui/material";
 import Logo from "./Logo";
 import { ChevronRight } from "@mui/icons-material";
-import { SxProps } from "@mui/system";
-import { Theme } from "@mui/material/styles/createTheme";
+import { type SxProps } from "@mui/system";
+import { type Theme } from "@mui/material/styles/createTheme";
 
 // The top portion of the page.
 export default function Header({ sx }: { sx?: SxProps<Theme> }) {
