@@ -38,7 +38,7 @@ You must use **spaces** instead of tabs, and the alignment must match the exampl
 
 </div>
 
-Edit the file to look **exactly** as this example does, but with your credentials instead of `USERNAME` / `PASSWORD`, and with your client name instead of `CLIENT`.
+Edit the file to look **exactly** as this example does, but with your credentials instead of `USERNAME` / `PASSWORD`, and with your client name instead of `CLIENT` (e.g. `teku` for `CLIENT` if you are using teku).
 
 ## Examples
 
