@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>FAQ - Rocket Rescue Node Docs</title>
+        <title>How It Works - Rocket Rescue Node Docs</title>
 
 
         <!-- Custom HTML head -->
@@ -87,7 +87,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="how-to-connect/SUMMARY.html"><strong aria-hidden="true">2.</strong> How To Connect</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="how-to-connect/rp.html"><strong aria-hidden="true">2.1.</strong> ... As a Rocket Pool Node Operator</a></li><li class="chapter-item expanded "><a href="how-to-connect/solo.html"><strong aria-hidden="true">2.2.</strong> ... As a Solo Staker</a></li><li class="chapter-item expanded "><a href="how-to-connect/disconnect.html"><strong aria-hidden="true">2.3.</strong> ... and Disconnect</a></li></ol></li><li class="chapter-item expanded "><a href="how-it-works.html"><strong aria-hidden="true">3.</strong> How It Works</a></li><li class="chapter-item expanded "><a href="donate.html"><strong aria-hidden="true">4.</strong> Donate</a></li><li class="chapter-item expanded "><a href="faq.html" class="active"><strong aria-hidden="true">5.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="tandc.html"><strong aria-hidden="true">6.</strong> Terms and Conditions</a></li><li class="chapter-item expanded "><a href="randt.html"><strong aria-hidden="true">7.</strong> Risks and Trust</a></li><li class="chapter-item expanded "><a href="tech-specs/SUMMARY.html"><strong aria-hidden="true">8.</strong> Tech Specs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tech-specs/original-tech-spec.html"><strong aria-hidden="true">8.1.</strong> Original Tech Spec</a></li><li class="chapter-item expanded "><a href="tech-specs/solo-validator-support.html"><strong aria-hidden="true">8.2.</strong> Solo Validator Support</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="how-to-connect/SUMMARY.html"><strong aria-hidden="true">2.</strong> How To Connect</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="how-to-connect/rp.html"><strong aria-hidden="true">2.1.</strong> ... As a Rocket Pool Node Operator</a></li><li class="chapter-item expanded "><a href="how-to-connect/solo.html"><strong aria-hidden="true">2.2.</strong> ... As a Solo Staker</a></li><li class="chapter-item expanded "><a href="how-to-connect/disconnect.html"><strong aria-hidden="true">2.3.</strong> ... and Disconnect</a></li></ol></li><li class="chapter-item expanded "><a href="how-it-works.html" class="active"><strong aria-hidden="true">3.</strong> How It Works</a></li><li class="chapter-item expanded "><a href="donate.html"><strong aria-hidden="true">4.</strong> Donate</a></li><li class="chapter-item expanded "><a href="faq.html"><strong aria-hidden="true">5.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="tandc.html"><strong aria-hidden="true">6.</strong> Terms and Conditions</a></li><li class="chapter-item expanded "><a href="randt.html"><strong aria-hidden="true">7.</strong> Risks and Trust</a></li><li class="chapter-item expanded "><a href="tech-specs/SUMMARY.html"><strong aria-hidden="true">8.</strong> Tech Specs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tech-specs/original-tech-spec.html"><strong aria-hidden="true">8.1.</strong> Original Tech Spec</a></li><li class="chapter-item expanded "><a href="tech-specs/solo-validator-support.html"><strong aria-hidden="true">8.2.</strong> Solo Validator Support</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -169,47 +169,35 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="faq"><a class="header" href="#faq">FAQ</a></h1>
-<details>
-  <summary>How often can I use the Rescue Node?</summary>
-<p>Rocket Pool Node operators can use it four times per year.<br />
-Solo stakers can use it twice per year.</p>
-<p>Each token is valid for ten or fifteen days, respectively, for solo stakers and Rocket Pool node operators.
-If you lose your token, you can simply repeat the request process to retrieve it.
-This will not count against your usage limits unless less than 48 hours remain, in which case a new token valid for 10/15 additional days will be issued.</p>
-</details>
-<details>
-  <summary>Why can't I claim rewards or do other operations while using the Rescue Node?</summary>
-<p>The Rescue Node only ensures that attestations, proposals, sync committees and other duties are performed- in order to join or leave the smoothing pool, claim rewards, or submit other transactions, you either must have synced local clients, or use infura as a fallback.
-Your Rescue Node URL, from <code>~/.rocketpool/override/validator.yml</code> will work as a Consensus Client fallback URL in conjunction with an Infura web3 URL configured as an Execution Fallback, if you need to submit a transaction in a pinch.</p>
-</details>
-<details>
-  <summary>How can I check that I successfully connected to the Rescue Node?</summary>
-<p>As of Smartnode v1.11.1, <code>rocketpool node status</code> will contain a message telling you that you are using the Rescue Node, and how much longer you have access.</p>
-<p>Addtionally, most validator clients will log a message containing the url.
-You can see if it connected by running:</p>
-<pre><code>docker logs rocketpool_validator |&amp; grep rescuenode.com
-</code></pre>
-<p>If that doesn't work, you can also check the following command to make sure the validator is using the Rescue Node URL:</p>
-<pre><code>docker exec rocketpool_validator env |&amp; grep rescuenode.com
-</code></pre>
-<p>Follow your validators on <a href="https://beaconcha.in/">beaconcha.in</a> to verify that they are attesting.</p>
-</details>
-<details>
-  <summary>Why do I have to submit a signed message to connect?</summary>
-<p>The signed message allows us to enforce our quotas.
-We don't save it, or broadcast it, or use it for any other purpose.</p>
-</details>
+                        <p>Normally, you run three clients. A Validator Client, a Consensus Client, and an Execution Client.</p>
+<ul>
+<li>The Validator Client connects to the Consensus Client, which provides it with everything it needs to perform your validators' duties.</li>
+<li>The Consensus Client, also called a Beacon Node, connects to other Consensus Clients in the Ethereum proof-of-stake network to broadcast your completed duties.
+Additionally, it connects to the Execution Client, since after The Merge, the Execution and Consensus Clients coordinate with each other so they can both stay in sync.</li>
+<li>The Execution Client connects to other Execution Clients in the Ethereum peer-to-peer network to share transactions and validate new blocks.</li>
+</ul>
+<p>Prior to connecting to the Rescue Node, your node's architecture looks something like this:</p>
+<p align="center">
+  <img src="disconnected-architecture.png" />
+</p>
+<p>When you connect, you are simply redirecting the Validator Client to point to the Rescue Node instead.<br />
+It doesn't connect directly to a Consensus Client, but instead to an application called <a href="https://github.com/rocket-rescue-node/rescue-proxy">rescue-proxy</a> which was custom-built to protect you from the usual dangers of using a public Consensus Client.</p>
+<p>After connecting, your node's architecture looks something like this:</p>
+<p align="center">
+  <img src="connected-architecture.png" />
+</p>
+<p>This isolates the Validator Client, which is performing your duties, from your Consensus Client and your Execution Client.<br />
+The Execution Client and Consensus Client can now undergo maintenance without any impact on your validation duties.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="donate.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="how-to-connect/disconnect.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="tandc.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="donate.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -219,11 +207,11 @@ We don't save it, or broadcast it, or use it for any other purpose.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="donate.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="how-to-connect/disconnect.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="tandc.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="donate.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
