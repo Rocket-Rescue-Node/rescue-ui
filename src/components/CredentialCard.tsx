@@ -202,7 +202,7 @@ function InstructionTabs({
         variant={"fullWidth"}
         textColor={tab === "rocketpool" ? "primary" : "secondary"}
         indicatorColor={tab === "rocketpool" ? "primary" : "secondary"}
-        onChange={(e, v) => {
+        onChange={(e, v: "rocketpool" | "solo") => {
           setTab(v);
         }}
       >

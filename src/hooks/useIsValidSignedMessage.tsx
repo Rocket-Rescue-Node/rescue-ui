@@ -12,7 +12,9 @@ export default function useIsValidSignedMessage(value: string) {
           message: msg,
           signature: sig,
         });
-        return getAddress(address) === recoveredAddress && version === "1";
+        return (
+          getAddress(address as string) === recoveredAddress && version === "1"
+        );
       } catch (e) {
         return false;
       }

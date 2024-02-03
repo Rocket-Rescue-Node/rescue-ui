@@ -126,13 +126,13 @@ export default function SignedMessageForm({
               });
               // TODO: consider folding the .error/.data handling into the `Api` client.
               if (res.error) {
-                setError(res.error);
+                setError(res.error as string);
               }
               if (!res.data) {
                 console.log("missing .data and .error", res);
                 setError("invalid response (missing .data and .error)");
               }
-              onCredentialCreated(res.data);
+              onCredentialCreated(res.data as AccessCredential);
             } catch (err) {
               console.log("error", err);
               setError(err ? (err as string) : "Unknown error");
