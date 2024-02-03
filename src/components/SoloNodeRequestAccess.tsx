@@ -58,8 +58,8 @@ export default function SoloNodeRequestAccess({
     signature && recoveredAddress === address
       ? Steps.submitSignedMessage
       : isConnected && !isWalletContract
-      ? Steps.signMessage
-      : Steps.connectWallet;
+        ? Steps.signMessage
+        : Steps.connectWallet;
   return (
     <Stack direction="column">
       <Alert sx={{ mb: 2 }} severity="warning" color="gray">
