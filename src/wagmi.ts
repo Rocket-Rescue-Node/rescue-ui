@@ -5,6 +5,7 @@ import { configureChains, createConfig } from "wagmi";
 import { mainnet } from "wagmi/chains";
 import { type Chain, type ChainProviderFn } from "@wagmi/core";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
+import { InjectedConnector } from "wagmi/connectors/injected";
 
 const walletConnectProjectId = import.meta.env?.VITE_WC_PROJECT_ID;
 
@@ -28,6 +29,10 @@ export const config = createConfig({
         projectId: walletConnectProjectId,
         showQrModal: false,
       },
+    }),
+    new InjectedConnector({
+      chains,
+      options: { shimDisconnect: true },
     }),
   ],
   publicClient,
