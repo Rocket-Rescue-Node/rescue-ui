@@ -8,7 +8,7 @@ const tmpl: string = `/*
   X-content-Type-Options: nosniff
   Permissions-Policy: microphone=(), camera=(), accelerometer=(), autoplay=(), display-capture=(), document-domain=(), encrypted-media=(), fullscreen=(), geolocation=(), gyroscope=(), magnetometer=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(self), usb=(), xr-spatial-tracking=()
   X-XSS-Protection: 1; mode=block
-  Content-Security-Policy: default-src 'none'; script-src 'self'; img-src 'self' data: https://explorer-api.walletconnect.com; style-src 'self' 'unsafe-inline'; font-src 'self'; manifest-src 'self'; connect-src 'self' wss://*.walletconnect.com https://*.walletconnect.com https://api.rescuenode.com; frame-ancestors 'self'; base-uri 'none'; form-action 'self'; upgrade-insecure-requests; report-uri https://rescuenode.com/csp-report; frame-src https://verify.walletconnect.com https://verify.walletconnect.org;
+  Content-Security-Policy: default-src 'none'; script-src 'self'; img-src 'self' data: blob: https://explorer-api.walletconnect.com; style-src 'self' 'unsafe-inline'; font-src 'self'; manifest-src 'self'; connect-src 'self' wss://*.walletconnect.com https://*.walletconnect.com https://api.rescuenode.com http://api.web3modal.com; frame-ancestors 'self'; base-uri 'none'; form-action 'self'; upgrade-insecure-requests; report-uri https://rescuenode.com/csp-report; frame-src https://verify.walletconnect.com https://verify.walletconnect.org;
   X-Robots-Tag: noindex
 
 /docs/*
