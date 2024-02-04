@@ -126,7 +126,6 @@ export default function SoloNodeRequestAccess({
                   message.
                 </Typography>
                 <Box>
-                  {/*  @ts-expect-error: w3m doesn't include type information */}
                   <w3m-connect-button size="sm" />
                 </Box>
                 <Typography
