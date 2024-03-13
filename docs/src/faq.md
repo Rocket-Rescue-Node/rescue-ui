@@ -4,7 +4,7 @@
   <summary>How often can I use the Rescue Node?</summary>
 
 Rocket Pool Node operators can use it four times per year.  
-Solo stakers can use it twice per year.
+Solo stakers can use it thrice per year.
 
 
 Each token is valid for ten or fifteen days, respectively, for solo stakers and Rocket Pool node operators.
