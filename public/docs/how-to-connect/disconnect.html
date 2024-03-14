@@ -191,7 +191,8 @@ rocketpool service start
 <p>Docker Compose and Systemd users should review the <a href="solo.html">Connection Guide</a> and restore their backed up configs to disconnect.<br />
 Don't forget to <code>sudo systemctl daemon-reload</code> and restart, or to <code>docker compose up -d</code> to restart.</p>
 <p>eth-docker users can use <code>git diff</code> to check which files have been modified, and <code>git restore</code> to restore them to their original states.<br />
-If you modified your <code>.env</code> file, edit it and restore <code>CL_NODE=</code> variable to the value before you connected (default is <code>CL_NODE=http://consensus:5052).   Run </code>./ethd update<code>and</code>./ethd up` to apply the changes.</p>
+If you modified your <code>.env</code> file, edit it and restore <code>CL_NODE=</code> variable to the value before you connected (default is <code>CL_NODE=http://consensus:5052</code>).<br />
+Run <code>./ethd update</code> and <code>./ethd up</code> to apply the changes.</p>
 
                     </main>
 
