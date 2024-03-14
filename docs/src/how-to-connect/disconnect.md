@@ -34,5 +34,5 @@ Docker Compose and Systemd users should review the [Connection Guide](solo.md) a
 Don't forget to `sudo systemctl daemon-reload` and restart, or to `docker compose up -d` to restart.
 
 eth-docker users can use `git diff` to check which files have been modified, and `git restore` to restore them to their original states.  
-If you modified your `.env` file, edit it and restore `CL_NODE=` variable to the value before you connected (default is `CL_NODE=http://consensus:5052).  
+If you modified your `.env` file, edit it and restore `CL_NODE=` variable to the value before you connected (default is `CL_NODE=http://consensus:5052`).  
 Run `./ethd update` and `./ethd up` to apply the changes.
