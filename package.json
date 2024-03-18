@@ -21,7 +21,7 @@
     "@web3modal/react": "2.7.1",
     "@web3modal/wagmi": "^4.1.1",
     "buffer": "^6.0.3",
-    "moment": "^2.29.4",
+    "moment": "^2.30.1",
     "process": "^0.11.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
