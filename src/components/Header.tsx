@@ -15,6 +15,25 @@ export default function Header({ sx }: { sx?: SxProps<Theme> }) {
       <Typography variant="h4" fontWeight="fontWeightBold">
         Rocket Rescue Node
       </Typography>
+      <Typography
+        sx={{ opacity: 0.8, m: 0, textAlign: "center", maxWidth: 500 }}
+      >
+        <i>
+          Generously sponsored by the
+          <span> </span>
+          <Link target="_blank" href="https://dao.rocketpool.net/">
+            Rocket Pool GMC
+          </Link>
+          .
+        </i>
+      </Typography>
+      <Typography
+        variant="h6"
+        sx={{ m: 2, textAlign: "center", maxWidth: 500 }}
+      >
+        A community-run, trust-minimized, and secured fallback node for
+        emergencies and maintenance.
+      </Typography>
       <Stack direction="row" spacing={2}>
         <Link
           variant="h6"
@@ -49,23 +68,6 @@ export default function Header({ sx }: { sx?: SxProps<Theme> }) {
           Stats
         </Link>
       </Stack>
-      <Typography
-        variant="h6"
-        sx={{ m: 2, textAlign: "center", maxWidth: 500 }}
-      >
-        A community-run, trust-minimized, and secured fallback node for
-        emergencies and maintenance.
-      </Typography>
-      <Typography sx={{ m: 0, textAlign: "center", maxWidth: 500 }}>
-        <i>
-          Generously sponsored by the
-          <span> </span>
-          <Link target="_blank" href="https://dao.rocketpool.net/">
-            Rocket Pool GMC
-          </Link>
-          .
-        </i>
-      </Typography>
       <Button
         component={Link}
         href="https://youtu.be/nePcIUq684k"
