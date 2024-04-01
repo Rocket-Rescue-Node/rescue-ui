@@ -56,6 +56,16 @@ export default function Header({ sx }: { sx?: SxProps<Theme> }) {
         A community-run, trust-minimized, and secured fallback node for
         emergencies and maintenance.
       </Typography>
+      <Typography sx={{ m: 0, textAlign: "center", maxWidth: 500 }}>
+        <i>
+          Generously sponsored by the
+          <span> </span>
+          <Link target="_blank" href="https://dao.rocketpool.net/">
+            Rocket Pool GMC
+          </Link>
+          .
+        </i>
+      </Typography>
       <Button
         component={Link}
         href="https://youtu.be/nePcIUq684k"
