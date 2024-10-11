@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import useIsValidSignedMessage from "../hooks/useIsValidSignedMessage";
 import {
   Alert,
@@ -43,9 +43,18 @@ export default function SignedMessageForm({
   const [value, setValue] = useState<string>(initialValue);
   const { data: isValid } = useIsValidSignedMessage(value);
   const [opInfo, setOpInfo] = useState<OperatorInfo | null>(null);
+  useEffect(() => {
+    if (initialValue != "") {
+      setOperatorInfo(initialValue);
+    }
+  },[]);
   const setOperatorInfo = useCallback(
     debounce((msg: string) => {
       (async () => {
+        if (msg == "") {
+          setOpInfo(null);
+          return;
+        }
         setError("");
         try {
           const res = await Api.getOperatorInfo({
@@ -197,6 +206,7 @@ export default function SignedMessageForm({
           (async () => {
             setIsCreating(true);
             setError("");
+            setOperatorInfo("");
             try {
               const res = await Api.createCredentials({
                 body: value,
