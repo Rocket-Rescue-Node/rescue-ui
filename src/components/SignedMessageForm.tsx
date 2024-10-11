@@ -91,34 +91,31 @@ export default function SignedMessageForm({
 
     // 86400 seconds = 1 day
     const windowInDays = opInfo.quotaSettings.window / 86400;
-    const used = opInfo.credentialEvents.length;
     const remaining = opInfo.quotaSettings.count - opInfo.credentialEvents.length;
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    if (opInfo.credentialEvents.length == 0) {
-      return(`You have not used the Rescue Node in the past ${windowInDays} days.
-        You have ${remaining} usages remaining.`
-      );
-    } else {
+    var usageMsg = `You have not used the Rescue Node in the past ${windowInDays} days.`
+    var remainingMsg = `You have ${remaining} usages remaining.`
+    var activeCredMsg = `You do not currently have an active credential.`
+
+    if (opInfo.credentialEvents.length != 0) {
       // Multiplying by 1000 converts timestamp to milliseconds for working with Date()
       const nextTimestamp = (opInfo.credentialEvents[opInfo.credentialEvents.length - 1] * 1000) + (opInfo.quotaSettings.window * 1000) + 1000;
       const nextDate = new Date(nextTimestamp).toLocaleString('en-US', {timeZone: tz});
       const expiresTimestamp = (opInfo.credentialEvents[0] * 1000) + (opInfo.quotaSettings.authValidityWindow * 1000);
       const expiresDate = new Date(expiresTimestamp).toLocaleString('en-US', {timeZone: tz});
 
-      var activeCredMsg;
+      remainingMsg = `You have ${remaining} usages remaining. Your next increase will be at ${nextDate} (localized).`
+      
       if (expiresTimestamp > Date.now()) {
         activeCredMsg = `You currently have an active credential, which will expire at ${expiresDate} (localized).`
       }
-      else {
-        activeCredMsg = `You do not currently have an active credential.`
-      }
-
-      return(`You have used the Rescue Node ${used} times in the past ${windowInDays} days.
-        You have ${remaining} usages remaining. Your next increase will be at ${nextDate} (localized).
-        ${activeCredMsg}`
-      );
     }
+
+    return(`${usageMsg}
+      ${remainingMsg}
+      ${activeCredMsg}`
+    );
   };
   return (
     <Stack direction="column">
