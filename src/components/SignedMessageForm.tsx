@@ -80,6 +80,7 @@ export default function SignedMessageForm({
         } catch (err) {
           console.log("error", err);
           setError(err ? (err as string) : "Unknown error");
+          setOpInfo(null)
         }
       })().catch(() => {});
     }, 600),[]
