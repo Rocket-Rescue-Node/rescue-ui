@@ -55,6 +55,7 @@ export default function SignedMessageForm({
           setOpInfo(null);
           return;
         }
+        // Should we remove these errors for op info and only allow them for credential requests? Maybe log to console only?
         setError("");
         try {
           const res = await Api.getOperatorInfo({
@@ -74,7 +75,6 @@ export default function SignedMessageForm({
           if (OperatorInfoSchema.safeParse(res.data).success) {
             setOpInfo(res.data as OperatorInfo)
           } else {
-            // Do we want to display this error in the same box as the cred errors? If not, move this to console.log or something.
             setError("error validating operator info");
           }
         } catch (err) {
@@ -106,15 +106,18 @@ export default function SignedMessageForm({
       const expiresTimestamp = (opInfo.credentialEvents[0] * 1000) + (opInfo.quotaSettings.authValidityWindow * 1000);
       const expiresDate = new Date(expiresTimestamp).toLocaleString('en-US', {timeZone: tz});
 
+      var activeCredMsg;
       if (expiresTimestamp > Date.now()) {
-        return(`You have used the Rescue Node ${used} times in the past ${windowInDays} days.
-          You have ${remaining} usages remaining. Your next increase will be at ${nextDate} (localized).
-          You currently have an active credential, which will expire at ${expiresDate} (localized).`);
+        activeCredMsg = `You currently have an active credential, which will expire at ${expiresDate} (localized).`
       }
       else {
-        return(`You have used the Rescue Node ${used} times in the past ${windowInDays} days.
-          You have ${remaining} usages remaining. Your next increase will be at ${nextDate} (localized).`);
+        activeCredMsg = `You do not currently have an active credential.`
       }
+
+      return(`You have used the Rescue Node ${used} times in the past ${windowInDays} days.
+        You have ${remaining} usages remaining. Your next increase will be at ${nextDate} (localized).
+        ${activeCredMsg}`
+      );
     }
   };
   return (
