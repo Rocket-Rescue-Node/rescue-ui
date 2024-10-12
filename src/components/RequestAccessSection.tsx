@@ -115,7 +115,9 @@ export default function RequestAccessSection({ sx }: { sx?: SxProps<Theme> }) {
               justifyContent: "center",
             }}
           >
-            <CredentialCard operatorType={tab} cred={cred ?? undefined} />
+            <div>
+              <CredentialCard operatorType={tab} cred={cred ?? undefined} />
+            </div>
           </Modal>
         </Box>
       </Stack>
