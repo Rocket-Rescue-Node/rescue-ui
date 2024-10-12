@@ -100,7 +100,7 @@ export default function SignedMessageForm({
     var remainingMsg = `You have ${remaining} usages remaining.`
     var activeCredMsg = `You do not currently have an active credential.`
 
-    if (used != 0) {
+    if (used > 0) {
       // Multiplying by 1000 converts timestamp to milliseconds for working with Date()
       const nextTimestamp = (opInfo.credentialEvents[opInfo.credentialEvents.length - 1] * 1000) + (opInfo.quotaSettings.window * 1000) + 1000;
       const nextDate = new Date(nextTimestamp).toLocaleString('en-US', {timeZone: tz});
