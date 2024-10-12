@@ -19,7 +19,7 @@ import AddressChip from "./AddressChip";
 import SignatureAlert from "./SignatureAlert";
 import SignedMessageForm from "./SignedMessageForm";
 import useIsContract from "../hooks/useIsContract";
-import useRecoveredAddress from "../hooks/useRecoveredAddress";
+import useValidateSignature from "../hooks/useValidateSignature";
 import { type AccessCredential } from "../Api";
 
 const Steps = {
@@ -48,14 +48,15 @@ export default function SoloNodeRequestAccess({
   const { isConnected, address } = useAccount();
   const { data: isWalletContract } = useIsContract(address);
   const { data: signature, signMessage } = useSignMessage();
-  const { recoveredAddress } = useRecoveredAddress({
+  const { data: validSignature } = useValidateSignature({
     message: soloSignatureMessage,
     signature,
+    address,
   });
 
   // Decide which step we're on based on what we've gathered so far.
   const step =
-    signature && recoveredAddress === address
+    signature && validSignature
       ? Steps.submitSignedMessage
       : isConnected && !isWalletContract
         ? Steps.signMessage
@@ -203,7 +204,7 @@ export default function SoloNodeRequestAccess({
               onCredentialCreated={onCredentialCreated}
               initialValue={JSON.stringify(
                 {
-                  address: recoveredAddress,
+                  address,
                   msg: soloSignatureMessage,
                   sig: signature,
                   version: "1",
