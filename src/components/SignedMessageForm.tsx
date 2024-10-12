@@ -47,7 +47,7 @@ export default function SignedMessageForm({
     if (initialValue != "") {
       setOperatorInfo(initialValue);
     }
-  },[]);
+  }, []);
   const setOperatorInfo = useCallback(
     debounce((msg: string) => {
       (async () => {
@@ -73,52 +73,62 @@ export default function SignedMessageForm({
             setError("invalid response (missing .data and .error)");
           }
           if (OperatorInfoSchema.safeParse(res.data).success) {
-            setOpInfo(res.data as OperatorInfo)
+            setOpInfo(res.data as OperatorInfo);
           } else {
             setError("error validating operator info");
           }
         } catch (err) {
           console.log("error", err);
           setError(err ? (err as string) : "Unknown error");
-          setOpInfo(null)
+          setOpInfo(null);
         }
       })().catch(() => {});
-    }, 600),[]
+    }, 600),
+    [],
   );
   const getOperatorInfo = () => {
     if (opInfo == null) {
-      return null
+      return null;
     }
 
     // 86400 seconds = 1 day
     const windowInDays = opInfo.quotaSettings.window / 86400;
     const used = opInfo.credentialEvents.length;
-    const remaining = opInfo.quotaSettings.count - opInfo.credentialEvents.length;
+    const remaining =
+      opInfo.quotaSettings.count - opInfo.credentialEvents.length;
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    var usageMsg = `You have not used the Rescue Node in the past ${windowInDays} days.`
-    var remainingMsg = `You have ${remaining} usages remaining.`
-    var activeCredMsg = `You do not currently have an active credential.`
+    var usageMsg = `You have not used the Rescue Node in the past ${windowInDays} days.`;
+    var remainingMsg = `You have ${remaining} usages remaining.`;
+    var activeCredMsg = `You do not currently have an active credential.`;
 
     if (used > 0) {
       // Multiplying by 1000 converts timestamp to milliseconds for working with Date()
-      const nextTimestamp = (opInfo.credentialEvents[opInfo.credentialEvents.length - 1] * 1000) + (opInfo.quotaSettings.window * 1000) + 1000;
-      const nextDate = new Date(nextTimestamp).toLocaleString('en-US', {timeZone: tz});
-      const expiresTimestamp = (opInfo.credentialEvents[0] * 1000) + (opInfo.quotaSettings.authValidityWindow * 1000);
-      const expiresDate = new Date(expiresTimestamp).toLocaleString('en-US', {timeZone: tz});
+      const nextTimestamp =
+        opInfo.credentialEvents[opInfo.credentialEvents.length - 1] * 1000 +
+        opInfo.quotaSettings.window * 1000 +
+        1000;
+      const nextDate = new Date(nextTimestamp).toLocaleString("en-US", {
+        timeZone: tz,
+      });
+      const expiresTimestamp =
+        opInfo.credentialEvents[0] * 1000 +
+        opInfo.quotaSettings.authValidityWindow * 1000;
+      const expiresDate = new Date(expiresTimestamp).toLocaleString("en-US", {
+        timeZone: tz,
+      });
 
-      usageMsg = `You have used the Rescue Node ${used} times in the past ${windowInDays} days.`
-      remainingMsg = `You have ${remaining} usages remaining. Your next increase will be at ${nextDate} (localized).`
-      
+      usageMsg = `You have used the Rescue Node ${used} times in the past ${windowInDays} days.`;
+      remainingMsg = `You have ${remaining} usages remaining. Your next increase will be at ${nextDate} (localized).`;
+
       if (expiresTimestamp > Date.now()) {
-        activeCredMsg = `You currently have an active credential, which will expire at ${expiresDate} (localized).`
+        activeCredMsg = `You currently have an active credential, which will expire at ${expiresDate} (localized).`;
       }
     }
 
-    return(`${usageMsg}
+    return `${usageMsg}
       ${remainingMsg}
-      ${activeCredMsg}`
-    );
+      ${activeCredMsg}`;
   };
   return (
     <Stack direction="column">
@@ -168,14 +178,22 @@ export default function SignedMessageForm({
         )}
       />
       {/* Show operator info when available */}
-      {opInfo ?
-        <Box sx={{ mt: 2, display: 'flex', alignItems: 'center'  }} border={1} borderColor={'#808080'} borderRadius={0.75}>
-          <Info sx={{ mx:2, verticalAlign: 'middle' }}/>
-          <Typography sx={{ mr:2, my: 1, whiteSpace: 'pre-line' }} variant="body2">
+      {opInfo ? (
+        <Box
+          sx={{ mt: 2, display: "flex", alignItems: "center" }}
+          border={1}
+          borderColor={"#808080"}
+          borderRadius={0.75}
+        >
+          <Info sx={{ mx: 2, verticalAlign: "middle" }} />
+          <Typography
+            sx={{ mr: 2, my: 1, whiteSpace: "pre-line" }}
+            variant="body2"
+          >
             {getOperatorInfo()}
           </Typography>
-        </Box> : null
-      }
+        </Box>
+      ) : null}
       <FormControlLabel
         sx={{ mt: 1, mb: 1 }}
         control={

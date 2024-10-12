@@ -9,8 +9,7 @@ export const Api: Record<
 > = {
   createCredentials: async (params) =>
     await rpc("POST", "/credentials", params),
-  getOperatorInfo: async (params) =>
-    await rpc("POST", "/info", params),
+  getOperatorInfo: async (params) => await rpc("POST", "/info", params),
   // TODO: add other API methods here
   // myNewMethod: (params) => rpc("POST", "/path/to/method", params),
 };
