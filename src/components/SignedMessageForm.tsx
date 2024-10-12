@@ -11,7 +11,7 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
-import { Error } from "@mui/icons-material";
+import { Error, HourglassEmpty } from "@mui/icons-material";
 import { type AccessCredential, Api } from "../Api";
 
 // A form for submitting the signed message JSON.
@@ -38,6 +38,33 @@ export default function SignedMessageForm({
   const [error, setError] = useState<string>("");
   const [value, setValue] = useState<string>(initialValue);
   const { data: isValid } = useIsValidSignedMessage(value);
+
+  const inputProps = () => {
+    if (value && isValid === undefined) {
+      return {
+        endAdornment: (
+          <InputAdornment position="end">
+            <HourglassEmpty color="secondary" />
+            Verifying...
+          </InputAdornment>
+        ),
+      };
+    }
+
+    if (value && !isValid) {
+      return {
+        endAdornment: (
+          <InputAdornment position="end">
+            <Error color="error" />
+            Invalid
+          </InputAdornment>
+        ),
+      };
+    }
+
+    return {};
+  };
+
   return (
     <Stack direction="column">
       <TextField
@@ -54,18 +81,7 @@ export default function SignedMessageForm({
             overflowX: "scroll",
           },
         }}
-        InputProps={
-          !value || isValid
-            ? {}
-            : {
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Error color="error" />
-                    Invalid
-                  </InputAdornment>
-                ),
-              }
-        }
+        InputProps={inputProps()}
         variant="outlined"
         rows={6}
         spellCheck={false}
