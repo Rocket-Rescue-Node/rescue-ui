@@ -7,7 +7,7 @@
 // TODO: consider useApi wrapper for hook usage
 
 /// The base URL for all API calls, e.g.
-const baseUrl = import.meta.env?.VITE_RESCUE_API_BASE_URL;
+const baseUrl = import.meta.env.VITE_RESCUE_API_BASE_URL;
 
 /// The parameters for an API request.
 interface ApiRequestParameters {

@@ -3,7 +3,7 @@ import { configureChains, createConfig } from "wagmi";
 import { mainnet } from "wagmi/chains";
 import { type Chain, type ChainProviderFn } from "@wagmi/core";
 
-export const walletConnectProjectId = import.meta.env?.VITE_WC_PROJECT_ID;
+export const walletConnectProjectId = import.meta.env.VITE_WC_PROJECT_ID;
 
 const {
   chains: _chains,
