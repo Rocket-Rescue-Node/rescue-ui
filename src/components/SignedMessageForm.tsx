@@ -108,32 +108,21 @@ export default function SignedMessageForm({
         disabled={!isValid || !isAgreed || isCreating}
         endIcon={isCreating ? <CircularProgress size={16} /> : null}
         onClick={() => {
-          (async () => {
-            setIsCreating(true);
-            setError("");
-            try {
-              const res = await Api.createCredentials({
-                body: value,
-                query: {
-                  operator_type: operatorType,
-                },
-              });
-              // TODO: consider folding the .error/.data handling into the `Api` client.
-              if (res.error) {
-                setError(res.error);
-              }
-              if (!res.data) {
-                console.log("missing .data and .error", res);
-                setError("invalid response (missing .data and .error)");
-              }
-              onCredentialCreated(res.data);
-            } catch (err) {
-              console.log("error", err);
-              setError(err ? (err as string) : "Unknown error");
-            } finally {
+          setIsCreating(true);
+          setError("");
+          void Api.createCredentials(
+            {
+              body: value,
+              query: {
+                operator_type: operatorType,
+              },
+            },
+            onCredentialCreated,
+            setError,
+            () => {
               setIsCreating(false);
-            }
-          })().catch(() => {});
+            },
+          );
         }}
         variant="contained"
         size="large"

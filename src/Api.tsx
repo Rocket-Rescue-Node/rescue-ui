@@ -4,8 +4,6 @@
 //
 // It uses the VITE_RESCUE_API_BASE_URL to construct requests.
 
-// TODO: consider useApi wrapper for hook usage
-
 /// The base URL for all API calls, e.g.
 const baseUrl = import.meta.env.VITE_RESCUE_API_BASE_URL;
 
@@ -16,11 +14,16 @@ interface ApiRequestParameters {
 }
 
 // Define a generic type for API methods
-type ApiMethod<T> = (params: ApiRequestParameters) => Promise<T>;
+type ApiMethod<T> = (
+  params: ApiRequestParameters,
+  onData: (data: T) => void,
+  onError: (error: string) => void,
+  onComplete: () => void,
+) => Promise<void>;
 
-// Generic esponse from the API
+// Generic response from the API
 interface ApiResponse<T> {
-  data: T;
+  data?: T;
   error?: string;
 }
 
@@ -33,46 +36,90 @@ export interface AccessCredential {
 }
 
 export const Api: {
-  createCredentials: ApiMethod<ApiResponse<AccessCredential>>;
-  // TODO: other methods
+  createCredentials: ApiMethod<AccessCredential>;
+  // Other methods
 } = {
-  createCredentials: async (params) =>
-    await rpc("POST", "/credentials", params),
-  // TODO: other methods
+  createCredentials: async (params, onData, onError, onComplete) => {
+    await rpc<AccessCredential>(
+      "POST",
+      "/credentials",
+      params,
+      onData,
+      onError,
+      onComplete,
+    );
+  },
+  // Other methods
 };
 
 /// Perform the low-level API request.
-async function rpc(
+async function rpc<T>(
   method: "POST" | "GET",
   path: string,
   params: ApiRequestParameters,
-) {
-  const url = new URL(baseUrl + path);
+  onData: (data: T) => void,
+  onError: (error: string) => void,
+  onComplete: () => void,
+): Promise<void> {
+  let url: URL;
+  try {
+    url = new URL(`${baseUrl}${path}`);
+  } catch (err) {
+    onError(`API request failed: ${err as string}`);
+    onComplete();
+    return;
+  }
+
   Object.keys(params.query ?? {}).forEach((key) => {
     url.searchParams.set(key, params.query ? params.query[key] : "");
   });
-  let body = params.body;
-  if (body && typeof body !== "string") {
-    body = JSON.stringify(body);
+
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      method,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        // TODO: consider using auth
+        //  Authorization: `Bearer ${authToken}`,
+      },
+      body: params.body,
+    });
+  } catch (err) {
+    onError(`API request failed: ${err as string}`);
+    onComplete();
+    return;
   }
-  const response = await fetch(url, {
-    method,
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      // TODO: consider using auth
-      //  Authorization: `Bearer ${authToken}`,
-    },
-    body,
-  });
+
   if (!response.ok) {
-    let errorRes;
+    let errorRes: { error?: string } | string;
     try {
       errorRes = await response.json();
     } catch (err) {
-      throw new Error(`API request failed: ${response.statusText}`);
+      onError(`API request failed: ${response.statusText}`);
+      onComplete();
+      return;
     }
-    throw errorRes?.error || errorRes;
+    if (typeof errorRes === "string") {
+      onError(errorRes);
+    } else if (typeof errorRes.error === "string") {
+      onError(errorRes.error);
+    } else {
+      onError("Unknown error occurred");
+    }
+    onComplete();
+    return;
   }
-  return await response.json();
+
+  const responseJson: ApiResponse<T> = await response.json();
+  if (responseJson.error) {
+    onError(responseJson.error);
+  } else if (!responseJson.data) {
+    console.log("missing .data and .error", responseJson);
+    onError("invalid response (missing .data and .error)");
+  } else {
+    onData(responseJson.data);
+  }
+  onComplete();
 }
