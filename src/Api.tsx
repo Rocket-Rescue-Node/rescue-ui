@@ -19,9 +19,8 @@ const baseUrl = import.meta.env?.VITE_RESCUE_API_BASE_URL;
 
 /// The parameters for an API request.
 interface ApiRequestParameters {
-  query?: Record<string, string>;
-  body?: any;
-  options?: any;
+  query: Record<string, string>;
+  body: string;
 }
 
 /// Perform the low-level API request.
