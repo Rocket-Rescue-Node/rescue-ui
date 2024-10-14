@@ -198,7 +198,6 @@ export default function SoloNodeRequestAccess({
               Now you can submit this signed message to request access.
             </Typography>
             <SignedMessageForm
-              readOnly
               operatorType="solo"
               onCredentialCreated={onCredentialCreated}
               initialValue={JSON.stringify(
