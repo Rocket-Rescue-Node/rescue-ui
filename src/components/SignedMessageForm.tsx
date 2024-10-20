@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import useIsValidSignedMessage from "../hooks/useIsValidSignedMessage";
 import {
   Alert,
-  Box,
   Button,
   Checkbox,
   CircularProgress,
@@ -11,12 +10,10 @@ import {
   Link,
   Stack,
   TextField,
-  Typography,
 } from "@mui/material";
-import { Error, Info } from "@mui/icons-material";
-import { type AccessCredential, Api } from "../Api";
-import { OperatorInfo, OperatorInfoSchema } from "./OperatorInfo";
-import debounce from "lodash/debounce";
+import { Error } from "@mui/icons-material";
+import { type AccessCredential, useApi } from "../Api";
+import OperatorInfoAlert from "./OperatorInfoAlert";
 
 // A form for submitting the signed message JSON.
 // If `readOnly` then the `initialValue` is not editable.
@@ -38,98 +35,13 @@ export default function SignedMessageForm({
   color?: "primary" | "secondary";
 }) {
   const [isAgreed, setAgreed] = useState<boolean>(false);
-  const [isCreating, setIsCreating] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [value, setValue] = useState<string>(initialValue);
   const { data: isValid } = useIsValidSignedMessage(value);
-  const [opInfo, setOpInfo] = useState<OperatorInfo | null>(null);
-  useEffect(() => {
-    if (initialValue != "") {
-      setOperatorInfo(initialValue);
-    }
-  }, []);
-  const setOperatorInfo = useCallback(
-    debounce((msg: string) => {
-      (async () => {
-        if (msg == "") {
-          setOpInfo(null);
-          return;
-        }
-        // Should we remove these errors for op info and only allow them for credential requests? Maybe log to console only?
-        setError("");
-        try {
-          const res = await Api.getOperatorInfo({
-            body: msg,
-            query: {
-              operator_type: operatorType,
-            },
-          });
-          // TODO: consider folding the .error/.data handling into the `Api` client.
-          if (res.error) {
-            setError(res.error as string);
-          }
-          if (!res.data) {
-            console.log("missing .data and .error", res);
-            setError("invalid response (missing .data and .error)");
-          }
-          if (OperatorInfoSchema.safeParse(res.data).success) {
-            setOpInfo(res.data as OperatorInfo);
-          } else {
-            setError("error validating operator info");
-          }
-        } catch (err) {
-          console.log("error", err);
-          setError(err ? (err as string) : "Unknown error");
-          setOpInfo(null);
-        }
-      })().catch(() => {});
-    }, 600),
-    [],
-  );
-  const getOperatorInfo = () => {
-    if (opInfo == null) {
-      return null;
-    }
-
-    // 86400 seconds = 1 day
-    const windowInDays = opInfo.quotaSettings.window / 86400;
-    const used = opInfo.credentialEvents.length;
-    const remaining =
-      opInfo.quotaSettings.count - opInfo.credentialEvents.length;
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-    var usageMsg = `You have not used the Rescue Node in the past ${windowInDays} days.`;
-    var remainingMsg = `You have ${remaining} usages remaining.`;
-    var activeCredMsg = `You do not currently have an active credential.`;
-
-    if (used > 0) {
-      // Multiplying by 1000 converts timestamp to milliseconds for working with Date()
-      const nextTimestamp =
-        opInfo.credentialEvents[opInfo.credentialEvents.length - 1] * 1000 +
-        opInfo.quotaSettings.window * 1000 +
-        1000;
-      const nextDate = new Date(nextTimestamp).toLocaleString("en-US", {
-        timeZone: tz,
-      });
-      const expiresTimestamp =
-        opInfo.credentialEvents[0] * 1000 +
-        opInfo.quotaSettings.authValidityWindow * 1000;
-      const expiresDate = new Date(expiresTimestamp).toLocaleString("en-US", {
-        timeZone: tz,
-      });
-
-      usageMsg = `You have used the Rescue Node ${used} times in the past ${windowInDays} days.`;
-      remainingMsg = `You have ${remaining} usages remaining. Your next increase will be at ${nextDate} (localized).`;
-
-      if (expiresTimestamp > Date.now()) {
-        activeCredMsg = `You currently have an active credential, which will expire at ${expiresDate} (localized).`;
-      }
-    }
-
-    return `${usageMsg}
-      ${remainingMsg}
-      ${activeCredMsg}`;
-  };
+  const createCredentials = useApi.createCredentials({
+    body: value,
+    query: { operator_type: operatorType },
+  });
   return (
     <Stack direction="column">
       <TextField
@@ -164,7 +76,6 @@ export default function SignedMessageForm({
         value={value}
         onChange={(e) => {
           setValue(e.target.value);
-          setOperatorInfo(e.target.value);
         }}
         placeholder={JSON.stringify(
           {
@@ -177,23 +88,7 @@ export default function SignedMessageForm({
           4,
         )}
       />
-      {/* Show operator info when available */}
-      {opInfo ? (
-        <Box
-          sx={{ mt: 2, display: "flex", alignItems: "center" }}
-          border={1}
-          borderColor={"#808080"}
-          borderRadius={0.75}
-        >
-          <Info sx={{ mx: 2, verticalAlign: "middle" }} />
-          <Typography
-            sx={{ mr: 2, my: 1, whiteSpace: "pre-line" }}
-            variant="body2"
-          >
-            {getOperatorInfo()}
-          </Typography>
-        </Box>
-      ) : null}
+      <OperatorInfoAlert value={value} operatorType={operatorType} />
       <FormControlLabel
         sx={{ mt: 1, mb: 1 }}
         control={
@@ -221,36 +116,31 @@ export default function SignedMessageForm({
       />
       <Button
         color={color}
-        disabled={!isValid || !isAgreed || isCreating}
-        endIcon={isCreating ? <CircularProgress size={16} /> : null}
-        onClick={() => {
-          (async () => {
-            setIsCreating(true);
-            setError("");
-            setOperatorInfo("");
-            try {
-              const res = await Api.createCredentials({
+        disabled={!isValid || !isAgreed || createCredentials.isPending}
+        endIcon={
+          createCredentials.isPending ? <CircularProgress size={16} /> : null
+        }
+        onClick={async () => {
+          // TODO: consider folding the .error/.data handling into the `Api` client.
+          setError("");
+          try {
+            await createCredentials.mutateAsync(
+              {
                 body: value,
-                query: {
-                  operator_type: operatorType,
+                query: { operator_type: operatorType },
+              },
+              {
+                onSuccess: (data) => {
+                  onCredentialCreated(data.data as AccessCredential);
                 },
-              });
-              // TODO: consider folding the .error/.data handling into the `Api` client.
-              if (res.error) {
-                setError(res.error as string);
-              }
-              if (!res.data) {
-                console.log("missing .data and .error", res);
-                setError("invalid response (missing .data and .error)");
-              }
-              onCredentialCreated(res.data as AccessCredential);
-            } catch (err) {
-              console.log("error", err);
-              setError(err ? (err as string) : "Unknown error");
-            } finally {
-              setIsCreating(false);
-            }
-          })().catch(() => {});
+                onError: (error) => {
+                  setError(String(error));
+                },
+              },
+            );
+          } catch (error) {
+            setError(error as string);
+          }
         }}
         variant="contained"
         size="large"

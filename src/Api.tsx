@@ -1,31 +1,112 @@
 // Basic API client for the Rescue API.
-//
 // This sends and accepts JSON content.
-//
+
+import {
+  useQuery,
+  UseQueryOptions,
+  UseQueryResult,
+  useMutation,
+  UseMutationOptions,
+  UseMutationResult,
+  QueryKey,
+} from "@tanstack/react-query";
+
 // It uses the VITE_RESCUE_API_BASE_URL to construct requests.
-export const Api: Record<
-  string,
-  (params: ApiRequestParameters) => Promise<any>
-> = {
-  createCredentials: async (params) =>
-    await rpc("POST", "/credentials", params),
-  getOperatorInfo: async (params) => await rpc("POST", "/info", params),
+const api = {
+  createCredentials: {
+    method: (params: ApiRequestParameters) =>
+      rpc("POST", "/credentials", params),
+    type: "mutation",
+  },
+  getOperatorInfo: {
+    method: (params: ApiRequestParameters) => rpc("POST", "/info", params),
+    type: "query",
+  },
   // TODO: add other API methods here
-  // myNewMethod: (params) => rpc("POST", "/path/to/method", params),
+  // myNewMethod: {
+  //   method: (params: ApiRequestParameters) => rpc("POST", "/path/to/method", params),
+  //   type: "query" | "mutation"
+  // }
+} as const;
+
+// Restricts useApi to known api names and defines appropriate hook types
+// Consider updating api calls to specify return type for replacing <any> in Use*Result
+type UseApi = {
+  [k in keyof typeof api]: (typeof api)[k]["type"] extends "query"
+    ? (
+        params: ApiRequestParameters,
+        options?: CustomUseQueryOptions,
+      ) => UseQueryResult<any, Error>
+    : (typeof api)[k]["type"] extends "mutation"
+      ? (
+          params: ApiRequestParameters,
+          options?: CustomUseMutationOptions,
+        ) => UseMutationResult<any, Error, ApiRequestParameters, unknown>
+      : never;
 };
+
+// In useQuery(): prevent queryFn being overridden, make queryKey optional
+type CustomUseQueryOptions = Omit<UseQueryOptions, "queryFn" | "queryKey"> & {
+  queryKey?: QueryKey;
+};
+
+// In useMutation(): prevent mutationFn being overridden
+type CustomUseMutationOptions = Omit<UseMutationOptions, "mutationFn">;
+
+// Generate hooks based on api
+export const useApi = Object.fromEntries(
+  Object.entries(api)
+    .map(([key, apiCall]) => {
+      // Generate query hooks
+      if (apiCall.type === "query") {
+        return [
+          key,
+          (params: ApiRequestParameters, options?: CustomUseQueryOptions) => {
+            return useQuery({
+              ...options,
+              queryKey: options?.queryKey ?? [key, params.body, params.query],
+              queryFn: () => {
+                return apiCall.method(params);
+              },
+            });
+          },
+        ];
+      }
+
+      // Generate mutation hooks
+      if (apiCall.type === "mutation") {
+        return [
+          key,
+          (
+            params: ApiRequestParameters,
+            options?: CustomUseMutationOptions,
+          ) => {
+            return useMutation({
+              ...options,
+              mutationKey: options?.mutationKey ?? [
+                key,
+                params.body,
+                params.query,
+              ],
+              mutationFn: () => {
+                return apiCall.method(params);
+              },
+            });
+          },
+        ];
+      }
+
+      // Type set incorrectly - filtered out below
+      return [];
+    })
+    .filter((entry) => entry.length > 0),
+) as UseApi;
 
 /// The base URL for all API calls, e.g.
 const baseUrl = import.meta.env?.VITE_RESCUE_API_BASE_URL;
 
-/// The parameters for an API request.
-interface ApiRequestParameters {
-  query?: Record<string, string>;
-  body?: any;
-  options?: any;
-}
-
 /// Perform the low-level API request.
-async function rpc(
+export async function rpc(
   method: "POST" | "GET",
   path: string,
   params: ApiRequestParameters,
@@ -38,6 +119,7 @@ async function rpc(
   if (body && typeof body !== "string") {
     body = JSON.stringify(body);
   }
+
   const response = await fetch(url, {
     method,
     headers: {
@@ -60,10 +142,14 @@ async function rpc(
   return await response.json();
 }
 
-// TODO: consider useApi wrapper for hook usage
+// Interface for parameters in an API request
+export interface ApiRequestParameters {
+  query?: Record<string, string>;
+  body?: any;
+  options?: any;
+}
 
-// Types that appear in API payloads:
-
+// Interface for parameters in a createCredential response
 export interface AccessCredential {
   username: string;
   password: string;
