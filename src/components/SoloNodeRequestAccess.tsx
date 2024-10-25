@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useAccount, useDisconnect, useSignMessage } from "wagmi";
 import {
   Alert,
@@ -26,14 +26,6 @@ const Steps = {
   submitSignedMessage: 2,
 };
 
-// This is what the user is prompted to sign to verify ownership.
-//
-// If the embedded timestamp is too old, the signature will be rejected.
-// This ^ can happen if they leave the tab open a long time before signing.
-// TODO: instead of generating this once, here, on page load
-//       we can avoid stale-timestamp issues by generating it when they sign.
-const soloSignatureMessage = `Rescue Node ${Math.floor(Date.now() / 1000)}`;
-
 // Form for RP operators to request access.
 // This uses a stepper to guide the process:
 //  connect wallet -> sign message -> submit signature
@@ -45,11 +37,29 @@ export default function SoloNodeRequestAccess({
   const { disconnectAsync } = useDisconnect();
   const { isConnected, address } = useAccount();
   const { data: signature, signMessage } = useSignMessage();
+  const [soloSignatureMessage, setSoloSignatureMessage] = useState("");
+  const [isSignButtonClicked, setIsSignButtonClicked] = useState(false);
+
   const { data: validSignature } = useValidateSignature({
     message: soloSignatureMessage,
     signature,
     address,
   });
+
+  // Update the message timestamp every second until the "Sign" button has been clicked.
+  // This ensures the timestamp is fresh when they click "Sign", even if the user
+  // leaves the tab open for a long time.
+  useEffect(() => {
+    if (isSignButtonClicked) return;
+
+    const intervalId = setInterval(() => {
+      setSoloSignatureMessage(`Rescue Node ${Math.floor(Date.now() / 1000)}`);
+    }, 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [isSignButtonClicked]);
 
   // Decide which step we're on based on what we've gathered so far.
   const step =
@@ -169,6 +179,7 @@ export default function SoloNodeRequestAccess({
                 variant="contained"
                 color="secondary"
                 onClick={() => {
+                  setIsSignButtonClicked(true);
                   signMessage({
                     message: soloSignatureMessage,
                   });
