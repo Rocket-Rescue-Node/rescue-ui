@@ -2,7 +2,6 @@ import React from "react";
 import { useAccount, useDisconnect, useSignMessage } from "wagmi";
 import {
   Alert,
-  AlertTitle,
   Box,
   Button,
   Link,
@@ -18,7 +17,6 @@ import { Logout } from "@mui/icons-material";
 import AddressChip from "./AddressChip";
 import SignatureAlert from "./SignatureAlert";
 import SignedMessageForm from "./SignedMessageForm";
-import useIsContract from "../hooks/useIsContract";
 import useValidateSignature from "../hooks/useValidateSignature";
 import { type AccessCredential } from "../Api";
 
@@ -46,7 +44,6 @@ export default function SoloNodeRequestAccess({
 }) {
   const { disconnectAsync } = useDisconnect();
   const { isConnected, address } = useAccount();
-  const { data: isWalletContract } = useIsContract(address);
   const { data: signature, signMessage } = useSignMessage();
   const { data: validSignature } = useValidateSignature({
     message: soloSignatureMessage,
@@ -58,7 +55,7 @@ export default function SoloNodeRequestAccess({
   const step =
     signature && validSignature
       ? Steps.submitSignedMessage
-      : isConnected && !isWalletContract
+      : isConnected
         ? Steps.signMessage
         : Steps.connectWallet;
   return (
@@ -140,7 +137,6 @@ export default function SoloNodeRequestAccess({
                 </Typography>
               </>
             )}
-            {isWalletContract && <ContractWalletAlert />}
           </StepContent>
         </Step>
 
@@ -217,31 +213,5 @@ export default function SoloNodeRequestAccess({
         </Step>
       </Stepper>
     </Stack>
-  );
-}
-
-function ContractWalletAlert() {
-  const { disconnectAsync } = useDisconnect();
-  return (
-    <Alert
-      severity="error"
-      action={
-        <Button
-          size={"small"}
-          color="inherit"
-          variant={"contained"}
-          onClick={() => {
-            disconnectAsync().catch(() => {});
-          }}
-          endIcon={<Logout />}
-        >
-          Disconnect
-        </Button>
-      }
-    >
-      <AlertTitle>You&apos;ve connected a contract wallet.</AlertTitle>
-      Sorry, but we don&apos;t support contract wallets yet. If this is
-      something you need, please reach out so we know to prioritize it.
-    </Alert>
   );
 }
