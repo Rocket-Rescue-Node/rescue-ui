@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useAccount, useDisconnect, useSignMessage } from "wagmi";
 import {
   Alert,
-  AlertTitle,
   Box,
   Button,
   Link,
@@ -18,8 +17,7 @@ import { Logout } from "@mui/icons-material";
 import AddressChip from "./AddressChip";
 import SignatureAlert from "./SignatureAlert";
 import SignedMessageForm from "./SignedMessageForm";
-import useIsContract from "../hooks/useIsContract";
-import useRecoveredAddress from "../hooks/useRecoveredAddress";
+import useValidateSignature from "../hooks/useValidateSignature";
 import { type AccessCredential } from "../Api";
 
 const Steps = {
@@ -38,14 +36,14 @@ export default function SoloNodeRequestAccess({
 }) {
   const { disconnectAsync } = useDisconnect();
   const { isConnected, address } = useAccount();
-  const { data: isWalletContract } = useIsContract(address);
   const { data: signature, signMessage } = useSignMessage();
   const [soloSignatureMessage, setSoloSignatureMessage] = useState("");
   const [isSignButtonClicked, setIsSignButtonClicked] = useState(false);
 
-  const { recoveredAddress } = useRecoveredAddress({
+  const { data: validSignature } = useValidateSignature({
     message: soloSignatureMessage,
     signature,
+    address,
   });
 
   // Update the message timestamp every second until the "Sign" button has been clicked.
@@ -65,9 +63,9 @@ export default function SoloNodeRequestAccess({
 
   // Decide which step we're on based on what we've gathered so far.
   const step =
-    signature && recoveredAddress === address
+    signature && validSignature
       ? Steps.submitSignedMessage
-      : isConnected && !isWalletContract
+      : isConnected
         ? Steps.signMessage
         : Steps.connectWallet;
   return (
@@ -149,7 +147,6 @@ export default function SoloNodeRequestAccess({
                 </Typography>
               </>
             )}
-            {isWalletContract && <ContractWalletAlert />}
           </StepContent>
         </Step>
 
@@ -209,12 +206,11 @@ export default function SoloNodeRequestAccess({
               Now you can submit this signed message to request access.
             </Typography>
             <SignedMessageForm
-              readOnly
               operatorType="solo"
               onCredentialCreated={onCredentialCreated}
               initialValue={JSON.stringify(
                 {
-                  address: recoveredAddress,
+                  address,
                   msg: soloSignatureMessage,
                   sig: signature,
                   version: "1",
@@ -227,31 +223,5 @@ export default function SoloNodeRequestAccess({
         </Step>
       </Stepper>
     </Stack>
-  );
-}
-
-function ContractWalletAlert() {
-  const { disconnectAsync } = useDisconnect();
-  return (
-    <Alert
-      severity="error"
-      action={
-        <Button
-          size={"small"}
-          color="inherit"
-          variant={"contained"}
-          onClick={() => {
-            disconnectAsync().catch(() => {});
-          }}
-          endIcon={<Logout />}
-        >
-          Disconnect
-        </Button>
-      }
-    >
-      <AlertTitle>You&apos;ve connected a contract wallet.</AlertTitle>
-      Sorry, but we don&apos;t support contract wallets yet. If this is
-      something you need, please reach out so we know to prioritize it.
-    </Alert>
   );
 }
