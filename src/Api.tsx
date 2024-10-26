@@ -1,8 +1,60 @@
 // Basic API client for the Rescue API.
-//
 // This sends and accepts JSON content.
+
 //
 // It uses the VITE_RESCUE_API_BASE_URL to construct requests.
+
+// In useMutation(): prevent mutationFn being overridden
+type CustomUseMutationOptions = Omit<UseMutationOptions, "mutationFn">;
+
+// Generate hooks based on api
+export const useApi = Object.fromEntries(
+  Object.entries(api)
+    .map(([key, apiCall]) => {
+      // Generate query hooks
+      if (apiCall.type === "query") {
+        return [
+          key,
+          (params: ApiRequestParameters, options?: CustomUseQueryOptions) => {
+            return useQuery({
+              ...options,
+              queryKey: options?.queryKey ?? [key, params.body, params.query],
+              queryFn: () => {
+                return apiCall.method(params);
+              },
+            });
+          },
+        ];
+      }
+
+      // Generate mutation hooks
+      if (apiCall.type === "mutation") {
+        return [
+          key,
+          (
+            params: ApiRequestParameters,
+            options?: CustomUseMutationOptions,
+          ) => {
+            return useMutation({
+              ...options,
+              mutationKey: options?.mutationKey ?? [
+                key,
+                params.body,
+                params.query,
+              ],
+              mutationFn: () => {
+                return apiCall.method(params);
+              },
+            });
+          },
+        ];
+      }
+
+      // Type set incorrectly - filtered out below
+      return [];
+    })
+    .filter((entry) => entry.length > 0),
+) as UseApi;
 
 /// The base URL for all API calls, e.g.
 const baseUrl = import.meta.env.VITE_RESCUE_API_BASE_URL;
