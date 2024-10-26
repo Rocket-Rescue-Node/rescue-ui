@@ -49,8 +49,8 @@ export interface QuotaSettings {
 // Unix timestamps and quota settings for the corresponding operator are returned.
 // Returns up to the maximum # of allowed credentials from the most recent
 // sliding 'window', or returns an empty array if the operator has not
-// requested any credentials within that timeframe. Quota settings are always
-// returned.
+// requested any credentials within that timeframe. Credential events are in
+// descending order (newest to oldest). Quota settings are always returned.
 export interface OperatorInfo {
   credentialEvents: number[];
   quotaSettings: QuotaSettings;
