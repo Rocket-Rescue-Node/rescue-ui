@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useAccount, useDisconnect, useSignMessage } from "wagmi";
 import {
   Alert,
-  AlertTitle,
   Box,
   Button,
   Link,
@@ -18,8 +17,7 @@ import { Logout } from "@mui/icons-material";
 import AddressChip from "./AddressChip";
 import SignatureAlert from "./SignatureAlert";
 import SignedMessageForm from "./SignedMessageForm";
-import useIsContract from "../hooks/useIsContract";
-import useRecoveredAddress from "../hooks/useRecoveredAddress";
+import useValidateSignature from "../hooks/useValidateSignature";
 import { type AccessCredential } from "../Api";
 
 const Steps = {
@@ -27,14 +25,6 @@ const Steps = {
   signMessage: 1,
   submitSignedMessage: 2,
 };
-
-// This is what the user is prompted to sign to verify ownership.
-//
-// If the embedded timestamp is too old, the signature will be rejected.
-// This ^ can happen if they leave the tab open a long time before signing.
-// TODO: instead of generating this once, here, on page load
-//       we can avoid stale-timestamp issues by generating it when they sign.
-const soloSignatureMessage = `Rescue Node ${Math.floor(Date.now() / 1000)}`;
 
 // Form for RP operators to request access.
 // This uses a stepper to guide the process:
@@ -46,18 +36,36 @@ export default function SoloNodeRequestAccess({
 }) {
   const { disconnectAsync } = useDisconnect();
   const { isConnected, address } = useAccount();
-  const { data: isWalletContract } = useIsContract(address);
   const { data: signature, signMessage } = useSignMessage();
-  const { recoveredAddress } = useRecoveredAddress({
+  const [soloSignatureMessage, setSoloSignatureMessage] = useState("");
+  const [isSignButtonClicked, setIsSignButtonClicked] = useState(false);
+
+  const { data: validSignature } = useValidateSignature({
     message: soloSignatureMessage,
     signature,
+    address,
   });
+
+  // Update the message timestamp every second until the "Sign" button has been clicked.
+  // This ensures the timestamp is fresh when they click "Sign", even if the user
+  // leaves the tab open for a long time.
+  useEffect(() => {
+    if (isSignButtonClicked) return;
+
+    const intervalId = setInterval(() => {
+      setSoloSignatureMessage(`Rescue Node ${Math.floor(Date.now() / 1000)}`);
+    }, 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [isSignButtonClicked]);
 
   // Decide which step we're on based on what we've gathered so far.
   const step =
-    signature && recoveredAddress === address
+    signature && validSignature
       ? Steps.submitSignedMessage
-      : isConnected && !isWalletContract
+      : isConnected
         ? Steps.signMessage
         : Steps.connectWallet;
   return (
@@ -139,7 +147,6 @@ export default function SoloNodeRequestAccess({
                 </Typography>
               </>
             )}
-            {isWalletContract && <ContractWalletAlert />}
           </StepContent>
         </Step>
 
@@ -172,6 +179,7 @@ export default function SoloNodeRequestAccess({
                 variant="contained"
                 color="secondary"
                 onClick={() => {
+                  setIsSignButtonClicked(true);
                   signMessage({
                     message: soloSignatureMessage,
                   });
@@ -198,12 +206,11 @@ export default function SoloNodeRequestAccess({
               Now you can submit this signed message to request access.
             </Typography>
             <SignedMessageForm
-              readOnly
               operatorType="solo"
               onCredentialCreated={onCredentialCreated}
               initialValue={JSON.stringify(
                 {
-                  address: recoveredAddress,
+                  address,
                   msg: soloSignatureMessage,
                   sig: signature,
                   version: "1",
@@ -216,31 +223,5 @@ export default function SoloNodeRequestAccess({
         </Step>
       </Stepper>
     </Stack>
-  );
-}
-
-function ContractWalletAlert() {
-  const { disconnectAsync } = useDisconnect();
-  return (
-    <Alert
-      severity="error"
-      action={
-        <Button
-          size={"small"}
-          color="inherit"
-          variant={"contained"}
-          onClick={() => {
-            disconnectAsync().catch(() => {});
-          }}
-          endIcon={<Logout />}
-        >
-          Disconnect
-        </Button>
-      }
-    >
-      <AlertTitle>You&apos;ve connected a contract wallet.</AlertTitle>
-      Sorry, but we don&apos;t support contract wallets yet. If this is
-      something you need, please reach out so we know to prioritize it.
-    </Alert>
   );
 }
