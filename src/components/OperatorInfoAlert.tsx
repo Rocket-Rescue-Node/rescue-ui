@@ -11,9 +11,11 @@ export default function OperatorInfoAlert({
   signedMessage: string;
   operatorType: "solo" | "rocketpool";
 }) {
-  const { data: isValid } = useIsValidSignedMessage(signedMessage)
+  const { data: isValid } = useIsValidSignedMessage(signedMessage);
   const [opInfo, setOpInfo] = useState<OperatorInfo | null>(null);
-  const onError = (error: string) => { console.log(error)}
+  const onError = (error: string) => {
+    console.log(error);
+  };
 
   useGetOperatorInfo({
     signedMessage: signedMessage,
@@ -28,7 +30,10 @@ export default function OperatorInfoAlert({
   }
 
   return (
-    <Alert severity="info" sx={{ display: "flex", alignItems: "center", mt: 2 }}>
+    <Alert
+      severity="info"
+      sx={{ display: "flex", alignItems: "center", mt: 2 }}
+    >
       <Typography sx={{ mr: 2, whiteSpace: "pre-line" }} variant="body2">
         {getQuotaText({ operatorInfo: opInfo })}
       </Typography>
@@ -46,8 +51,8 @@ function getQuotaText({ operatorInfo }: { operatorInfo: OperatorInfo }) {
   const used = operatorInfo.credentialEvents.length;
   const remaining =
     operatorInfo.quotaSettings.count - operatorInfo.credentialEvents.length;
-    
-  // tz is in locale string format, e.g. 'America/New_York' 
+
+  // tz is in locale string format, e.g. 'America/New_York'
   const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
   var usageMsg = `You have not used the Rescue Node in the past ${windowInDays} days.`;
   var activeCredMsg = `You do not currently have an active credential.`;

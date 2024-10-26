@@ -1,5 +1,5 @@
 import { useQuery } from "wagmi";
-import { Api, OperatorInfo } from "../Api"
+import { Api, OperatorInfo } from "../Api";
 
 // Hook to retrieve OperatorInfo from API
 export default function useGetOperatorInfo({
@@ -10,30 +10,31 @@ export default function useGetOperatorInfo({
   onError,
   onSuccess,
 }: {
-  signedMessage: string,
-  operatorType: "solo" | "rocketpool",
-  enabled: boolean
-  onData: (data: OperatorInfo) => void
-  onError: (error: string) => void
-  onSuccess?: () => void
+  signedMessage: string;
+  operatorType: "solo" | "rocketpool";
+  enabled: boolean;
+  onData: (data: OperatorInfo) => void;
+  onError: (error: string) => void;
+  onSuccess?: () => void;
 }) {
   return useQuery<boolean, Error>(
     ["Api.getOperatorInfo", signedMessage, operatorType],
-    async () => { 
-        try { 
-          await Api.getOperatorInfo(
-            { body: signedMessage, query: { operator_type: operatorType } },
-            onData, onError, onSuccess ? onSuccess : () => {}
-          )
-          return true
-        }
-        catch(e) {
-          console.log("Error retrieving operator info:", e)
-          return false
-        }
+    async () => {
+      try {
+        await Api.getOperatorInfo(
+          { body: signedMessage, query: { operator_type: operatorType } },
+          onData,
+          onError,
+          onSuccess ? onSuccess : () => {},
+        );
+        return true;
+      } catch (e) {
+        console.log("Error retrieving operator info:", e);
+        return false;
+      }
     },
     {
-      enabled: enabled
+      enabled: enabled,
     },
   );
 }
