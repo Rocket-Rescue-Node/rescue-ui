@@ -35,14 +35,46 @@ export interface AccessCredential {
   expiresAt: number;
 }
 
+// Quota settings for a given operator, based on operator type
+// count = total # times per sliding 'window' that access can be requested
+// window = sliding 'window' duration measured in seconds
+// authValidityWindow = credential validity lifetime measured in seconds
+export interface QuotaSettings {
+  count: number;
+  window: number;
+  authValidityWindow: number;
+}
+
+// When requesting OperatorInfo, an array of past credential request event
+// Unix timestamps and quota settings for the corresponding operator are returned.
+// Returns up to the maximum # of allowed credentials from the most recent
+// sliding 'window', or returns an empty array if the operator has not
+// requested any credentials within that timeframe. Quota settings are always
+// returned.
+export interface OperatorInfo {
+  credentialEvents: number[];
+  quotaSettings: QuotaSettings;
+}
+
 export const Api: {
   createCredentials: ApiMethod<AccessCredential>;
+  getOperatorInfo: ApiMethod<OperatorInfo>;
   // Other methods
 } = {
   createCredentials: async (params, onData, onError, onComplete) => {
     await rpc<AccessCredential>(
       "POST",
       "/credentials",
+      params,
+      onData,
+      onError,
+      onComplete,
+    );
+  },
+  getOperatorInfo: async (params, onData, onError, onComplete) => {
+    await rpc<OperatorInfo>(
+      "POST",
+      "/info",
       params,
       onData,
       onError,
