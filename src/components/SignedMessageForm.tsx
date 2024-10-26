@@ -30,6 +30,7 @@ export default function SignedMessageForm({
   initialValue?: string;
 }) {
   const [isAgreed, setAgreed] = useState<boolean>(false);
+  const [isCreating, setIsCreating] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [value, setValue] = useState<string>(initialValue);
   const { data: isValid } = useIsValidSignedMessage(value);
@@ -95,7 +96,7 @@ export default function SignedMessageForm({
           4,
         )}
       />
-      <OperatorInfoAlert value={value} operatorType={operatorType} />
+      <OperatorInfoAlert signedMessage={value} operatorType={operatorType} />
       <FormControlLabel
         sx={{ mt: 1, mb: 1 }}
         control={

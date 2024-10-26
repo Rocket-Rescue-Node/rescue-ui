@@ -1,60 +1,8 @@
 // Basic API client for the Rescue API.
+//
 // This sends and accepts JSON content.
-
 //
 // It uses the VITE_RESCUE_API_BASE_URL to construct requests.
-
-// In useMutation(): prevent mutationFn being overridden
-type CustomUseMutationOptions = Omit<UseMutationOptions, "mutationFn">;
-
-// Generate hooks based on api
-export const useApi = Object.fromEntries(
-  Object.entries(api)
-    .map(([key, apiCall]) => {
-      // Generate query hooks
-      if (apiCall.type === "query") {
-        return [
-          key,
-          (params: ApiRequestParameters, options?: CustomUseQueryOptions) => {
-            return useQuery({
-              ...options,
-              queryKey: options?.queryKey ?? [key, params.body, params.query],
-              queryFn: () => {
-                return apiCall.method(params);
-              },
-            });
-          },
-        ];
-      }
-
-      // Generate mutation hooks
-      if (apiCall.type === "mutation") {
-        return [
-          key,
-          (
-            params: ApiRequestParameters,
-            options?: CustomUseMutationOptions,
-          ) => {
-            return useMutation({
-              ...options,
-              mutationKey: options?.mutationKey ?? [
-                key,
-                params.body,
-                params.query,
-              ],
-              mutationFn: () => {
-                return apiCall.method(params);
-              },
-            });
-          },
-        ];
-      }
-
-      // Type set incorrectly - filtered out below
-      return [];
-    })
-    .filter((entry) => entry.length > 0),
-) as UseApi;
 
 /// The base URL for all API calls, e.g.
 const baseUrl = import.meta.env.VITE_RESCUE_API_BASE_URL;
@@ -87,14 +35,45 @@ export interface AccessCredential {
   expiresAt: number;
 }
 
+// count = total # times per sliding 'window' that access can be requested
+// window = sliding 'window' duration measured in seconds
+// authValidityWindow = credential validity lifetime measured in seconds
+export interface QuotaSettings {
+  count: number;
+  window: number;
+  authValidityWindow: number;
+}
+
+// When requesting OperatorInfo, an array of past credential request event
+// Unix timestamps and quota settings for the corresponding operator are returned.
+// Returns up to the maximum # of allowed credentials from the most recent
+// sliding 'window', or returns an empty array if the operator has not
+// requested any credentials within that timeframe. Quota settings are always
+// returned.
+export interface OperatorInfo {
+  credentialEvents: number[];
+  quotaSettings: QuotaSettings;
+}
+
 export const Api: {
   createCredentials: ApiMethod<AccessCredential>;
+  getOperatorInfo: ApiMethod<OperatorInfo>;
   // Other methods
 } = {
   createCredentials: async (params, onData, onError, onComplete) => {
     await rpc<AccessCredential>(
       "POST",
       "/credentials",
+      params,
+      onData,
+      onError,
+      onComplete,
+    );
+  },
+  getOperatorInfo: async (params, onData, onError, onComplete) => {
+    await rpc<OperatorInfo>(
+      "POST",
+      "/info",
       params,
       onData,
       onError,
