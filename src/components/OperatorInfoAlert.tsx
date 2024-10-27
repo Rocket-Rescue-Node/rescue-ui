@@ -25,7 +25,7 @@ export default function OperatorInfoAlert({
     onError: onError,
   });
 
-  if (!opInfo) {
+  if (!opInfo || !isValid) {
     return null;
   }
 
@@ -46,41 +46,50 @@ function getQuotaText({ operatorInfo }: { operatorInfo: OperatorInfo }) {
     return null;
   }
 
+  // See OperatorInfo and QuotaSettings types for full explanation
+  // count = total # times per sliding 'window' that access can be requested
+  // window = sliding 'window' duration measured in seconds
+  // authValidityWindow = credential validity lifetime measured in seconds
   // 86400 seconds = 1 day
   const windowInDays = operatorInfo.quotaSettings.window / 86400;
   const used = operatorInfo.credentialEvents.length;
   const remaining =
     operatorInfo.quotaSettings.count - operatorInfo.credentialEvents.length;
 
-  // tz is in locale string format, e.g. 'America/New_York'
-  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
   var usageMsg = `You have not used the Rescue Node in the past ${windowInDays} days.`;
   var activeCredMsg = `You do not currently have an active credential.`;
   var remainingMsg = `You have ${remaining} usages remaining.`;
 
-  if (used > 0) {
-    // Multiplying by 1000 converts timestamp to milliseconds for working with Date()
-    const nextTimestamp =
-      operatorInfo.credentialEvents[operatorInfo.credentialEvents.length - 1] *
-        1000 +
-      operatorInfo.quotaSettings.window * 1000 +
-      1000;
-    const nextDate = new Date(nextTimestamp).toLocaleString("en-US", {
-      timeZone: tz,
-    });
-    const expiresTimestamp =
-      operatorInfo.credentialEvents[0] * 1000 +
-      operatorInfo.quotaSettings.authValidityWindow * 1000;
-    const expiresDate = new Date(expiresTimestamp).toLocaleString("en-US", {
-      timeZone: tz,
-    });
+  if (used == 0) {
+    return `${usageMsg}
+    ${activeCredMsg}
+    ${remainingMsg}`;
+  }
 
-    usageMsg = `You have used the Rescue Node ${used} times in the past ${windowInDays} days.`;
-    remainingMsg = `You have ${remaining} usages remaining. Your next increase will be at ${nextDate} (${tz}).`;
+  // tz is in locale string format, e.g. 'America/New_York'
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    if (expiresTimestamp > Date.now()) {
-      activeCredMsg = `You currently have an active credential, which will expire at ${expiresDate} (${tz}).`;
-    }
+  // Multiplying by 1000 converts timestamp to milliseconds for working with Date()
+  const nextTimestamp =
+    operatorInfo.credentialEvents[operatorInfo.credentialEvents.length - 1] *
+      1000 +
+    operatorInfo.quotaSettings.window * 1000 +
+    1000;
+  const nextDate = new Date(nextTimestamp).toLocaleString("en-US", {
+    timeZone: tz,
+  });
+  const expiresTimestamp =
+    operatorInfo.credentialEvents[0] * 1000 +
+    operatorInfo.quotaSettings.authValidityWindow * 1000;
+  const expiresDate = new Date(expiresTimestamp).toLocaleString("en-US", {
+    timeZone: tz,
+  });
+
+  usageMsg = `You have used the Rescue Node ${used} times in the past ${windowInDays} days.`;
+  remainingMsg = `You have ${remaining} usages remaining. Your next increase will be at ${nextDate} (${tz}).`;
+
+  if (expiresTimestamp > Date.now()) {
+    activeCredMsg = `You currently have an active credential, which will expire at ${expiresDate} (${tz}).`;
   }
 
   return `${usageMsg}
