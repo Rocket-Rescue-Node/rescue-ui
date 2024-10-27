@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { Error, HourglassEmpty } from "@mui/icons-material";
 import { type AccessCredential, Api } from "../Api";
+import OperatorInfoAlert from "./OperatorInfoAlert";
 
 // A form for submitting the signed message JSON.
 //
@@ -94,6 +95,7 @@ export default function SignedMessageForm({
           4,
         )}
       />
+      <OperatorInfoAlert signedMessage={value} operatorType={operatorType} />
       <FormControlLabel
         sx={{ mt: 1, mb: 1 }}
         control={
