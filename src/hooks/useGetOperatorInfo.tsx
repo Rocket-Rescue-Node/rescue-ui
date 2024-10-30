@@ -6,32 +6,27 @@ export default function useGetOperatorInfo({
   signedMessage,
   operatorType,
   enabled,
-  onData,
-  onError,
-  onSuccess,
 }: {
   signedMessage: string;
   operatorType: "solo" | "rocketpool";
   enabled: boolean;
-  onData: (data: OperatorInfo) => void;
-  onError: (error: string) => void;
-  onSuccess?: () => void;
 }) {
-  return useQuery<boolean, Error>(
+  return useQuery<OperatorInfo, Error>(
     ["Api.getOperatorInfo", signedMessage, operatorType],
     async () => {
-      try {
-        await Api.getOperatorInfo(
-          { body: signedMessage, query: { operator_type: operatorType } },
-          onData,
-          onError,
-          onSuccess ? onSuccess : () => {},
-        );
-        return true;
-      } catch (e) {
-        console.log("Error retrieving operator info:", e);
-        return false;
+      let error: string | undefined;
+      let data: OperatorInfo | undefined;
+      await Api.getOperatorInfo(
+        { body: signedMessage, query: { operator_type: operatorType } },
+        (d) => (data = d),
+        (e) => (error = e),
+        () => {},
+      );
+
+      if (error) {
+        throw new Error(error);
       }
+      return data!;
     },
     {
       enabled: enabled,

@@ -1,7 +1,6 @@
 import { Alert, Typography } from "@mui/material";
 import useIsValidSignedMessage from "../hooks/useIsValidSignedMessage";
 import { OperatorInfo } from "../Api";
-import { useState } from "react";
 import useGetOperatorInfo from "../hooks/useGetOperatorInfo";
 
 export default function OperatorInfoAlert({
@@ -12,17 +11,11 @@ export default function OperatorInfoAlert({
   operatorType: "solo" | "rocketpool";
 }) {
   const { data: isValid } = useIsValidSignedMessage(signedMessage);
-  const [opInfo, setOpInfo] = useState<OperatorInfo | null>(null);
-  const onError = (error: string) => {
-    console.log(error);
-  };
 
-  useGetOperatorInfo({
+  let { data: opInfo } = useGetOperatorInfo({
     signedMessage: signedMessage,
     operatorType: operatorType,
     enabled: !!isValid,
-    onData: setOpInfo,
-    onError: onError,
   });
 
   if (!opInfo || !isValid) {
