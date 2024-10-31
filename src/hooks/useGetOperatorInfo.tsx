@@ -1,5 +1,6 @@
 import { useQuery } from "wagmi";
-import { Api, OperatorInfo } from "../Api";
+import { Api } from "../Api";
+import type { OperatorInfo } from "../Api";
 
 // Hook to retrieve OperatorInfo from API
 export default function useGetOperatorInfo({
@@ -26,10 +27,13 @@ export default function useGetOperatorInfo({
       if (error) {
         throw new Error(error);
       }
-      return data!;
+      if (!data) {
+        throw new Error("null data received from api");
+      }
+      return data;
     },
     {
-      enabled: enabled,
+      enabled,
     },
   );
 }

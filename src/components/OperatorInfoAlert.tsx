@@ -1,7 +1,8 @@
 import { Alert, Typography } from "@mui/material";
 import useIsValidSignedMessage from "../hooks/useIsValidSignedMessage";
-import { OperatorInfo } from "../Api";
+import type { OperatorInfo } from "../Api";
 import useGetOperatorInfo from "../hooks/useGetOperatorInfo";
+import React from "react";
 
 export default function OperatorInfoAlert({
   signedMessage,
@@ -12,9 +13,9 @@ export default function OperatorInfoAlert({
 }) {
   const { data: isValid } = useIsValidSignedMessage(signedMessage);
 
-  let { data: opInfo } = useGetOperatorInfo({
-    signedMessage: signedMessage,
-    operatorType: operatorType,
+  const { data: opInfo } = useGetOperatorInfo({
+    signedMessage,
+    operatorType,
     enabled: !!isValid,
   });
 
@@ -49,11 +50,11 @@ function getQuotaText({ operatorInfo }: { operatorInfo: OperatorInfo }) {
   const remaining =
     operatorInfo.quotaSettings.count - operatorInfo.credentialEvents.length;
 
-  var usageMsg = `You have not used the Rescue Node in the past ${windowInDays} days.`;
-  var activeCredMsg = `You do not currently have an active credential.`;
-  var remainingMsg = `You have ${remaining} usages remaining.`;
+  let usageMsg = `You have not used the Rescue Node in the past ${windowInDays} days.`;
+  let activeCredMsg = `You do not currently have an active credential.`;
+  let remainingMsg = `You have ${remaining} usages remaining.`;
 
-  if (used == 0) {
+  if (used === 0) {
     return `${usageMsg}
     ${activeCredMsg}
     ${remainingMsg}`;
