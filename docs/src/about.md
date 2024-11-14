@@ -6,7 +6,7 @@ Rocket Rescue Node was first created to help [Rocket Pool](https://rocketpool.ne
 In December 2023, we launched solo validator support.
 
 
-We have [received a pDAO grant](https://dao.rocketpool.net/t/january-2023-gmc-call-for-grant-applications-deadline-is-january-15th/1335/3) to help ensure its ongoing available to the community.
+We have [received a pDAO grant](https://dao.rocketpool.net/t/january-2023-gmc-call-for-grant-applications-deadline-is-january-15th/1335/3) to help ensure its ongoing availability to the community.
 
 Under the hood, Rocket Rescue Node is actually five nodes to maximize Beacon Client compatibility, a custom reverse-proxy to combat potential malfeasance by its users, and an API and UI to make it easy to access.
 For more information, see the [Tech Specs](./tech-specs/SUMMARY.md).
