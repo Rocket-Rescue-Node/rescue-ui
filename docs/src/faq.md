@@ -27,7 +27,7 @@ Your Rescue Node URL, from `~/.rocketpool/override/validator.yml` will work as a
 
 As of Smartnode v1.11.1, `rocketpool node status` will contain a message telling you that you are using the Rescue Node, and how much longer you have access.
 
-Addtionally, most validator clients will log a message containing the url.
+Additionally, most validator clients will log a message containing the url.
 You can see if it connected by running:
 ```
 docker logs rocketpool_validator |& grep rescuenode.com
