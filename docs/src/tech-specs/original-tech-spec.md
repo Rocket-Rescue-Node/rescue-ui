@@ -94,7 +94,7 @@ The body of this message should contain a known string and a timestamp expressed
 The node operator would paste the message into a web ui or POST it as the body of an API request to the auth token generator.
 
 The API will:
-1. Validated the signature
+1. Validate the signature
 1. Ensure that the timestamp is "recent"
 1. Ensure that the node is not banned for misbehavior
 1. Determine if a credential younger than GRACE_PERIOD_DAYS already exists, and if so, return it. If a credential between GRACE_PERIOD_DAYS and (GRACE_PERIOD_DAYS + TIMEOUT_DAYS) exists, reject access to the rescue node.
