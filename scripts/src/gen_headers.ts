@@ -39,6 +39,9 @@ const tmpl: string = `/*
   console.log(
     `Setting /docs/* Content-Security-Policy script-src to \`${scriptSrc}\``,
   );
+  const tmpl = `/*
+    Content-Security-Policy: default-src 'none'; script-src '${scriptSrc}';
+  */`;
 
   await fs.writeFile(out, tmpl.replace("{script_src}", scriptSrc));
 })().catch((err) => {
