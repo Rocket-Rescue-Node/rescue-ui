@@ -10,7 +10,7 @@ node for Rocket Pool Node operators.
   * If, at any one point in time, a large number of Node Operators are relying on the rescue node,
     it becomes a vector for attack- a malicious actor can take those Node Operators offline by
     DDoSing the rescue node. We should protect, to the best of our abilities, against this.
-  2. **Compatability with each available Consensus Client that supports split mode** (currently lighthouse, prysm and teku)
+  2. **Compatibility with each available Consensus Client that supports split mode** (currently lighthouse, prysm and teku)
  
   * Currently, prysm only works with a prysm fallback.
     Teku only works with a teku fallback.
