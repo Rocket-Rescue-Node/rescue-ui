@@ -19,10 +19,15 @@ export default function Header({ sx }: { sx?: SxProps<Theme> }) {
         sx={{ opacity: 0.8, m: 0, textAlign: "center", maxWidth: 500 }}
       >
         <i>
-          Generously sponsored by the
+          Built and sponsored by the
           <span> </span>
           <Link target="_blank" href="https://dao.rocketpool.net/">
-            Rocket Pool GMC
+            Rocket Pool DAO
+          </Link>
+          . Maintained by
+          <span> </span>
+          <Link target="_blank" href="https://ethstaker.cc/">
+            EthStaker
           </Link>
           .
         </i>
