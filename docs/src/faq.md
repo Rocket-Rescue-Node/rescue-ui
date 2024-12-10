@@ -1,4 +1,11 @@
 # FAQ
+<details>
+  <summary>When should I use the Rescue Node?</summary>
+
+The Rescue Node is for when your Consensus or Execution layer clients need troubleshooting or maintenance and those processes have to be stopped. The Rescue Node needs to connect to your Validator client in order to function. So you should use the Rescue Node, for example, when syncing the chain, troubleshooting an execution client problem, or switching clients. You _should not_ use the Rescue Node when your entire machine is not functional or offline.
+
+
+</details>
 
 <details>
   <summary>How often can I use the Rescue Node?</summary>
