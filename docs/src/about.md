@@ -35,6 +35,11 @@ The rescue node is currently maintained by:
   - [GitHub](https://github.com/htimsk)
   - [RP Dao Forum](https://dao.rocketpool.net/u/ken/summary)
   - [Twitter](https://twitter.com/nextblock_eth)
+- Thorsten Behrens
+  - **@yorickdowne** on Discord
+  - [GitHub](https://github.com/yorickdowne)
+  - [RP Dao Forum](https://dao.rocketpool.net/u/yorickdowne/summary)
+  - [Twitter](https://twitter.com/yorickdowne)
 
 ## Credits
   - @poupas - prototype, rescue-api, design, infrastructure, security
