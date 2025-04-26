@@ -17,7 +17,7 @@ jobs:
       - name: Setup mdBook
         uses: peaceiris/actions-mdbook@v1
         with:
-          mdbook-version: '0.4.36'
+          mdbook-version: '0.4.48'
       - run: mdbook build ./docs -d ${GITHUB_WORKSPACE}/public/docs
       - name: Check if rebuilding the book creates a diff
         run: |
