@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" class="navy" dir="ltr">
+<html lang="en" class="navy sidebar-visible" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -7,7 +7,7 @@
 
 
         <!-- Custom HTML head -->
-        
+
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
@@ -23,26 +23,29 @@
         <link rel="stylesheet" href="../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="../highlight.css">
-        <link rel="stylesheet" href="../tomorrow-night.css">
-        <link rel="stylesheet" href="../ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
-    </head>
-    <body class="sidebar-visible no-js">
-    <div id="body-container">
-        <!-- Provide site root to javascript -->
-        <script>
-            var path_to_root = "../";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
-        </script>
 
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "navy";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -56,24 +59,22 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
-            var html = document.querySelector('html');
+            const html = document.documentElement;
             html.classList.remove('navy')
             html.classList.add(theme);
-            var body = document.querySelector('body');
-            body.classList.remove('no-js')
-            body.classList.add('js');
+            html.classList.add("js");
         </script>
 
         <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var body = document.querySelector('body');
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -81,45 +82,25 @@
                 sidebar = 'hidden';
             }
             sidebar_toggle.checked = sidebar === 'visible';
-            body.classList.remove('sidebar-visible');
-            body.classList.add("sidebar-" + sidebar);
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../about.html"><strong aria-hidden="true">1.</strong> About</a></li><li class="chapter-item expanded "><a href="../how-to-connect/SUMMARY.html"><strong aria-hidden="true">2.</strong> How To Connect</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../how-to-connect/rp.html" class="active"><strong aria-hidden="true">2.1.</strong> ... As a Rocket Pool Node Operator</a></li><li class="chapter-item expanded "><a href="../how-to-connect/solo.html"><strong aria-hidden="true">2.2.</strong> ... As a Solo Staker</a></li><li class="chapter-item expanded "><a href="../how-to-connect/disconnect.html"><strong aria-hidden="true">2.3.</strong> ... and Disconnect</a></li></ol></li><li class="chapter-item expanded "><a href="../how-it-works.html"><strong aria-hidden="true">3.</strong> How It Works</a></li><li class="chapter-item expanded "><a href="../donate.html"><strong aria-hidden="true">4.</strong> Donate</a></li><li class="chapter-item expanded "><a href="../faq.html"><strong aria-hidden="true">5.</strong> FAQ</a></li><li class="chapter-item expanded "><a href="../tandc.html"><strong aria-hidden="true">6.</strong> Terms and Conditions</a></li><li class="chapter-item expanded "><a href="../randt.html"><strong aria-hidden="true">7.</strong> Risks and Trust</a></li><li class="chapter-item expanded "><a href="../tech-specs/SUMMARY.html"><strong aria-hidden="true">8.</strong> Tech Specs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tech-specs/original-tech-spec.html"><strong aria-hidden="true">8.1.</strong> Original Tech Spec</a></li><li class="chapter-item expanded "><a href="../tech-specs/solo-validator-support.html"><strong aria-hidden="true">8.2.</strong> Solo Validator Support</a></li></ol></li></ol>
-            </div>
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <!-- Track and set sidebar scroll position -->
-        <script>
-            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
-            sidebarScrollbox.addEventListener('click', function(e) {
-                if (e.target.tagName === 'A') {
-                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
-                }
-            }, { passive: true });
-            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
-            sessionStorage.removeItem('sidebar-scroll');
-            if (sidebarScrollTop) {
-                // preserve sidebar scroll position when navigating via links within sidebar
-                sidebarScrollbox.scrollTop = sidebarScrollTop;
-            } else {
-                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
-                var activeSection = document.querySelector('#sidebar .active');
-                if (activeSection) {
-                    activeSection.scrollIntoView({ block: 'center' });
-                }
-            }
-        </script>
-
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
                         <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -129,6 +110,7 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
@@ -209,12 +191,12 @@ Restart the mentioned containers when prompted.</p>
 # See https://docs.docker.com/compose/extends/#adding-and-overriding-configuration
 # for more information on overriding specific parameters of docker-compose files.
 
-version: &quot;3.7&quot;
+version: "3.7"
 services:
   validator:
     x-rp-comment: Add your customizations below this line
     environment:
-      - &quot;CC_API_ENDPOINT=https://USERNAME:PASSWORD@CLIENT.rescuenode.com&quot;
+      - "CC_API_ENDPOINT=https://USERNAME:PASSWORD@CLIENT.rescuenode.com"
 </code></pre>
 <h3 id="example-for-prysm"><a class="header" href="#example-for-prysm">Example for Prysm</a></h3>
 <pre><code class="language-yaml"># Enter your own customizations for the validator container here. These changes will persist after upgrades, so you only need to do them once.
@@ -222,13 +204,13 @@ services:
 # See https://docs.docker.com/compose/extends/#adding-and-overriding-configuration
 # for more information on overriding specific parameters of docker-compose files.
 
-version: &quot;3.7&quot;
+version: "3.7"
 services:
   validator:
     x-rp-comment: Add your customizations below this line
     environment:
-      - &quot;CC_RPC_ENDPOINT=prysm-grpc.rescuenode.com:443&quot;
-      - &quot;VC_ADDITIONAL_FLAGS=--grpc-headers=rprnauth=USERNAME:PASSWORD --tls-cert=/etc/ssl/certs/ca-certificates.crt&quot;
+      - "CC_RPC_ENDPOINT=prysm-grpc.rescuenode.com:443"
+      - "VC_ADDITIONAL_FLAGS=--grpc-headers=rprnauth=USERNAME:PASSWORD --tls-cert=/etc/ssl/certs/ca-certificates.crt"
 </code></pre>
 <h2 id="applying-the-changes"><a class="header" href="#applying-the-changes">Applying the Changes</a></h2>
 <p>After modifying the file, save and exit.</p>
@@ -236,7 +218,7 @@ services:
 <p>You can monitor the validator for errors using <code>rocketpool service logs validator</code>.
 See the <a href="../faq.html">FAQ</a> for more details on how to verify the changes were effective.</p>
 <div class="warning">
-<p>Once connected, <strong>do not forget</strong> to <a href="disconnect.html">disconnect</a> before 15 days, or to request a new credential on the 14th day. </p>
+<p>Once connected, <strong>do not forget</strong> to <a href="disconnect.html">disconnect</a> before 15 days, or to request a new credential on the 14th day.</p>
 <p>Failure to do so will result in <strong>missed attestations and other duties</strong>.</p>
 </div>
 <hr />
@@ -257,7 +239,7 @@ Check <code>Use Fallback Clients</code>.</p>
 <li><strong>If using Prysm</strong> follow these additional steps:
 <ul>
 <li>In the <code>Beacon Node JSON-RPC URL</code> box insert <code>prysm-grpc.rescuenode.com:443</code></li>
-<li>Go back to the main config and edit your <code>Consensus Client Settings</code>-&gt;<code>Additional Validator Client Flags</code> to contain <code>--grpc-headers=rprnauth=USERNAME:PASSWORD --tls-cert=/etc/ssl/certs/ca-certificates.crt</code>, substituting your USERNAME/PASSWORD. </li>
+<li>Go back to the main config and edit your <code>Consensus Client Settings</code>-&gt;<code>Additional Validator Client Flags</code> to contain <code>--grpc-headers=rprnauth=USERNAME:PASSWORD --tls-cert=/etc/ssl/certs/ca-certificates.crt</code>, substituting your USERNAME/PASSWORD.</li>
 </ul>
 </li>
 </ol>
