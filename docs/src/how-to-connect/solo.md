@@ -12,11 +12,11 @@ For eth-docker users, as of Nov. 2023, this means only Prysm, Lodestar, and Ligh
 
 <div class="warning">
 
-We recommend having migrated all active validators to 0x01 and **using the 0x01 address as the fee recipient.**
+We recommend having migrated all active validators to 0x01 (Distributing Validator or Type 1) or 0x02 (Accumulating Validator or Type 2) and **using the withdrawal address as the fee recipient.**
 If MEV-Boost is not enabled by your Validator Client, you will miss proposals on all validators if any noncompliant fee recipient is used.
 Additionally, even if MEV-Boost is enabled and there is no MEV available for a proposal duty assignment, that proposal will be missed unless all fee recipients are compliant. 
 
-If this is an emergency and you don't have time to migrate to 0x01, **we strongly recommend enabling MEV Boost / External Builders in your Validator Client flags to minimize potential losses.**
+If this is an emergency and you don't have time to migrate to 0x01 or 0x02, **we strongly recommend enabling MEV Boost / External Builders in your Validator Client flags to minimize potential losses.**
 
 </div>
 

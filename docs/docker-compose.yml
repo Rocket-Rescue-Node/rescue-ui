@@ -1,4 +1,3 @@
-version: "3"
 services:
   mdbook-build:
     image: rescue-ui-mdbook:local

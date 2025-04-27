@@ -22,13 +22,13 @@ Please exercise caution whenever performing administrative functions on your nod
 For locally built blocks, The Rocket Rescue Node forces connected users to use fee recipients that are known to be safe.  
 
 For Rocket Pool Node Operators, this means either their node's fee distributor contract, or the smoothing pool contract, depending on whether they are in the smoothing pool.  
-For solo stakers, **we only accept the 0x01 credential's address as the fee recipient for locally built blocks.**  
+For solo stakers, **we only accept the withdrawal address as the fee recipient for locally built blocks.**  
 
 For blind blocks, any fee recipient is accepted.  
 
 <div class="warning">
 
-We ***strongly*** **recommend solo stakers use their 0x01 credential as their fee recipient, or at least enable MEV-Boost before connecting.**
+We ***strongly*** **recommend solo stakers use their withdrawal address as their fee recipient, or at least enable MEV-Boost before connecting.**
 
 Invalid fee recipients can lead to missed proposals.
 
