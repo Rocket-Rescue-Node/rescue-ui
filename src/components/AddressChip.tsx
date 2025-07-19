@@ -1,5 +1,6 @@
 import React from "react";
-import { type Address, useEnsName } from "wagmi";
+import { type Address } from "viem";
+import { useEnsName } from "wagmi";
 import { Chip } from "@mui/material";
 
 // Display an address as a clickable chip.
