@@ -38,7 +38,11 @@ export default function SoloNodeRequestAccess({
   const { disconnectAsync } = useDisconnect();
   const { isConnected, address } = useAccount();
   const { data: signature, signMessage } = useSignMessage();
-  const { open } = useAppKit();
+  const { open: openAppKit } = useAppKit();
+  const open = () => {
+    const promise = openAppKit();
+    void promise;
+  };
   const [soloSignatureMessage, setSoloSignatureMessage] = useState("");
   const [isSignButtonClicked, setIsSignButtonClicked] = useState(false);
 
@@ -140,10 +144,7 @@ export default function SoloNodeRequestAccess({
                     variant="contained"
                     color="primary"
                     size="small"
-                    onClick={() => {
-                      const promise = open();
-                      void promise;
-                    }}
+                    onClick={ open }
                   >
                     Connect Wallet
                   </Button>
