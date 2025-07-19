@@ -1,7 +1,7 @@
 import { glob } from "glob";
 import { promises as fs } from "fs";
 import { parse } from "node-html-parser";
-import * as sha256 from "sha256";
+import sha256 from "sha256";
 const tmpl: string = `/*
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
   Referrer-Policy: no-referrer
