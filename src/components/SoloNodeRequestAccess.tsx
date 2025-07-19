@@ -144,7 +144,7 @@ export default function SoloNodeRequestAccess({
                     variant="contained"
                     color="primary"
                     size="small"
-                    onClick={ open }
+                    onClick={open}
                   >
                     Connect Wallet
                   </Button>

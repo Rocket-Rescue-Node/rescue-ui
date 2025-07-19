@@ -9,7 +9,7 @@ export default function useIsValidSignedMessage(value: string) {
     queryKey: ["isValidSignedMessage", value || ""],
     queryFn: async () => {
       if (!publicClient) return false;
-      
+
       try {
         const { address, msg, sig, version } = JSON.parse(value);
         const isValid = await publicClient.verifyMessage({
