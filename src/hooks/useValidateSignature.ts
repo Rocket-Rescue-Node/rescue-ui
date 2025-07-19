@@ -15,7 +15,7 @@ const useValidateSignature = ({
   const [valid, setValid] = useState(false);
 
   useEffect(() => {
-    if (!signature || !address) {
+    if (!signature || !address || !publicClient) {
       setValid(false);
       return;
     }

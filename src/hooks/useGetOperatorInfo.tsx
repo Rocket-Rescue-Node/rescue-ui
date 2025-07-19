@@ -1,4 +1,4 @@
-import { useQuery } from "wagmi";
+import { useQuery } from "@tanstack/react-query";
 import { Api } from "../Api";
 import type { OperatorInfo } from "../Api";
 
@@ -12,9 +12,9 @@ export default function useGetOperatorInfo({
   operatorType: "solo" | "rocketpool";
   enabled: boolean;
 }) {
-  return useQuery<OperatorInfo, Error>(
-    ["Api.getOperatorInfo", signedMessage, operatorType],
-    async () => {
+  return useQuery<OperatorInfo, Error>({
+    queryKey: ["Api.getOperatorInfo", signedMessage, operatorType],
+    queryFn: async () => {
       let error: string | undefined;
       let data: OperatorInfo | undefined;
       await Api.getOperatorInfo(
@@ -32,8 +32,6 @@ export default function useGetOperatorInfo({
       }
       return data;
     },
-    {
-      enabled,
-    },
-  );
+    enabled,
+  });
 }

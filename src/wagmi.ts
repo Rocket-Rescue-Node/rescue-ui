@@ -1,28 +1,26 @@
-import { w3mConnectors, w3mProvider } from "@web3modal/ethereum";
-import { configureChains, createConfig } from "wagmi";
-import { mainnet } from "wagmi/chains";
-import { type Chain, type ChainProviderFn } from "@wagmi/core";
+import { createAppKit } from '@reown/appkit/react'
+import { mainnet } from '@reown/appkit/networks'
+import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
 
 export const walletConnectProjectId = import.meta.env.VITE_WC_PROJECT_ID;
 
-const {
-  chains: _chains,
-  publicClient,
-  webSocketPublicClient,
-} = configureChains([mainnet], [
-  w3mProvider({ projectId: walletConnectProjectId }),
-] as Array<ChainProviderFn<any>>);
-
-export const chains = _chains as Chain[];
-
-// Create a wagmi config using the wallet-connect project.
-export const config = createConfig({
-  autoConnect: true,
-  connectors: w3mConnectors({
-    chains,
-    projectId: walletConnectProjectId,
-    version: 2,
-  }),
-  publicClient,
-  webSocketPublicClient,
+// Create the Wagmi adapter
+export const wagmiAdapter = new WagmiAdapter({
+  networks: [mainnet],
+  projectId: walletConnectProjectId,
 });
+
+// Create Reown AppKit
+export const appKit = createAppKit({
+  adapters: [wagmiAdapter],
+  networks: [mainnet],
+  projectId: walletConnectProjectId,
+  metadata: {
+    name: "Rescue Node",
+    description: "Rescue Node UI",
+    url: typeof window !== 'undefined' ? window.location.origin : "https://rescuenode.com",
+    icons: ["https://rescuenode.com/favicon.ico"],
+  },
+});
+
+export { WagmiProvider } from "wagmi";

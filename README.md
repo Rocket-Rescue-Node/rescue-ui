@@ -5,7 +5,7 @@
 This repository contains the source code for [Rocket Rescue Node](https://rescuenode.com),
 a community-run, trust-minimized, and secured fallback node for emergencies and maintenance.
 
-This web app uses [wagmi](https://wagmi.sh) + [Web3Modal](https://web3modal.com/) + [Vite](https://vitejs.dev/).
+This web app uses [wagmi](https://wagmi.sh) + [Reown](https://reown.com/) + [Vite](https://vitejs.dev/).
 
 # Local Dev
 

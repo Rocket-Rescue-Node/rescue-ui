@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAccount, useDisconnect, useSignMessage } from "wagmi";
+import { useAppKit } from "@reown/appkit/react";
 import {
   Alert,
   Box,
@@ -37,6 +38,7 @@ export default function SoloNodeRequestAccess({
   const { disconnectAsync } = useDisconnect();
   const { isConnected, address } = useAccount();
   const { data: signature, signMessage } = useSignMessage();
+  const { open } = useAppKit();
   const [soloSignatureMessage, setSoloSignatureMessage] = useState("");
   const [isSignButtonClicked, setIsSignButtonClicked] = useState(false);
 
@@ -82,7 +84,7 @@ export default function SoloNodeRequestAccess({
         .
       </Alert>
       <Typography gutterBottom variant="body1">
-        You’ll submit a signed message from your withdrawal wallet.
+        You&apos;ll submit a signed message from your withdrawal wallet.
       </Typography>
       <SignatureAlert sx={{ mb: 1, mt: 1 }} />
       <Stepper
@@ -134,8 +136,17 @@ export default function SoloNodeRequestAccess({
                   message.
                 </Typography>
                 <Box>
-                  {/*  @ts-expect-error: w3m doesn't include type information */}
-                  <w3m-connect-button size="sm" />
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    onClick={() => {
+                      const promise = open();
+                      void promise;
+                    }}
+                  >
+                    Connect Wallet
+                  </Button>
                 </Box>
                 <Typography
                   sx={{ width: 190, mt: 1, ml: 1, mb: 0 }}
