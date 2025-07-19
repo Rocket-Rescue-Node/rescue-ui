@@ -20,14 +20,18 @@ const useValidateSignature = ({
       return;
     }
 
-    void publicClient
+    publicClient
       .verifyMessage({
         message,
         signature,
         address,
       })
-      .then(setValid)
-      .catch(() => setValid(false));
+      .then((result: boolean) => {
+        setValid(result);
+      })
+      .catch(() => {
+        setValid(false);
+      });
   }, [message, signature, address, publicClient]);
 
   return { data: valid };
