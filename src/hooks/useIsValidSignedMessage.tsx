@@ -1,12 +1,17 @@
-import { usePublicClient, useQuery } from "wagmi";
+import { usePublicClient } from "wagmi";
+import { useQuery } from "@tanstack/react-query";
 
 // Hook for whether the given `value` contains JSON of a valid signed message.
 export default function useIsValidSignedMessage(value: string) {
   const publicClient = usePublicClient();
 
-  return useQuery<boolean>(
-    ["isValidSignedMessage", value || ""],
-    async () => {
+  return useQuery<boolean>({
+    queryKey: ["isValidSignedMessage", value || ""],
+    queryFn: async () => {
+      if (!publicClient) {
+        throw new Error("Public client not available");
+      }
+
       try {
         const { address, msg, sig, version } = JSON.parse(value);
         const isValid = await publicClient.verifyMessage({
@@ -21,8 +26,6 @@ export default function useIsValidSignedMessage(value: string) {
         return false;
       }
     },
-    {
-      enabled: !!value,
-    },
-  );
+    enabled: !!value && !!publicClient,
+  });
 }
