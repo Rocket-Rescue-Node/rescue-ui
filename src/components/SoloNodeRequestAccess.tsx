@@ -134,8 +134,9 @@ export default function SoloNodeRequestAccess({
                   message.
                 </Typography>
                 <Box>
-                  {/*  @ts-expect-error: w3m doesn't include type information */}
-                  <w3m-connect-button size="sm" />
+                  <Typography variant="body2" color="text.secondary">
+                    Connect your wallet using the browser extension or WalletConnect
+                  </Typography>
                 </Box>
                 <Typography
                   sx={{ width: 190, mt: 1, ml: 1, mb: 0 }}
