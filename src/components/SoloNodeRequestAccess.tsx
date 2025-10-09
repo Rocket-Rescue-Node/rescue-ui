@@ -137,7 +137,15 @@ export default function SoloNodeRequestAccess({
               <>
                 <Typography sx={{ mt: 2, mb: 3 }} gutterBottom>
                   Connect your wallet so you can be prompted to sign the
-                  message.
+                  message. Note that there is a{" "}
+                  <Link
+                    href="https://github.com/MetaMask/detect-provider/issues/31"
+                    color="inherit"
+                    target="_blank"
+                  >
+                    known issue
+                  </Link>{" "}
+                  with Firefox Metamask.
                 </Typography>
                 <Box>
                   <Button
