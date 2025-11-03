@@ -33,7 +33,7 @@
     "wagmi": "^2.16.0"
   },
   "devDependencies": {
-    "@types/glob": "^8.1.0",
+    "@types/glob": "^9.0.0",
     "@types/react": "^18.2.65",
     "@types/react-dom": "^18.2.23",
     "@types/sha256": "^0.2.2",
