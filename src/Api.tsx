@@ -9,8 +9,8 @@ const baseUrl = import.meta.env.VITE_RESCUE_API_BASE_URL;
 
 /// The parameters for an API request.
 interface ApiRequestParameters {
-  query: Record<string, string>;
-  body: string;
+  query?: Record<string, string>;
+  body?: string;
 }
 
 // Define a generic type for API methods
@@ -56,9 +56,21 @@ export interface OperatorInfo {
   quotaSettings: QuotaSettings;
 }
 
+// Lifetime usage totals shown on the front page.
+export interface LifetimeStatsByType {
+  rocketpool: number;
+  solo: number;
+}
+
+export interface LifetimeStats {
+  accessGranted: LifetimeStatsByType;
+  users: LifetimeStatsByType;
+}
+
 export const Api: {
   createCredentials: ApiMethod<AccessCredential>;
   getOperatorInfo: ApiMethod<OperatorInfo>;
+  getLifetimeStats: ApiMethod<LifetimeStats>;
   // Other methods
 } = {
   createCredentials: async (params, onData, onError, onComplete) => {
@@ -75,6 +87,16 @@ export const Api: {
     await rpc<OperatorInfo>(
       "POST",
       "/info",
+      params,
+      onData,
+      onError,
+      onComplete,
+    );
+  },
+  getLifetimeStats: async (params, onData, onError, onComplete) => {
+    await rpc<LifetimeStats>(
+      "GET",
+      "/stats",
       params,
       onData,
       onError,
@@ -108,15 +130,19 @@ async function rpc<T>(
 
   let response: Response;
   try {
+    const headers: Record<string, string> = {
+      Accept: "application/json",
+    };
+    // GET requests must not include a body; only set JSON content-type for POST.
+    if (method === "POST") {
+      headers["Content-Type"] = "application/json";
+    }
     response = await fetch(url, {
       method,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        // TODO: consider using auth
-        //  Authorization: `Bearer ${authToken}`,
-      },
-      body: params.body,
+      headers,
+      // TODO: consider using auth
+      //  Authorization: `Bearer ${authToken}`,
+      ...(method === "POST" ? { body: params.body ?? "" } : {}),
     });
   } catch (err) {
     onError(`API request failed: ${err as string}`);
