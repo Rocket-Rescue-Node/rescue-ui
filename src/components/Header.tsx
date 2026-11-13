@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Button, Link, Stack, Typography } from "@mui/material";
 import Logo from "./Logo";
+import LifetimeStats from "./LifetimeStats";
 import { ChevronRight } from "@mui/icons-material";
 import { type SxProps } from "@mui/system";
 import { type Theme } from "@mui/material/styles/createTheme";
@@ -39,6 +40,7 @@ export default function Header({ sx }: { sx?: SxProps<Theme> }) {
         A community-run, trust-minimized, and secured fallback node for
         emergencies and maintenance.
       </Typography>
+      <LifetimeStats sx={{ mb: 2 }} />
       <Stack direction="row" spacing={2}>
         <Link
           variant="h6"
