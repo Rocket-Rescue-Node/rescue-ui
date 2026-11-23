@@ -8,14 +8,14 @@ export function App() {
   // On larger screens, make the center column narrower (to keep line-width reasonable).
   return (
     <Grid container>
-      <Grid item flexGrow={1} />
-      <Grid item lg={6} md={9} xs={12}>
+      <Grid size="grow" />
+      <Grid size={{ xs: 12, md: 9, lg: 6 }}>
         <Stack direction="column" sx={{ pt: 5, pb: 5 }} spacing={2}>
           <Header />
           <RequestAccessSection />
         </Stack>
       </Grid>
-      <Grid item flexGrow={1} />
+      <Grid size="grow" />
     </Grid>
   );
 }

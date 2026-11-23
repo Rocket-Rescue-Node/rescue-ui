@@ -12,11 +12,10 @@ import {
   Tabs,
   Typography,
 } from "@mui/material";
-import { type SxProps } from "@mui/system";
-import { type Theme } from "@mui/material/styles/createTheme";
+import type { SxProps, Theme } from "@mui/material/styles";
 import RocketPoolRequestAccess from "./RocketPoolRequestAccess";
 import SoloNodeRequestAccess from "./SoloNodeRequestAccess";
-import { type AccessCredential } from "../Api";
+import type { AccessCredential } from "../Api";
 import CredentialCard from "./CredentialCard";
 
 // Tabbed interface to the request-access forms (one for RP, another for Solo operators).

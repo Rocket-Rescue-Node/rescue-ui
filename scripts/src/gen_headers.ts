@@ -1,9 +1,8 @@
-import pkg from "glob";
+import { globSync } from "glob";
 import { promises as fs } from "fs";
 import { parse } from "node-html-parser";
 import sha256 from "sha256";
-const { glob } = pkg;
-const tmpl: string = `/*
+const tmpl = `/*
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
   Referrer-Policy: no-referrer
   X-content-Type-Options: nosniff
@@ -23,7 +22,7 @@ const tmpl: string = `/*
   const shas = new Set();
   shas.add("'self'");
 
-  const files = glob.sync(docsPath + "/**/*.html");
+  const files = globSync(`${docsPath}/**/*.html`).sort();
   for (const f of files) {
     const html = await fs.readFile(f, "utf8");
     const root = parse(html);
@@ -42,7 +41,7 @@ const tmpl: string = `/*
   );
 
   await fs.writeFile(out, tmpl.replace("{script_src}", scriptSrc));
-})().catch((err) => {
+})().catch((err: unknown) => {
   console.error(err);
   process.exit(1);
 });

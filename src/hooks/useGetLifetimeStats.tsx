@@ -4,7 +4,7 @@ import type { LifetimeStats } from "../Api";
 
 // Hook to retrieve lifetime usage stats from the API (for the front page).
 export default function useGetLifetimeStats() {
-  return useQuery<LifetimeStats, Error>({
+  return useQuery<LifetimeStats>({
     queryKey: ["Api.getLifetimeStats"],
     queryFn: async () => {
       let error: string | undefined;

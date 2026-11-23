@@ -65,18 +65,20 @@ export default function SignedMessageForm({
       <TextField
         multiline
         color={operatorType === "solo" ? "secondary" : "primary"}
-        inputProps={{
-          readOnly: operatorType === "solo",
-          spellCheck: false,
-          sx: {
-            fontFamily: "monospace",
-            fontSize: 14,
-            textWrap: "nowrap",
-            wrap: "off",
-            overflowX: "scroll",
+        slotProps={{
+          htmlInput: {
+            readOnly: operatorType === "solo",
+            spellCheck: false,
+            sx: {
+              fontFamily: "monospace",
+              fontSize: 14,
+              textWrap: "nowrap",
+              wrap: "off",
+              overflowX: "scroll",
+            },
           },
+          input: inputProps(),
         }}
-        InputProps={inputProps()}
         variant="outlined"
         rows={6}
         spellCheck={false}

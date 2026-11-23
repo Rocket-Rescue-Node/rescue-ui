@@ -1,5 +1,5 @@
 import React from "react";
-import { type Address } from "viem";
+import type { Address } from "viem";
 import { useEnsName } from "wagmi";
 import { Chip } from "@mui/material";
 
