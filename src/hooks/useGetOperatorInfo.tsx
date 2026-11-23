@@ -12,7 +12,7 @@ export default function useGetOperatorInfo({
   operatorType: "solo" | "rocketpool";
   enabled: boolean;
 }) {
-  return useQuery<OperatorInfo, Error>({
+  return useQuery<OperatorInfo>({
     queryKey: ["Api.getOperatorInfo", signedMessage, operatorType],
     queryFn: async () => {
       let error: string | undefined;

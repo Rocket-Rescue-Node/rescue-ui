@@ -1,7 +1,6 @@
 import React from "react";
 import { alpha, Box, Skeleton, Stack, Typography } from "@mui/material";
-import { type SxProps } from "@mui/system";
-import { type Theme } from "@mui/material/styles/createTheme";
+import type { SxProps, Theme } from "@mui/material/styles";
 import useGetLifetimeStats from "../hooks/useGetLifetimeStats";
 import type { PeriodStats } from "../Api";
 

@@ -19,7 +19,7 @@ import AddressChip from "./AddressChip";
 import SignatureAlert from "./SignatureAlert";
 import SignedMessageForm from "./SignedMessageForm";
 import useValidateSignature from "../hooks/useValidateSignature";
-import { type AccessCredential } from "../Api";
+import type { AccessCredential } from "../Api";
 
 const Steps = {
   connectWallet: 0,
@@ -161,7 +161,7 @@ export default function SoloNodeRequestAccess({
                   sx={{ width: 190, mt: 1, ml: 1, mb: 0 }}
                   variant="caption"
                   color="text.secondary"
-                  paragraph
+                  component="p"
                 >
                   This wallet should be your validator withdrawal address.
                 </Typography>
@@ -187,8 +187,10 @@ export default function SoloNodeRequestAccess({
             <Box sx={{ width: 300 }}>
               <TextField
                 sx={{ width: 300 }}
-                inputProps={{
-                  sx: { fontFamily: "monospace" },
+                slotProps={{
+                  htmlInput: {
+                    sx: { fontFamily: "monospace" },
+                  },
                 }}
                 fullWidth
                 disabled

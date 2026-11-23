@@ -1,5 +1,5 @@
 import { createTheme } from "@mui/material/styles";
-import { type PaletteColorOptions } from "@mui/material/styles/createPalette";
+import type { PaletteColorOptions } from "@mui/material/styles";
 
 // Define the colors and other pieces of the theme.
 const theme = createTheme({

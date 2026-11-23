@@ -13,12 +13,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { type AccessCredential } from "../Api";
+import type { AccessCredential } from "../Api";
 import moment from "moment";
 import React, { useState } from "react";
 import { ContentCopy } from "@mui/icons-material";
-import { type SxProps } from "@mui/system";
-import type { Theme } from "@mui/material/styles/createTheme";
+import type { SxProps, Theme } from "@mui/material/styles";
 
 export default function CredentialCard({
   cred,
@@ -82,38 +81,40 @@ function CopyTextField({
       value={value}
       multiline
       helperText={helperText}
-      FormHelperTextProps={{ sx: { mt: 0 } }}
-      inputProps={{
-        readOnly: true,
-        spellCheck: false,
-        sx: {
-          fontFamily: "monospace",
-          fontSize,
-          textWrap: "balance",
-          wrap: "off",
-          overflowX: "scroll",
-          pr: 1,
-          borderRight: "1pt ridge #888",
+      slotProps={{
+        formHelperText: { sx: { mt: 0 } },
+        htmlInput: {
+          readOnly: true,
+          spellCheck: false,
+          sx: {
+            fontFamily: "monospace",
+            fontSize,
+            textWrap: "balance",
+            wrap: "off",
+            overflowX: "scroll",
+            pr: 1,
+            borderRight: "1pt ridge #888",
+          },
         },
-      }}
-      InputProps={{
-        disableUnderline: true,
-        sx: {
-          pt: 1,
-          pb: 1,
+        input: {
+          disableUnderline: true,
+          sx: {
+            pt: 1,
+            pb: 1,
+          },
+          endAdornment: (
+            <InputAdornment position="end">
+              <Button
+                endIcon={<ContentCopy />}
+                onClick={() => {
+                  navigator.clipboard.writeText(value).catch(() => {});
+                }}
+              >
+                Copy
+              </Button>
+            </InputAdornment>
+          ),
         },
-        endAdornment: (
-          <InputAdornment position="end">
-            <Button
-              endIcon={<ContentCopy />}
-              onClick={() => {
-                navigator.clipboard.writeText(value).catch(() => {});
-              }}
-            >
-              Copy
-            </Button>
-          </InputAdornment>
-        ),
       }}
     />
   );
