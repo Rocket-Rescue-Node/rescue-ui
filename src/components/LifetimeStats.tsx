@@ -3,6 +3,7 @@ import { alpha, Box, Skeleton, Stack, Typography } from "@mui/material";
 import { type SxProps } from "@mui/system";
 import { type Theme } from "@mui/material/styles/createTheme";
 import useGetLifetimeStats from "../hooks/useGetLifetimeStats";
+import type { PeriodStats } from "../Api";
 
 function formatCount(n: number | undefined): string {
   if (n === undefined) {
@@ -83,6 +84,33 @@ function StatCard({
   );
 }
 
+function PeriodLine({
+  label,
+  periods,
+  field,
+  loading,
+}: {
+  label: string;
+  periods: PeriodStats | undefined;
+  field: "accessGranted" | "users";
+  loading: boolean;
+}) {
+  const value =
+    loading || !periods
+      ? "…"
+      : [periods.week, periods.month, periods.year]
+          .map((p) => formatCount(p[field]))
+          .join(" / ");
+  return (
+    <Typography variant="body2" color="text.secondary">
+      {label} week/month/year:{" "}
+      <Box component="span" color="text.primary" fontWeight="fontWeightMedium">
+        {value}
+      </Box>
+    </Typography>
+  );
+}
+
 // Lifetime usage totals displayed in the page header.
 export default function LifetimeStats({ sx }: { sx?: SxProps<Theme> }) {
   const { data, isLoading, isError } = useGetLifetimeStats();
@@ -94,33 +122,52 @@ export default function LifetimeStats({ sx }: { sx?: SxProps<Theme> }) {
 
   const accessGranted = data?.accessGranted;
   const users = data?.users;
+  const periods = data?.periods;
 
   return (
     <Stack
       sx={sx}
-      direction={{ xs: "column", sm: "row" }}
-      spacing={2}
+      spacing={1.5}
       width="100%"
       maxWidth={520}
+      alignItems="center"
     >
-      <StatCard
-        title="Access Granted"
-        total={
-          accessGranted
-            ? accessGranted.rocketpool + accessGranted.solo
-            : undefined
-        }
-        rocketpool={accessGranted?.rocketpool}
-        solo={accessGranted?.solo}
-        loading={isLoading}
-      />
-      <StatCard
-        title="Lifetime Users"
-        total={users ? users.rocketpool + users.solo : undefined}
-        rocketpool={users?.rocketpool}
-        solo={users?.solo}
-        loading={isLoading}
-      />
+      <Stack direction={{ xs: "column", sm: "row" }} spacing={2} width="100%">
+        <StatCard
+          title="Access Granted"
+          total={
+            accessGranted
+              ? accessGranted.rocketpool + accessGranted.solo
+              : undefined
+          }
+          rocketpool={accessGranted?.rocketpool}
+          solo={accessGranted?.solo}
+          loading={isLoading}
+        />
+        <StatCard
+          title="Lifetime Users"
+          total={users ? users.rocketpool + users.solo : undefined}
+          rocketpool={users?.rocketpool}
+          solo={users?.solo}
+          loading={isLoading}
+        />
+      </Stack>
+      {(isLoading || periods) && (
+        <Stack spacing={0.25} alignItems="center">
+          <PeriodLine
+            label="Used"
+            periods={periods}
+            field="accessGranted"
+            loading={isLoading}
+          />
+          <PeriodLine
+            label="Unique users"
+            periods={periods}
+            field="users"
+            loading={isLoading}
+          />
+        </Stack>
+      )}
     </Stack>
   );
 }
