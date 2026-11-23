@@ -62,9 +62,22 @@ export interface LifetimeStatsByType {
   solo: number;
 }
 
+// Usage across all operator types over a rolling window.
+export interface PeriodUsage {
+  accessGranted: number;
+  users: number;
+}
+
+export interface PeriodStats {
+  week: PeriodUsage;
+  month: PeriodUsage;
+  year: PeriodUsage;
+}
+
 export interface LifetimeStats {
   accessGranted: LifetimeStatsByType;
   users: LifetimeStatsByType;
+  periods?: PeriodStats;
 }
 
 export const Api: {
