@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useAccount, useDisconnect, useSignMessage } from "wagmi";
+import { useConnection, useDisconnect, useSignMessage } from "wagmi";
 import { useAppKit } from "@reown/appkit/react";
 import {
   Alert,
@@ -35,9 +35,9 @@ export default function SoloNodeRequestAccess({
 }: {
   onCredentialCreated: (cred: AccessCredential) => void;
 }) {
-  const { disconnectAsync } = useDisconnect();
-  const { isConnected, address } = useAccount();
-  const { data: signature, signMessage } = useSignMessage();
+  const { mutateAsync: disconnectAsync } = useDisconnect();
+  const { isConnected, address } = useConnection();
+  const { data: signature, mutate: signMessage } = useSignMessage();
   const { open: openAppKit } = useAppKit();
   const open = () => {
     const promise = openAppKit();
