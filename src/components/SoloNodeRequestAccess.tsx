@@ -127,7 +127,7 @@ export default function SoloNodeRequestAccess({
           >
             <Typography
               variant={step === Steps.connectWallet ? "h5" : "subtitle1"}
-              color="text.secondary"
+              color="textSecondary"
             >
               {isConnected ? "Connected" : "Connect"} Wallet
             </Typography>
@@ -160,7 +160,7 @@ export default function SoloNodeRequestAccess({
                 <Typography
                   sx={{ width: 190, mt: 1, ml: 1, mb: 0 }}
                   variant="caption"
-                  color="text.secondary"
+                  color="textSecondary"
                   component="p"
                 >
                   This wallet should be your validator withdrawal address.
@@ -175,7 +175,7 @@ export default function SoloNodeRequestAccess({
           <StepLabel>
             <Typography
               variant={step === Steps.signMessage ? "h5" : "subtitle1"}
-              color="text.secondary"
+              color="textSecondary"
             >
               {signature ? "Signed" : "Sign"} Message
             </Typography>
@@ -218,7 +218,7 @@ export default function SoloNodeRequestAccess({
           <StepLabel>
             <Typography
               variant={step === Steps.submitSignedMessage ? "h5" : "subtitle1"}
-              color="text.secondary"
+              color="textSecondary"
             >
               Submit Signed Message
             </Typography>

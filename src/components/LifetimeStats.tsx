@@ -40,7 +40,7 @@ function StatCard({
     >
       <Typography
         variant="overline"
-        color="text.secondary"
+        color="textSecondary"
         sx={{ letterSpacing: 1.2, lineHeight: 1.2 }}
       >
         {title}
@@ -55,8 +55,7 @@ function StatCard({
       ) : (
         <Typography
           variant="h4"
-          fontWeight="fontWeightBold"
-          sx={{ lineHeight: 1.2, my: 0.5 }}
+          sx={{ fontWeight: "fontWeightBold", lineHeight: 1.2, my: 0.5 }}
         >
           {formatCount(total)}
         </Typography>
@@ -64,18 +63,16 @@ function StatCard({
       <Stack
         direction="row"
         spacing={1.5}
-        justifyContent="center"
-        flexWrap="wrap"
         useFlexGap
-        sx={{ mt: 0.5 }}
+        sx={{ justifyContent: "center", flexWrap: "wrap", mt: 0.5 }}
       >
-        <Typography variant="body2" color="primary.main">
+        <Typography variant="body2" color="primary">
           {loading ? "…" : formatCount(rocketpool)} Rocket Pool
         </Typography>
-        <Typography variant="body2" color="text.disabled">
+        <Typography variant="body2" color="textDisabled">
           ·
         </Typography>
-        <Typography variant="body2" color="secondary.main">
+        <Typography variant="body2" color="secondary">
           {loading ? "…" : formatCount(solo)} Solo
         </Typography>
       </Stack>
@@ -101,9 +98,12 @@ function PeriodLine({
           .map((p) => formatCount(p[field]))
           .join(" / ");
   return (
-    <Typography variant="body2" color="text.secondary">
+    <Typography variant="body2" color="textSecondary">
       {label} week/month/year:{" "}
-      <Box component="span" color="text.primary" fontWeight="fontWeightMedium">
+      <Box
+        component="span"
+        sx={{ color: "text.primary", fontWeight: "fontWeightMedium" }}
+      >
         {value}
       </Box>
     </Typography>
@@ -125,13 +125,17 @@ export default function LifetimeStats({ sx }: { sx?: SxProps<Theme> }) {
 
   return (
     <Stack
-      sx={sx}
       spacing={1.5}
-      width="100%"
-      maxWidth={520}
-      alignItems="center"
+      sx={[
+        { width: "100%", maxWidth: 520, alignItems: "center" },
+        ...(Array.isArray(sx) ? sx : [sx]),
+      ]}
     >
-      <Stack direction={{ xs: "column", sm: "row" }} spacing={2} width="100%">
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        spacing={2}
+        sx={{ width: "100%" }}
+      >
         <StatCard
           title="Access Granted"
           total={
@@ -152,7 +156,7 @@ export default function LifetimeStats({ sx }: { sx?: SxProps<Theme> }) {
         />
       </Stack>
       {(isLoading || periods) && (
-        <Stack spacing={0.25} alignItems="center">
+        <Stack spacing={0.25} sx={{ alignItems: "center" }}>
           <PeriodLine
             label="Used"
             periods={periods}

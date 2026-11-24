@@ -35,7 +35,7 @@ export default function CredentialCard({
         }
       />
       <CardContent>
-        <Stack direction="column" alignItems="center">
+        <Stack direction="column" sx={{ alignItems: "center" }}>
           <Box sx={{ width: 300 }}>
             <CopyTextField
               helperText={"Username"}
@@ -125,11 +125,11 @@ function RocketPoolInstructions() {
     <Stack direction="column">
       <Typography gutterBottom>
         To enable Rescue Node, add this{" "}
-        <Typography component={"span"} color="text.secondary">
+        <Typography component={"span"} color="textSecondary">
           Username
         </Typography>{" "}
         and{" "}
-        <Typography component={"span"} color="text.secondary">
+        <Typography component={"span"} color="textSecondary">
           Password
         </Typography>{" "}
         to your Smartnode configuration:
@@ -140,11 +140,11 @@ function RocketPoolInstructions() {
         color="primary"
       >
         Categories
-        <Typography variant="caption" sx={{ m: 1 }} color="text.secondary">
+        <Typography variant="caption" sx={{ m: 1 }} color="textSecondary">
           &gt;
         </Typography>
         Addons
-        <Typography variant="caption" sx={{ m: 1 }} color="text.secondary">
+        <Typography variant="caption" sx={{ m: 1 }} color="textSecondary">
           &gt;
         </Typography>
         Rescue Node
@@ -166,11 +166,11 @@ function SoloInstructions() {
     <Stack direction="column">
       <Typography>
         To enable Rescue Node you will need this{" "}
-        <Typography component={"span"} color="text.secondary">
+        <Typography component={"span"} color="textSecondary">
           Username
         </Typography>{" "}
         and{" "}
-        <Typography component={"span"} color="text.secondary">
+        <Typography component={"span"} color="textSecondary">
           Password
         </Typography>{" "}
         to configure your access URL.

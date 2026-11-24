@@ -16,8 +16,8 @@
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^7.3.11",
-    "@mui/material": "^7.3.11",
+    "@mui/icons-material": "^9.6.0",
+    "@mui/material": "^9.6.0",
     "@reown/appkit": "^2.0.0",
     "@reown/appkit-adapter-wagmi": "^2.0.0",
     "@reown/appkit-controllers": "^2.0.0",
@@ -26,7 +26,7 @@
     "@wagmi/connectors": "^8.2.4",
     "@wagmi/core": "^3.6.9",
     "buffer": "^6.0.3",
-    "moment": "^2.30.1",
+    "moment": "^2.31.0",
     "process": "^0.11.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -51,6 +51,6 @@
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.74.0",
     "vite": "^8.3.8",
-    "vite-plugin-checker": "^0.14.5"
+    "vite-plugin-checker": "^1.0.0"
   }
 }

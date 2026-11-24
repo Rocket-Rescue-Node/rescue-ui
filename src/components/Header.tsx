@@ -8,11 +8,14 @@ import type { SxProps, Theme } from "@mui/material/styles";
 // The top portion of the page.
 export default function Header({ sx }: { sx?: SxProps<Theme> }) {
   return (
-    <Stack sx={sx} direction="column" alignItems="center">
+    <Stack
+      direction="column"
+      sx={[{ alignItems: "center" }, ...(Array.isArray(sx) ? sx : [sx])]}
+    >
       <Box sx={{ m: 2 }}>
         <Logo size={64} />
       </Box>
-      <Typography variant="h4" fontWeight="fontWeightBold">
+      <Typography variant="h4" sx={{ fontWeight: "fontWeightBold" }}>
         Rocket Rescue Node
       </Typography>
       <Typography
@@ -43,7 +46,7 @@ export default function Header({ sx }: { sx?: SxProps<Theme> }) {
       <Stack direction="row" spacing={2}>
         <Link
           variant="h6"
-          color="text.secondary"
+          color="textSecondary"
           target="_blank"
           href="/docs/about.html"
         >
@@ -51,7 +54,7 @@ export default function Header({ sx }: { sx?: SxProps<Theme> }) {
         </Link>
         <Link
           variant="h6"
-          color="text.secondary"
+          color="textSecondary"
           target="_blank"
           href="/docs/donate.html"
         >
@@ -59,7 +62,7 @@ export default function Header({ sx }: { sx?: SxProps<Theme> }) {
         </Link>
         <Link
           variant="h6"
-          color="text.secondary"
+          color="textSecondary"
           target="_blank"
           href="/docs/faq.html"
         >
@@ -67,7 +70,7 @@ export default function Header({ sx }: { sx?: SxProps<Theme> }) {
         </Link>
         <Link
           variant="h6"
-          color="text.secondary"
+          color="textSecondary"
           target="_blank"
           href="https://stats.rescuenode.com/"
         >
