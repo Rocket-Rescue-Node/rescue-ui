@@ -15,6 +15,13 @@ export const appKit = createAppKit({
   adapters: [wagmiAdapter],
   networks: [mainnet],
   projectId: walletConnectProjectId,
+  // Wallet-only login. These are also disabled in the Reown dashboard, which
+  // takes precedence when the remote project config loads; the local values
+  // apply when it doesn't (e.g. an origin not on the project's allowlist).
+  features: {
+    email: false,
+    socials: false,
+  },
   metadata: {
     name: "Rescue Node",
     description: "Rescue Node UI",
