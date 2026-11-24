@@ -43,7 +43,7 @@ export default function RequestAccessSection({ sx }: { sx?: SxProps<Theme> }) {
               }}
               sx={{ cursor: "pointer" }}
               underline="hover"
-              color="primary.main"
+              color="primary"
             >
               rocket pool
             </Link>{" "}
@@ -54,7 +54,7 @@ export default function RequestAccessSection({ sx }: { sx?: SxProps<Theme> }) {
               }}
               sx={{ cursor: "pointer" }}
               underline="hover"
-              color="secondary.main"
+              color="secondary"
             >
               solo node
             </Link>{" "}
